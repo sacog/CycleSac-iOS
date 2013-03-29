@@ -145,12 +145,9 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info {
     UIImage *castedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     //save to library
     UIImageWriteToSavedPhotosAlbum(castedImage,self, nil, nil);
-    
-    imageData = [[NSData alloc] initWithData:UIImageJPEGRepresentation([ImageResize imageWithImage:castedImage scaledToSizeWithSameAspectRatio:CGSizeMake(960, 640)], 1)];
-    UIImage *thumbnail = [ImageResize imageWithImage:castedImage scaledToSizeWithSameAspectRatio:CGSizeMake(290, 192)];
-    
+    imageData = [[NSData alloc] initWithData:UIImageJPEGRepresentation([ImageResize imageWithImage:castedImage scaledToSize:CGSizeMake(960, 720)], 1)];
     NSLog(@"Size of Image(bytes):%d",[imageData length]);
-    self.image = thumbnail;
+    self.image = [ImageResize imageWithImage:castedImage scaledToSize:CGSizeMake(290, 192)];
     [picker dismissModalViewControllerAnimated:YES];
     [picker release];
 }

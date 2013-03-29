@@ -98,7 +98,7 @@
         UIImageViewResizable *noteImageResize = [[[UIImageViewResizable alloc] initWithFrame:CGRectMake(0, 0, 320, 427)] autorelease];
         
         noteImageResize.image= [UIImage imageWithData:note.image_data];
-        noteImageResize.contentMode = UIViewContentModeScaleAspectFill;
+        noteImageResize.contentMode = UIViewContentModeScaleAspectFit;
         
 //        [noteImageResize applyGestures];
         

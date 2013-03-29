@@ -178,7 +178,7 @@
     NSLog(@"img_url: %@", note.image_url);
     
     UIImage *castedImage = [[UIImage alloc] initWithData:note.image_data];
-    
+
     CGSize size;
     if (castedImage.size.height > castedImage.size.width) {
         size.height = 640;
@@ -188,7 +188,6 @@
         size.height = 480;
         size.width = 640;
     }
-    
     NSData *uploadData = [[NSData alloc] initWithData:UIImageJPEGRepresentation([ImageResize imageWithImage:castedImage scaledToSize:size], kJpegQuality)];
     
     NSLog(@"Size of Image(bytes):%d", [uploadData length]);
