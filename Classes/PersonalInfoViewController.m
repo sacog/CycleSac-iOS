@@ -509,7 +509,7 @@
 
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 6;
+    return 7;
 }
 
 
@@ -532,6 +532,9 @@
 			break;
         case 5:
 			return @"How long have you been a cyclist?";
+			break;
+        case 6:
+			return @"Missing trips previously saved?";
 			break;
 	}
     return nil;
@@ -601,6 +604,9 @@
 			return 1;
 			break;
         case 5:
+			return 1;
+			break;
+        case 6:
 			return 1;
 			break;
 		default:
@@ -765,6 +771,25 @@
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 		}
             break;
+        case 6:
+		{
+			static NSString *CellIdentifier = @"CellDownload";
+			cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+			if (cell == nil) {
+				cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+			}
+            
+			// inner switch statement identifies row
+			switch ([indexPath indexAtPosition:1])
+			{
+				case 0:
+					cell.textLabel.text = @"Download Previously Saved Trips";
+					break;
+			}
+			
+			cell.selectionStyle = UITableViewCellSelectionStyleNone;
+		}
+			break;
             
 //        case 5:
 //		{
@@ -907,6 +932,19 @@
 			switch ([indexPath indexAtPosition:1])
 			{
 				case 0:
+					break;
+				case 1:
+					break;
+			}
+			break;
+		}
+        case 6:
+		{
+			switch ([indexPath indexAtPosition:1])
+			{
+				case 0:
+                    //do the download here.
+                
 					break;
 				case 1:
 					break;
