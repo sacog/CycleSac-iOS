@@ -27,32 +27,6 @@
 
 @synthesize managedObjectContext, receivedData, parent, deviceUniqueIdHash, activityDelegate, alertDelegate, activityIndicator, uploadingView, user, urlRequest;
 
-<<<<<<< HEAD
-- (id)initWithManagedObjectContext:(NSManagedObjectContext*)context
-{
-    if ( self = [super init] )
-	{
-		//self.managedObjectContext = context;
-        self.activityDelegate = self;
-        self.user = [[User alloc] init];
-        
-    }
-    return self;
-}
-=======
-//- (id)initWithManagedObjectContext:(NSManagedObjectContext*)context
-//{
-//    if ( self = [super init] )
-//	{
-//		self.managedObjectContext = context;
-//        self.activityDelegate = self;
-//        self.user = [[User alloc] init];
-//        
-//    }
-//    return self;
-//}
->>>>>>> core data handling code
-
 
 - (void)reloadUser{
     self.managedObjectContext = [(CycleAtlantaAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
@@ -62,13 +36,6 @@
 	[request setEntity:entity];
 	
 	NSError *error;
-//	NSInteger count = [managedObjectContext countForFetchRequest:request error:&error];
-//	NSLog(@"saved user count  = %d", count);
-//	if ( count == 0 )
-//	{
-//		// create an empty User entity
-//		[self setUser:[self createUser]];
-//	}
 	
 	NSMutableArray *mutableFetchResults = [[self.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
 	if (mutableFetchResults == nil) {
@@ -85,12 +52,10 @@
         //user.homeZIP = @"33333";
         [user setHomeZIP:@"33333"];
     }
-<<<<<<< HEAD
-=======
+
     NSLog(@"User HomeZIP Post: %@", user.homeZIP );
     [self.managedObjectContext save:&error ];
 //    user.homeZIP = @"33333";
->>>>>>> core data handling code
     
 	[mutableFetchResults release];
 	[request release];
@@ -100,37 +65,35 @@
 
 - (void)fetchUserAndTrip{
     CycleAtlantaAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    self.deviceUniqueIdHash = delegate.uniqueIDHash;
+    //TODO reset to delegate.uniqueIDHash for production. 
+    self.deviceUniqueIdHash = @"2ecc2e36c3e1a512d349f9b407fb281e";// delegate.uniqueIDHash;
     NSLog(@"start downloading");
     NSLog(@"DeviceUniqueIdHash: %@", deviceUniqueIdHash);
     [self reloadUser];
-<<<<<<< HEAD
     
     NSDictionary *fetchDict = [NSDictionary dictionaryWithObjectsAndKeys:
                                @"get_user_and_trips", @"t", deviceUniqueIdHash, @"d", nil];
     
-    NSError *writeError = nil;
+    NSMutableString *postBody = [NSMutableString string];
+    NSString *sep = @"";
+    for(NSString * key in fetchDict) {
+        [postBody appendString:[NSString stringWithFormat:@"%@%@=%@",
+                                sep,
+                                key,
+                                [fetchDict objectForKey:key]]];
+        sep = @"&";
+    }
     
-    NSData *fetchJsonData = [[NSData alloc] initWithData:[NSJSONSerialization dataWithJSONObject:fetchDict options:0 error:&writeError]];
+    NSData *postData = [postBody dataUsingEncoding:NSUTF8StringEncoding];
+    NSLog(@"POST Data: %@", postBody);
     
-    NSString *fetchJson = [[NSString alloc] initWithData:fetchJsonData encoding:NSUTF8StringEncoding];
-    
-    NSLog(@"Json Data: %@", fetchJson);
-    
-    NSLog(@"Json Data Length: %d", [fetchJsonData length]);
-    
-    NSURL *aUrl = [NSURL URLWithString:kFetchURL];
-    
-    urlRequest = [NSMutableURLRequest requestWithURL:aUrl
-                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                  timeoutInterval:60.0];
+    self.urlRequest = [[[NSMutableURLRequest alloc] init] autorelease];
+    [urlRequest setURL:[NSURL URLWithString:kFetchURL]];
+
     [urlRequest setHTTPMethod:@"POST"];
-    [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    [urlRequest setValue:@"charset=utf-8" forHTTPHeaderField:@"Accept-Encoding"];
-    [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [urlRequest setValue:[NSString stringWithFormat:@"%d", [fetchJsonData length]] forHTTPHeaderField:@"Content-Length"];
-    [urlRequest setHTTPBody:fetchJsonData];
-    
+    [urlRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [urlRequest setValue:[NSString stringWithFormat:@"%d", [postData length]] forHTTPHeaderField:@"Content-Length"];
+    [urlRequest setHTTPBody:postData];
 	
 	// create the connection with the request and start loading the data
 	NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
@@ -202,10 +165,10 @@
 				NSLog(@"FetchUser error %@, %@", error, [error localizedDescription]);
 			}
             
-            [uploadingView loadingComplete:kSuccessTitle delayInterval:.7];
+            //[uploadingView loadingComplete:kSuccessTitle delayInterval:.7];
 		} else {
             
-            [uploadingView loadingComplete:kServerError delayInterval:1.5];
+            //[uploadingView loadingComplete:kServerError delayInterval:1.5];
         }
 	}
 	
@@ -235,8 +198,6 @@
     
     // TODO: is this really adequate...?
     [uploadingView loadingComplete:kConnectionError delayInterval:1.5];
-=======
->>>>>>> core data handling code
     
     // inform the user
     NSLog(@"Connection failed! Error - %@ %@",

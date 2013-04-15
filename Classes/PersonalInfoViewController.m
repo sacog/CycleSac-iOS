@@ -263,13 +263,11 @@
     
 	[mutableFetchResults release];
 	[request release];
-    
-<<<<<<< HEAD
-=======
+
     self.tableView.dataSource = self;
     [self.tableView reloadData];
     [super viewWillAppear:animated];
->>>>>>> core data handling code
+
 }
 
 
