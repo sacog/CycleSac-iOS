@@ -112,7 +112,7 @@
             [request setValue:@"gzip" forHTTPHeaderField:@"Content-Encoding"];
             // this is a bit grotty, but it indicates a) cycleatl namespace
             // b) trip upload, c) version 3, d) form encoding
-            [request setValue:@"application/vnd.cycleatl.trip-v3+form" forHTTPHeaderField:@"Content-Type"];            
+            [request setValue:@"application/vnd.cycleatl.trip-v3+form" forHTTPHeaderField:@"Content-Type"];
             
             //convert dict to string
             NSMutableString *postBody = [NSMutableString string];

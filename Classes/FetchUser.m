@@ -83,11 +83,8 @@
     NSLog(@"DeviceUniqueIdHash: %@", deviceUniqueIdHash);
     [self reloadUser];
     
-    
-    NSMutableDictionary *fetchDict = [[[NSMutableDictionary alloc] initWithCapacity:2] autorelease];
-    
-    [fetchDict setValue:@"get_user_and_trips" forKey:@"t"];
-    [fetchDict setValue:deviceUniqueIdHash forKey:@"d"];
+    NSDictionary *fetchDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                               @"get_user_and_trips", @"t", deviceUniqueIdHash, @"d", nil];
     
     NSError *writeError = nil;
     
@@ -96,18 +93,21 @@
     NSString *fetchJson = [[NSString alloc] initWithData:fetchJsonData encoding:NSUTF8StringEncoding];
     
     NSLog(@"Json Data: %@", fetchJson);
-	
-    self.urlRequest = [[[NSMutableURLRequest alloc] init] autorelease];
-    [urlRequest setURL:[NSURL URLWithString:kFetchURL]];
+    
+    NSLog(@"Json Data Length: %d", [fetchJsonData length]);
+    
+    NSURL *aUrl = [NSURL URLWithString:kFetchURL];
+    
+    urlRequest = [NSMutableURLRequest requestWithURL:aUrl
+                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                  timeoutInterval:60.0];
     [urlRequest setHTTPMethod:@"POST"];
-    
-    [urlRequest setValue:@"application/json; charset=utf-8" forHTTPHeaderField: @"Content-Type"];
-    
-    //[urlRequest setValue:[fetchJsonData length] forHTTPHeaderField:@"Content-Length"];
-    
-    
-    
+    [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [urlRequest setValue:@"charset=utf-8" forHTTPHeaderField:@"Accept-Encoding"];
+    [urlRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [urlRequest setValue:[NSString stringWithFormat:@"%d", [fetchJsonData length]] forHTTPHeaderField:@"Content-Length"];
     [urlRequest setHTTPBody:fetchJsonData];
+    
 	
 	// create the connection with the request and start loading the data
 	NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
@@ -162,7 +162,6 @@
 			case 500:
 			default:
 				title = @"Internal Server Error";
-				//message = [NSString stringWithFormat:@"%d", [httpResponse statusCode]];
 				message = kServerError;
 		}
 		
@@ -173,6 +172,7 @@
         
         if ( success )
 		{
+            NSLog(@"Download Success!!!");
 			NSError *error;
 			if (![managedObjectContext save:&error]) {
 				// Handle the error.
@@ -230,6 +230,5 @@
     [connection release];
     [receivedData release];
 }
-
 
 @end
