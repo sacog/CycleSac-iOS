@@ -27,6 +27,7 @@
 
 @synthesize managedObjectContext, receivedData, parent, deviceUniqueIdHash, activityDelegate, alertDelegate, activityIndicator, uploadingView, user, urlRequest;
 
+<<<<<<< HEAD
 - (id)initWithManagedObjectContext:(NSManagedObjectContext*)context
 {
     if ( self = [super init] )
@@ -38,6 +39,19 @@
     }
     return self;
 }
+=======
+//- (id)initWithManagedObjectContext:(NSManagedObjectContext*)context
+//{
+//    if ( self = [super init] )
+//	{
+//		self.managedObjectContext = context;
+//        self.activityDelegate = self;
+//        self.user = [[User alloc] init];
+//        
+//    }
+//    return self;
+//}
+>>>>>>> core data handling code
 
 
 - (void)reloadUser{
@@ -56,7 +70,7 @@
 //		[self setUser:[self createUser]];
 //	}
 	
-	NSMutableArray *mutableFetchResults = [[managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
+	NSMutableArray *mutableFetchResults = [[self.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
 	if (mutableFetchResults == nil) {
 		// Handle the error.
 		NSLog(@"no saved user");
@@ -67,8 +81,16 @@
 	[self setUser:[mutableFetchResults objectAtIndex:0]];
     
     if ( user != nil ){
-        user.homeZIP = @"11111";
+        NSLog(@"User HomeZIP Pre: %@", user.homeZIP );
+        //user.homeZIP = @"33333";
+        [user setHomeZIP:@"33333"];
     }
+<<<<<<< HEAD
+=======
+    NSLog(@"User HomeZIP Post: %@", user.homeZIP );
+    [self.managedObjectContext save:&error ];
+//    user.homeZIP = @"33333";
+>>>>>>> core data handling code
     
 	[mutableFetchResults release];
 	[request release];
@@ -82,6 +104,7 @@
     NSLog(@"start downloading");
     NSLog(@"DeviceUniqueIdHash: %@", deviceUniqueIdHash);
     [self reloadUser];
+<<<<<<< HEAD
     
     NSDictionary *fetchDict = [NSDictionary dictionaryWithObjectsAndKeys:
                                @"get_user_and_trips", @"t", deviceUniqueIdHash, @"d", nil];
@@ -212,6 +235,8 @@
     
     // TODO: is this really adequate...?
     [uploadingView loadingComplete:kConnectionError delayInterval:1.5];
+=======
+>>>>>>> core data handling code
     
     // inform the user
     NSLog(@"Connection failed! Error - %@ %@",

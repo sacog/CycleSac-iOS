@@ -146,9 +146,11 @@
 }
 
 
-- (void)viewDidLoad
+- (void)viewDidLoad:(BOOL)animated
 {
-    [super viewDidLoad];
+    [super viewDidLoad:animated];
+}
+- (void)viewWillAppear:(BOOL)animated{
     
     fetchUser = [[FetchUser alloc] init];
 
@@ -258,10 +260,16 @@
 	}
 	else
 		NSLog(@"init FAIL");
-	
+    
 	[mutableFetchResults release];
 	[request release];
     
+<<<<<<< HEAD
+=======
+    self.tableView.dataSource = self;
+    [self.tableView reloadData];
+    [super viewWillAppear:animated];
+>>>>>>> core data handling code
 }
 
 
@@ -956,6 +964,8 @@
 			{
 				case 0:
                     [fetchUser fetchUserAndTrip];
+                    //reload data didn't seem to refresh the view. this does
+                    [self viewWillAppear:false];                    
 					break;
 				case 1:
 					break;
