@@ -39,7 +39,7 @@
 
 #import <UIKit/UIKit.h>
 #import "PersonalInfoDelegate.h"
-
+#import "FetchUser.h"
 
 @class User;
 
@@ -84,7 +84,7 @@
     NSInteger selectedItem;
 }
 
-
+@property (nonatomic,strong) FetchUser *fetchUser;
 @property (nonatomic, retain) id <PersonalInfoDelegate> delegate;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) User *user;

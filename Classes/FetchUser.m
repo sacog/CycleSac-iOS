@@ -19,24 +19,70 @@
  */
 
 #import "FetchUser.h"
+#import "constants.h"
+#import "CycleAtlantaAppDelegate.h"
 
 @implementation FetchUser
 
-@synthesize managedObjectContext, receivedData, parent;
-@synthesize deviceUniqueIdHash;
+@synthesize managedObjectContext, receivedData, parent, deviceUniqueIdHash, activityDelegate, alertDelegate, activityIndicator, uploadingView, user;
 
 - (id)initWithManagedObjectContext:(NSManagedObjectContext*)context
 {
     if ( self = [super init] )
 	{
 		self.managedObjectContext = context;
-        self.activityDelegate = self;        
+        self.activityDelegate = self;
+        self.user = [[User alloc] init];
         
     }
     return self;
 }
 
 
-- (id)fetchUserAndTrip:(NSString *)deviceUniqueIdHash{}
+- (void)reloadUser{
+     [(CycleAtlantaAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
+    NSFetchRequest		*request = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"User" inManagedObjectContext:managedObjectContext];
+	[request setEntity:entity];
+	
+	NSError *error;
+//	NSInteger count = [managedObjectContext countForFetchRequest:request error:&error];
+//	NSLog(@"saved user count  = %d", count);
+//	if ( count == 0 )
+//	{
+//		// create an empty User entity
+//		[self setUser:[self createUser]];
+//	}
+	
+	NSMutableArray *mutableFetchResults = [[managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
+	if (mutableFetchResults == nil) {
+		// Handle the error.
+		NSLog(@"no saved user");
+		if ( error != nil )
+			NSLog(@"Fetch User fetch error %@, %@", error, [error localizedDescription]);
+	}
+	
+	[self setUser:[mutableFetchResults objectAtIndex:0]];
+    
+    if ( user != nil ){
+        user.homeZIP = @"11111";
+    }
+    user.homeZIP = @"11111";
+    
+	[mutableFetchResults release];
+	[request release];
+}
+
+//after fetching user and trips, send data back to PersonalInfoViewController and TripManager to add into the db
+
+- (void)fetchUserAndTrip{
+    CycleAtlantaAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    self.deviceUniqueIdHash = delegate.uniqueIDHash;
+    NSLog(@"start downloading");
+    NSLog(@"DeviceUniqueIdHash: %@", deviceUniqueIdHash);
+    //[self reloadUser];
+    
+    //NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:[saveRequest request] delegate:self];
+}
 
 @end

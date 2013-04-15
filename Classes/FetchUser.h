@@ -24,19 +24,27 @@
 #import "Trip.h"
 #import "User.h"
 
+@class User;
+
 @interface FetchUser : NSObject <ActivityIndicatorDelegate, UIAlertViewDelegate, UITextViewDelegate>
 {
     NSManagedObjectContext *managedObjectContext;
 	NSMutableData *receivedData;
     NSString *deviceUniqueIdHash;
+    User *user;
 }
+
+@property (nonatomic, retain) User *user;
+@property (nonatomic, retain) id <ActivityIndicatorDelegate> activityDelegate;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSMutableData *receivedData;
 @property (nonatomic, retain) NSString *deviceUniqueIdHash;
 @property (nonatomic, retain) id <UIAlertViewDelegate> alertDelegate;
 @property (nonatomic, retain) UIViewController *parent;
+@property (nonatomic, retain) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, retain) LoadingView *uploadingView;
 
 - (id)initWithManagedObjectContext:(NSManagedObjectContext*)context;
-- (id)fetchUserAndTrip:(NSString *)deviceUniqueIdHash;
+- (void)fetchUserAndTrip;
 
 @end

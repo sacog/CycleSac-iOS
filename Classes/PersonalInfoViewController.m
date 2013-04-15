@@ -50,6 +50,7 @@
 @synthesize age, email, gender, ethnicity, income, homeZIP, workZIP, schoolZIP;
 @synthesize cyclingFreq, riderType, riderHistory;
 @synthesize ageSelectedRow, genderSelectedRow, ethnicitySelectedRow, incomeSelectedRow, cyclingFreqSelectedRow, riderTypeSelectedRow, riderHistorySelectedRow, selectedItem;
+@synthesize fetchUser;
 
 
 - (id)initWithStyle:(UITableViewStyle)style {
@@ -148,6 +149,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    fetchUser = [[FetchUser alloc] init];
 
 	// Set the title.
 	// self.title = @"Personal Info";
@@ -864,6 +867,9 @@
     NSURL *url = [NSURL URLWithString:kInstructionsURL];
     NSURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
+    NSURL *downloadUrl = [NSURL URLWithString:kFetchURL];
+    NSURLRequest *downloadRequest = [NSMutableURLRequest requestWithURL:downloadUrl];
+    
 	switch ([indexPath indexAtPosition:0])
 	{
 		case 0:
@@ -938,13 +944,14 @@
 			}
 			break;
 		}
+                    
         case 6:
 		{
+			// inner switch statement identifies row
 			switch ([indexPath indexAtPosition:1])
 			{
 				case 0:
-                    //do the download here.
-                
+                    [fetchUser fetchUserAndTrip];
 					break;
 				case 1:
 					break;
