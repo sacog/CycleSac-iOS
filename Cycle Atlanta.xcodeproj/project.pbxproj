@@ -169,6 +169,8 @@
 		9D6D31AA16D7C017007A2497 /* noteIssuePicker@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D6D31A616D7C017007A2497 /* noteIssuePicker@2x.png */; };
 		9D6D31AD16D7C189007A2497 /* noteBlankPicker.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D6D31AB16D7C189007A2497 /* noteBlankPicker.png */; };
 		9D6D31AE16D7C189007A2497 /* noteBlankPicker@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D6D31AC16D7C189007A2497 /* noteBlankPicker@2x.png */; };
+		9D8A1BAF171B03E000509FBD /* FetchUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D8A1BAE171B03E000509FBD /* FetchUser.m */; };
+		9D8A1BB2171B03E900509FBD /* FetchTripData.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D8A1BB1171B03E900509FBD /* FetchTripData.m */; };
 		9DD65FBB16FEA3CC00F2EB63 /* ImageResize.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD65FBA16FEA3CC00F2EB63 /* ImageResize.m */; };
 /* End PBXBuildFile section */
 
@@ -371,6 +373,10 @@
 		9D6D31A616D7C017007A2497 /* noteIssuePicker@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "noteIssuePicker@2x.png"; path = "TripPurposePickerIcons V3/noteIssuePicker@2x.png"; sourceTree = SOURCE_ROOT; };
 		9D6D31AB16D7C189007A2497 /* noteBlankPicker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = noteBlankPicker.png; path = "TripPurposePickerIcons V3/noteBlankPicker.png"; sourceTree = SOURCE_ROOT; };
 		9D6D31AC16D7C189007A2497 /* noteBlankPicker@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "noteBlankPicker@2x.png"; path = "TripPurposePickerIcons V3/noteBlankPicker@2x.png"; sourceTree = SOURCE_ROOT; };
+		9D8A1BAD171B03E000509FBD /* FetchUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FetchUser.h; sourceTree = "<group>"; };
+		9D8A1BAE171B03E000509FBD /* FetchUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FetchUser.m; sourceTree = "<group>"; };
+		9D8A1BB0171B03E900509FBD /* FetchTripData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FetchTripData.h; sourceTree = "<group>"; };
+		9D8A1BB1171B03E900509FBD /* FetchTripData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FetchTripData.m; sourceTree = "<group>"; };
 		9DD65FB916FEA3CC00F2EB63 /* ImageResize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageResize.h; sourceTree = "<group>"; };
 		9DD65FBA16FEA3CC00F2EB63 /* ImageResize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageResize.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -408,6 +414,10 @@
 				1D3623250D0F684500981E51 /* CycleAtlantaAppDelegate.m */,
 				8F1B1D3D164B94C60022B776 /* DetailViewController.h */,
 				8F1B1D3E164B94C60022B776 /* DetailViewController.m */,
+				9D8A1BAD171B03E000509FBD /* FetchUser.h */,
+				9D8A1BAE171B03E000509FBD /* FetchUser.m */,
+				9D8A1BB0171B03E900509FBD /* FetchTripData.h */,
+				9D8A1BB1171B03E900509FBD /* FetchTripData.m */,
 				9DD65FB916FEA3CC00F2EB63 /* ImageResize.h */,
 				9DD65FBA16FEA3CC00F2EB63 /* ImageResize.m */,
 				645E4EDA1200C1C800EFF0E6 /* LoadingView.h */,
@@ -926,6 +936,8 @@
 				8FAD930516F189EE00082B6F /* UIImageViewResizable.m in Sources */,
 				9DD65FBB16FEA3CC00F2EB63 /* ImageResize.m in Sources */,
 				8F316F671703161E0087529E /* Model.xcmappingmodel in Sources */,
+				9D8A1BAF171B03E000509FBD /* FetchUser.m in Sources */,
+				9D8A1BB2171B03E900509FBD /* FetchTripData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
