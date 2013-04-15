@@ -27,8 +27,75 @@
 
 @synthesize managedObjectContext, receivedData, parent, deviceUniqueIdHash, activityDelegate, alertDelegate, activityIndicator, uploadingView, user, urlRequest;
 
+- (void)reload{
+    self.managedObjectContext = [(CycleAtlantaAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
+}
 
-- (void)reloadUser{
+- (void)reloadUser:(NSDictionary *)userDict{
+    self.managedObjectContext = [(CycleAtlantaAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
+    NSFetchRequest		*request = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"User" inManagedObjectContext:managedObjectContext];
+    
+	[request setEntity:entity];
+	
+	NSError *error;
+	
+	NSMutableArray *mutableFetchResults = [[self.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
+	if (mutableFetchResults == nil) {
+		// Handle the error.
+		NSLog(@"no saved user");
+		if ( error != nil )
+			NSLog(@"Fetch User fetch error %@, %@", error, [error localizedDescription]);
+	}
+	
+	[self setUser:[mutableFetchResults objectAtIndex:0]];
+    
+    //for later use
+    NSString *user_id = [userDict objectForKey:@"id"];
+    NSString *created = [userDict objectForKey:@"created"];
+    
+    if ( user != nil ){
+        if ( [userDict objectForKey:@"age"] != (id)[NSNull null]) {
+            [user setAge:[NSNumber numberWithInteger:[[userDict objectForKey:@"age"] integerValue]]];
+        }
+        if ([userDict objectForKey:@"email"]!= NULL) {
+            [user setEmail:[userDict objectForKey:@"email"]];
+        }
+        if ([userDict objectForKey:@"gender"] != (id)[NSNull null]) {
+            [user setGender:[NSNumber numberWithInteger:[[userDict objectForKey:@"gender"] integerValue]]];
+        }
+        if ([userDict objectForKey:@"ethnicity"] != (id)[NSNull null]) {
+            [user setEthnicity:[NSNumber numberWithInteger:[[userDict objectForKey:@"ethnicity"] integerValue]]];
+        }
+        if ([userDict objectForKey:@"income"] != (id)[NSNull null]) {
+            [user setIncome:[NSNumber numberWithInteger:[[userDict objectForKey:@"income"] integerValue]]];
+        }        
+        if ([userDict objectForKey:@"homeZIP"] != (id)[NSNull null]) {
+            [user setHomeZIP:[userDict objectForKey:@"homeZIP"]];
+        }
+        if ([userDict objectForKey:@"workZIP"] != (id)[NSNull null]) {
+            [user setWorkZIP:[userDict objectForKey:@"workZIP"]];
+        }
+        if ([userDict objectForKey:@"schoolZIP"] != (id)[NSNull null]) {
+            [user setSchoolZIP:[userDict objectForKey:@"schoolZIP"]];
+        }
+        if ([userDict objectForKey:@"cycling_freq"] != (id)[NSNull null]) {
+            [user setCyclingFreq:[NSNumber numberWithInteger:[[userDict objectForKey:@"cycling_freq"] integerValue]]];
+        }
+        if ([userDict objectForKey:@"rider_type"] != (id)[NSNull null]) {
+            [user setRider_type:[NSNumber numberWithInteger:[[userDict objectForKey:@"rider_type"] integerValue]]];
+        }
+        if ([userDict objectForKey:@"rider_history"] != (id)[NSNull null]) {
+            [user setRider_history:[NSNumber numberWithInteger:[[userDict objectForKey:@"rider_history"] integerValue]]];
+        }
+    }
+    [self.managedObjectContext save:&error];
+    
+	[mutableFetchResults release];
+	[request release];
+}
+
+- (void)reloadTrips:(NSDictionary *)tripsDict{
     self.managedObjectContext = [(CycleAtlantaAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
     NSFetchRequest		*request = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"User" inManagedObjectContext:managedObjectContext];
@@ -52,10 +119,10 @@
         //user.homeZIP = @"33333";
         [user setHomeZIP:@"33333"];
     }
-
+    
     NSLog(@"User HomeZIP Post: %@", user.homeZIP );
-    [self.managedObjectContext save:&error ];
-//    user.homeZIP = @"33333";
+    [self.managedObjectContext save:&error];
+    //    user.homeZIP = @"33333";
     
 	[mutableFetchResults release];
 	[request release];
@@ -64,12 +131,12 @@
 //after fetching user and trips, send data back to PersonalInfoViewController and TripManager to add into the db
 
 - (void)fetchUserAndTrip{
-    CycleAtlantaAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    //CycleAtlantaAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     //TODO reset to delegate.uniqueIDHash for production. 
     self.deviceUniqueIdHash = @"2ecc2e36c3e1a512d349f9b407fb281e";// delegate.uniqueIDHash;
     NSLog(@"start downloading");
     NSLog(@"DeviceUniqueIdHash: %@", deviceUniqueIdHash);
-    [self reloadUser];
+    [self reload];
     
     NSDictionary *fetchDict = [NSDictionary dictionaryWithObjectsAndKeys:
                                @"get_user_and_trips", @"t", deviceUniqueIdHash, @"d", nil];
@@ -210,7 +277,35 @@
 {
 	// do something with the data
     NSLog(@"+++++++DEBUG: Received %d bytes of data", [receivedData length]);
-	NSLog(@"%@", [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease] );
+    
+    NSError *error;
+    
+    NSString *jsonString = [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding];
+    
+    
+    NSDictionary *JSON =
+    [NSJSONSerialization JSONObjectWithData: [jsonString dataUsingEncoding:NSUTF8StringEncoding]
+                                    options: NSJSONReadingMutableContainers
+                                      error: &error];
+    
+    NSDictionary *userDict = [JSON objectForKey:@"user"];
+    [self reloadUser:userDict];
+    
+    NSData *JsonDataUser = [[NSData alloc] initWithData:[NSJSONSerialization dataWithJSONObject:userDict options:0 error:&error]];
+    NSLog(@"%@", [[[NSString alloc] initWithData:JsonDataUser encoding:NSUTF8StringEncoding] autorelease] );
+    
+    
+    
+//    NSDictionary *tripsDict = [JSON objectForKey:@"trips"];
+//    [self reloadTrips:tripsDict];
+//    
+//    NSData *JsonDataTrips = [[NSData alloc] initWithData:[NSJSONSerialization dataWithJSONObject:userDict options:0 error:&error]];
+//    NSLog(@"%@", [[[NSString alloc] initWithData:JsonDataTrips encoding:NSUTF8StringEncoding] autorelease] );
+    
+    
+	//NSLog(@"%@", [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease] );
+    
+    
     
     // release the connection, and the data object
     [connection release];
