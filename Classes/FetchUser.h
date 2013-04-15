@@ -28,12 +28,14 @@
 
 @interface FetchUser : NSObject <ActivityIndicatorDelegate, UIAlertViewDelegate, UITextViewDelegate>
 {
+    NSMutableURLRequest *urlRequest;
     NSManagedObjectContext *managedObjectContext;
 	NSMutableData *receivedData;
     NSString *deviceUniqueIdHash;
     User *user;
 }
 
+@property (nonatomic, retain) NSMutableURLRequest *urlRequest;
 @property (nonatomic, retain) User *user;
 @property (nonatomic, retain) id <ActivityIndicatorDelegate> activityDelegate;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;

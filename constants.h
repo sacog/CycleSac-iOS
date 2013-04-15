@@ -67,7 +67,9 @@
 #define kRetryTitle			@"Retry Upload?"
 #define	kSavingTitle		@"Uploading your trip"
 #define kSavingNoteTitle    @"Uploading your note"
+#define kDownloadingUser    @"Downloading demographic information"
 #define kSuccessTitle		@"Upload complete"
+#define kSuccessFetchTitle	@"Download complete"
 #define kTripNotesTitle		@"Enter Comments Below"
 #define kConsentFor18Title  @"In order to send route data to Georgia Tech and the City of Atlanta, you must be at least 18."
 
@@ -86,6 +88,7 @@
 #define kPreparingData		@"Preparing your trip data for transfer."
 #define kRetryMessage		@"This trip has not yet been uploaded successfully. Try again?"
 #define kSaveSuccess		@"Your trip has been uploaded successfully. Thank you."
+#define kFetchSuccess		@"User and Trips information are downloaded successfully. Thank you."
 #define kSaveAccepted		@"Your trip has already been uploaded. Thank you."
 #define kSaveError			@"Your trip has been saved. Please try uploading again later."
 
@@ -94,7 +97,6 @@
 
 #define kSaveURL			@"http://cycleatlanta.org/post_dev/"
 #define kFetchURL			@"http://cycleatlanta.org/fetch/"
-//#define kSaveURL			@""
 
 #define kTripNotesPlaceholder	@"Comments"
 

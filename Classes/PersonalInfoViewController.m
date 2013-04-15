@@ -261,6 +261,7 @@
 	
 	[mutableFetchResults release];
 	[request release];
+    
 }
 
 
@@ -471,11 +472,14 @@
 }
 
 
-/*
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-*/
+
+//- (void)viewWillAppear:(BOOL)animated {
+//    [super viewWillAppear:animated];
+//    [self.view setNeedsDisplay];
+//    [self.tableView reloadData];
+//    [self.tableView reloadInputViews];
+//}
+
 /*
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
