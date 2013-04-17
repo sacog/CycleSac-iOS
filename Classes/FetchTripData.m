@@ -109,7 +109,7 @@
 	}
     NSLog(@"Trip Download: %d", self.downloadCount);
     if (self.downloadCount <= 1){
-        [self.downloadingView loadingComplete:kSuccessFetchTitle delayInterval:.7];
+        [self.downloadingView loadingComplete:kSuccessFetchTitle delayInterval:1];
     }
     
     [dateFormat release];

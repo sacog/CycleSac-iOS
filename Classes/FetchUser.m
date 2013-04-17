@@ -98,15 +98,18 @@
 	NSMutableArray *storedTrips = [[self.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSString *tempDateString = [NSString  alloc];
     
     BOOL tripNotFound = true;
+    BOOL noNewData = true;
     int downloadCount = [tripsDict count];
     NSLog(@"Total number of trips: %d", downloadCount);
     //TODO: fix date compare. first issue is oldTrip is 4 hours ahead of newTrip. not sure why. and i think my test is wrong
     for(NSDictionary *newTrip in tripsDict){
         tripNotFound = true;
         for(Trip *oldTrip in storedTrips){
-            if(oldTrip.start == [dateFormat dateFromString:[newTrip objectForKey:@"start"]]){
+            tempDateString=[dateFormat stringFromDate:oldTrip.start];
+            if( [tempDateString isEqualToString:[newTrip objectForKey:@"start"]]){
                 NSLog(@"trip  found");
                 tripNotFound = false;
                 downloadCount--;
@@ -114,10 +117,15 @@
             }
         }
         if(tripNotFound){
+            noNewData = false;
             FetchTripData *fetchTrip = [[[FetchTripData alloc] init] autorelease];
             [fetchTrip fetchTripData:newTrip statusView:downloadingView downloadCount:downloadCount];
             downloadCount--;
         }
+    }
+    
+    if(noNewData){
+        [self.downloadingView loadingComplete:kSuccessFetchTitle delayInterval:1];
     }
     
     [request release];
@@ -132,7 +140,7 @@
     self.downloadingView = [[LoadingView loadingViewInView:self.parent.parentViewController.view messageString:kFetchTitle] retain];
     //CycleAtlantaAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     //TODO reset to delegate.uniqueIDHash for production. 
-    self.deviceUniqueIdHash = @"2ecc2e36c3e1a512d349f9b407fb281e";// delegate.uniqueIDHash;
+    self.deviceUniqueIdHash = @"3cab3ca8964ca45b3e24fa7aee4d5e1f";// delegate.uniqueIDHash;  ME://2ecc2e36c3e1a512d349f9b407fb281e
     NSLog(@"start downloading");
     NSLog(@"DeviceUniqueIdHash: %@", deviceUniqueIdHash);
     
