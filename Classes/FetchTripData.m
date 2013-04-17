@@ -50,6 +50,7 @@
 	NSError *error;
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    [dateFormat setTimeZone:[NSTimeZone timeZoneWithName:@"PST"]]; 
     
     CLLocationDistance distance = 0;
     Coord *prev = nil;

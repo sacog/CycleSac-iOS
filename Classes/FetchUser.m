@@ -98,6 +98,7 @@
 	NSMutableArray *storedTrips = [[self.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    [dateFormat setTimeZone:[NSTimeZone timeZoneWithName:@"PST"]];
     NSString *tempDateString = [NSString  alloc];
     
     BOOL tripNotFound = true;
@@ -140,7 +141,7 @@
     self.downloadingView = [[LoadingView loadingViewInView:self.parent.parentViewController.view messageString:kFetchTitle] retain];
     //CycleAtlantaAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     //TODO reset to delegate.uniqueIDHash for production. 
-    self.deviceUniqueIdHash = @"3cab3ca8964ca45b3e24fa7aee4d5e1f";// delegate.uniqueIDHash;  ME://2ecc2e36c3e1a512d349f9b407fb281e
+    self.deviceUniqueIdHash = @"2ecc2e36c3e1a512d349f9b407fb281e";// delegate.uniqueIDHash;  ME://3cab3ca8964ca45b3e24fa7aee4d5e1f
     NSLog(@"start downloading");
     NSLog(@"DeviceUniqueIdHash: %@", deviceUniqueIdHash);
     
