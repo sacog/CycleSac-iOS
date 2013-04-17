@@ -19,40 +19,35 @@
  */
 
 #import "FetchUser.h"
+#import "FetchTripData.h"
 #import "constants.h"
 #import "CycleAtlantaAppDelegate.h"
 #import "PersonalInfoViewController.h"
 
 @implementation FetchUser
 
-@synthesize managedObjectContext, receivedData, parent, deviceUniqueIdHash, activityDelegate, alertDelegate, activityIndicator, uploadingView, user, urlRequest;
+@synthesize managedObjectContext, receivedData, parent, deviceUniqueIdHash, activityDelegate, alertDelegate, activityIndicator, downloadingView, user, urlRequest;
 
-- (void)reload{
+- (id)init{
     self.managedObjectContext = [(CycleAtlantaAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
+
+    return self;
 }
 
-- (void)reloadUser:(NSDictionary *)userDict{
-    self.managedObjectContext = [(CycleAtlantaAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
+- (void)loadUser:(NSDictionary *)userDict{
     NSFetchRequest		*request = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"User" inManagedObjectContext:managedObjectContext];
-    
 	[request setEntity:entity];
-	
 	NSError *error;
-	
 	NSMutableArray *mutableFetchResults = [[self.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
-	if (mutableFetchResults == nil) {
+	
+    if (mutableFetchResults == nil) {
 		// Handle the error.
 		NSLog(@"no saved user");
 		if ( error != nil )
 			NSLog(@"Fetch User fetch error %@, %@", error, [error localizedDescription]);
-	}
-	
+	}	
 	[self setUser:[mutableFetchResults objectAtIndex:0]];
-    
-    //for later use
-    NSString *user_id = [userDict objectForKey:@"id"];
-    NSString *created = [userDict objectForKey:@"created"];
     
     if ( user != nil ){
         if ( [userDict objectForKey:@"age"] != (id)[NSNull null]) {
@@ -90,53 +85,56 @@
         }
     }
     [self.managedObjectContext save:&error];
-    
+    [self.parent viewWillAppear:false];
 	[mutableFetchResults release];
 	[request release];
 }
 
-- (void)reloadTrips:(NSDictionary *)tripsDict{
-    self.managedObjectContext = [(CycleAtlantaAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
+-(void)loadTrip:(NSDictionary *)tripsDict{
     NSFetchRequest		*request = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"User" inManagedObjectContext:managedObjectContext];
-    
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Trip" inManagedObjectContext:self.managedObjectContext];
 	[request setEntity:entity];
-	
 	NSError *error;
-	
-	NSMutableArray *mutableFetchResults = [[self.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
-	if (mutableFetchResults == nil) {
-		// Handle the error.
-		NSLog(@"no saved user");
-		if ( error != nil )
-			NSLog(@"Fetch User fetch error %@, %@", error, [error localizedDescription]);
-	}
-	
-	[self setUser:[mutableFetchResults objectAtIndex:0]];
+	NSMutableArray *storedTrips = [[self.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     
-    if ( user != nil ){
-        NSLog(@"User HomeZIP Pre: %@", user.homeZIP );
-        //user.homeZIP = @"33333";
-        [user setHomeZIP:@"33333"];
+    BOOL tripNotFound = true;
+    int downloadCount = [tripsDict count];
+    NSLog(@"Total number of trips: %d", downloadCount);
+    //TODO: fix date compare. first issue is oldTrip is 4 hours ahead of newTrip. not sure why. and i think my test is wrong
+    for(NSDictionary *newTrip in tripsDict){
+        tripNotFound = true;
+        for(Trip *oldTrip in storedTrips){
+            if(oldTrip.start == [dateFormat dateFromString:[newTrip objectForKey:@"start"]]){
+                NSLog(@"trip  found");
+                tripNotFound = false;
+                downloadCount--;
+                break;
+            }
+        }
+        if(tripNotFound){
+            FetchTripData *fetchTrip = [[[FetchTripData alloc] init] autorelease];
+            [fetchTrip fetchTripData:newTrip statusView:downloadingView downloadCount:downloadCount];
+            downloadCount--;
+        }
     }
     
-    NSLog(@"User HomeZIP Post: %@", user.homeZIP );
-    [self.managedObjectContext save:&error];
-    //    user.homeZIP = @"33333";
-    
-	[mutableFetchResults release];
-	[request release];
+    [request release];
+    [storedTrips release];
+    [dateFormat release];
 }
 
 //after fetching user and trips, send data back to PersonalInfoViewController and TripManager to add into the db
 
-- (void)fetchUserAndTrip{
+- (void)fetchUserAndTrip:(UIViewController*)parentView;{
+    self.parent = parentView;
+    self.downloadingView = [[LoadingView loadingViewInView:self.parent.parentViewController.view messageString:kFetchTitle] retain];
     //CycleAtlantaAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     //TODO reset to delegate.uniqueIDHash for production. 
     self.deviceUniqueIdHash = @"2ecc2e36c3e1a512d349f9b407fb281e";// delegate.uniqueIDHash;
     NSLog(@"start downloading");
     NSLog(@"DeviceUniqueIdHash: %@", deviceUniqueIdHash);
-    [self reload];
     
     NSDictionary *fetchDict = [NSDictionary dictionaryWithObjectsAndKeys:
                                @"get_user_and_trips", @"t", deviceUniqueIdHash, @"d", nil];
@@ -239,9 +237,6 @@
         }
 	}
 	
-    // it can be called multiple times, for example in the case of a
-	// redirect, so each time we reset the data.
-	
     // receivedData is declared as a method instance elsewhere
     [receivedData setLength:0];
 }
@@ -264,7 +259,7 @@
     [receivedData release];
     
     // TODO: is this really adequate...?
-    [uploadingView loadingComplete:kConnectionError delayInterval:1.5];
+    [downloadingView loadingComplete:kConnectionError delayInterval:1.5];
     
     // inform the user
     NSLog(@"Connection failed! Error - %@ %@",
@@ -275,41 +270,30 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-	// do something with the data
     NSLog(@"+++++++DEBUG: Received %d bytes of data", [receivedData length]);
-    
     NSError *error;
-    
     NSString *jsonString = [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding];
-    
-    
-    NSDictionary *JSON =
-    [NSJSONSerialization JSONObjectWithData: [jsonString dataUsingEncoding:NSUTF8StringEncoding]
-                                    options: NSJSONReadingMutableContainers
-                                      error: &error];
+    NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData: [jsonString dataUsingEncoding:NSUTF8StringEncoding]
+                                                         options: NSJSONReadingMutableContainers
+                                                           error: &error];
     
     NSDictionary *userDict = [JSON objectForKey:@"user"];
-    [self reloadUser:userDict];
-    
-    NSData *JsonDataUser = [[NSData alloc] initWithData:[NSJSONSerialization dataWithJSONObject:userDict options:0 error:&error]];
-    NSLog(@"%@", [[[NSString alloc] initWithData:JsonDataUser encoding:NSUTF8StringEncoding] autorelease] );
+    NSDictionary *tripsDict = [JSON objectForKey:@"trips"];
     
     
+    //Debugging messages
+//    NSData *JsonDataUser = [[NSData alloc] initWithData:[NSJSONSerialization dataWithJSONObject:userDict options:0 error:&error]];
+//    NSLog(@"User Data: \n%@", [[[NSString alloc] initWithData:JsonDataUser encoding:NSUTF8StringEncoding] autorelease] );
+//    NSData *JsonDataTrips = [[NSData alloc] initWithData:[NSJSONSerialization dataWithJSONObject:tripsDict options:0 error:&error]];
+//    NSLog(@"Trip Data: \n%@", [[[NSString alloc] initWithData:JsonDataTrips encoding:NSUTF8StringEncoding] autorelease] );
     
-//    NSDictionary *tripsDict = [JSON objectForKey:@"trips"];
-//    [self reloadTrips:tripsDict];
-//    
-//    NSData *JsonDataTrips = [[NSData alloc] initWithData:[NSJSONSerialization dataWithJSONObject:userDict options:0 error:&error]];
-//    NSLog(@"%@", [[[NSString alloc] initWithData:JsonDataTrips encoding:NSUTF8StringEncoding] autorelease] );
-    
-    
-	//NSLog(@"%@", [[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding] autorelease] );
-    
-    
+    [self loadUser:userDict];
+    [self loadTrip:tripsDict];
     
     // release the connection, and the data object
     [connection release];
     [receivedData release];
+    [jsonString release];
 }
 
 @end

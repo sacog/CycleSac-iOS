@@ -25,6 +25,7 @@
 #import "User.h"
 
 @class User;
+@class Trip;
 
 @interface FetchUser : NSObject <ActivityIndicatorDelegate, UIAlertViewDelegate, UITextViewDelegate>
 {
@@ -44,9 +45,8 @@
 @property (nonatomic, retain) id <UIAlertViewDelegate> alertDelegate;
 @property (nonatomic, retain) UIViewController *parent;
 @property (nonatomic, retain) UIActivityIndicatorView *activityIndicator;
-@property (nonatomic, retain) LoadingView *uploadingView;
+@property (nonatomic, retain) LoadingView *downloadingView;
 
-- (id)initWithManagedObjectContext:(NSManagedObjectContext*)context;
-- (void)fetchUserAndTrip;
+- (void)fetchUserAndTrip:(UIViewController*) parent;
 
 @end

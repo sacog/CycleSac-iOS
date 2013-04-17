@@ -961,9 +961,9 @@
 			switch ([indexPath indexAtPosition:1])
 			{
 				case 0:
-                    [fetchUser fetchUserAndTrip];
+                    [fetchUser fetchUserAndTrip:self];
                     //reload data didn't seem to refresh the view. this does
-                    [self viewWillAppear:false];                    
+                    //[self viewWillAppear:false];
 					break;
 				case 1:
 					break;

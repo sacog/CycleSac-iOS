@@ -268,7 +268,7 @@
 	NSLog(@"addCoord");
 	
 	if ( !trip )
-		[self createTrip];	
+		[self createTrip];
 
 	// Create and configure a new instance of the Coord entity
 	Coord *coord = (Coord *)[NSEntityDescription insertNewObjectForEntityForName:@"Coord" inManagedObjectContext:managedObjectContext];
@@ -309,43 +309,6 @@
 		//NSLog(@"duration = %.0fs", duration);
 		[trip setDuration:[NSNumber numberWithDouble:duration]];
 		
-		/*
-		Coord *prev = [coords objectAtIndex:0];
-		CLLocation *prevLoc = [[CLLocation alloc] initWithLatitude:[prev.latitude doubleValue] 
-														 longitude:[prev.longitude doubleValue]];
-
-		CLLocationDistance	deltaDist = [location getDistanceFrom:prevLoc];
-		NSTimeInterval		deltaTime = [location.timestamp timeIntervalSinceDate:prev.recorded];
-		
-		NSLog(@"deltaDist = %f", deltaDist);
-		NSLog(@"deltaTime = %f", deltaTime);
-		NSLog(@"est speed = %f", deltaDist / deltaTime);
-		
-		// sanity check accuracy
-		if ( [prev.hAccuracy doubleValue] < kEpsilonAccuracy && 
-			 location.horizontalAccuracy < kEpsilonAccuracy )
-		{
-			// sanity check time interval if non-zero
-			if ( !kEpsilonTimeInterval || deltaTime < kEpsilonTimeInterval )
-			{
-				// sanity check speed
-				if ( deltaDist / deltaTime < kEpsilonSpeed )
-				{
-					// consider distance delta as valid
-					distance += deltaDist;
-					dirty = YES;
-
-					NSLog(@"distance: %f", distance);
-				}
-				else
-					NSLog(@"WARNING speed exceeds epsilon: %f", deltaDist / deltaTime);
-			}
-			else
-				NSLog(@"WARNING deltaTime exceeds epsilon: %f", deltaTime);
-		}
-		else
-			NSLog(@"WARNING accuracy exceeds epsilon: %f", location.horizontalAccuracy);
-		 */
 	}
 	
 	NSError *error;

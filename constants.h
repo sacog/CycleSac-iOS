@@ -66,6 +66,7 @@
 #define kBatteryTitle		@"Battery Low"
 #define kRetryTitle			@"Retry Upload?"
 #define	kSavingTitle		@"Uploading your trip"
+#define kFetchTitle         @"Downloading your data"
 #define kSavingNoteTitle    @"Uploading your note"
 #define kDownloadingUser    @"Downloading demographic information"
 #define kSuccessTitle		@"Upload complete"

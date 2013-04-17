@@ -19,7 +19,29 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "ActivityIndicatorDelegate.h"
+#import "LoadingView.h"
+#import "Trip.h"
+#import "User.h"
 
-@interface FetchTripData : NSObject
+@class User;
+@class Trip;
+
+@interface FetchTripData: NSObject <ActivityIndicatorDelegate, UIAlertViewDelegate, UITextViewDelegate>
+{
+    NSMutableURLRequest *urlRequest;
+    NSManagedObjectContext *managedObjectContext;
+	NSMutableData *receivedData;
+    NSDictionary *tripDict;
+}
+
+@property (nonatomic, retain) NSDictionary *tripDict;
+@property (nonatomic, retain) NSMutableURLRequest *urlRequest;
+@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain) NSMutableData *receivedData;
+@property (nonatomic, retain) LoadingView *downloadingView;
+@property (nonatomic) int downloadCount;
+
+- (void)fetchTripData:(NSDictionary*) tripToLoad statusView:(LoadingView*) statusView downloadCount:(int) downloadCounter;
 
 @end
