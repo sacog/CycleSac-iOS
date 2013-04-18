@@ -68,6 +68,7 @@
 #define	kSavingTitle		@"Uploading your trip"
 #define kFetchTitle         @"Downloading your data"
 #define kSavingNoteTitle    @"Uploading your note"
+#define kInitMessage        @"Initializing..."
 #define kDownloadingUser    @"Downloading demographic information"
 #define kSuccessTitle		@"Upload complete"
 #define kSuccessFetchTitle	@"Download complete"

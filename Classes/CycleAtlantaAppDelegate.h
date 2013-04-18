@@ -37,6 +37,7 @@
 //	For more information on the project, 
 //	e-mail Billy Charlton at the SFCTA <billy.charlton@sfcta.org>
 #import <CoreLocation/CoreLocation.h>
+#import "LoadingView.h"
 
 @interface CycleAtlantaAppDelegate : NSObject <UIApplicationDelegate>
 {
@@ -64,6 +65,8 @@
 // added to handle location manager background service switching
 @property (nonatomic, assign) BOOL isRecording;
 @property (nonatomic, retain) CLLocationManager *locationManager;
+@property (nonatomic, retain) LoadingView *storeLoading;
+@property (nonatomic, retain) UIView *storeLoadingView;
 
 - (NSString *)applicationDocumentsDirectory;
 - (void)initUniqueIDHash;

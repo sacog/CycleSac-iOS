@@ -242,7 +242,7 @@
             //[uploadingView loadingComplete:kSuccessTitle delayInterval:.7];
 		} else {
             
-            //[uploadingView loadingComplete:kServerError delayInterval:1.5];
+            [downloadingView loadingComplete:kServerError delayInterval:1.5];
         }
 	}
 	
