@@ -64,7 +64,7 @@
     [newTrip setUploaded:[dateFormat dateFromString:[tripDict objectForKey:@"stop"]]];
     [newTrip setSaved:[NSDate date]];
     [newTrip setNotes:[tripDict objectForKey:@"notes"]];
-    [newTrip setDistance:0]; //should force the dintance to be recalcuate when the trips page is loaded.
+    [newTrip setDistance:0]; //should force the distance to be recalcuate when the trips page is loaded.
     //or better, explicity call the recalculate function so it's done.
     if (![self.managedObjectContext save:&error]) {
         // Handle the error.

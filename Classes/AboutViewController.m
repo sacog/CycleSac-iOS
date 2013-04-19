@@ -64,13 +64,6 @@
 {
     [super viewDidLoad];
     
-	self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-	NSLog(@"About viewDidLoad");
-    //loads the instructions page everytime the app is started. good for testing.
-    NSURL *url = [NSURL URLWithString:kInstructionsURL];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
-    [webView loadRequest:request];
     //loads the instructions page once and saves it unless the app is deleted
 	//[webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:kInstructionsURL]]];
     
@@ -90,6 +83,18 @@
                                   autorelease];
         [alertView show];
     }*/
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+	NSLog(@"About viewDidLoad");
+    //loads the instructions page everytime the app is started. good for testing.
+    NSURL *url = [NSURL URLWithString:kInstructionsURL];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
+    [webView loadRequest:request];
+    [super viewWillAppear:animated];
 }
 
 

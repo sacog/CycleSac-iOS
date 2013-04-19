@@ -39,11 +39,18 @@
 
 - (void)viewDidLoad
 {
-    [self.detailTextView becomeFirstResponder];
     [super viewDidLoad];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self.detailTextView becomeFirstResponder];
+
     // Do any additional setup after loading the view from its nib.
     detailTextView.layer.borderWidth = 1.0;
     detailTextView.layer.borderColor = [[UIColor blackColor] CGColor];
+    
+    [super viewWillAppear:animated];
 }
 
 -(IBAction)skip:(id)sender{

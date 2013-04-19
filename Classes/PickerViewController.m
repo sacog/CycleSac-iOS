@@ -253,6 +253,28 @@
 
 - (void)viewDidLoad
 {
+	[super viewDidLoad];
+    
+	
+
+	//self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
+	// self.view.backgroundColor = [[UIColor alloc] initWithRed:40. green:42. blue:57. alpha:1. ];
+
+	// Set up the buttons.
+	/*
+	UIBarButtonItem* done = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
+															  target:self action:@selector(done)];
+	done.enabled = YES;
+	self.navigationItem.rightBarButtonItem = done;
+	 */
+	//[self.navigationController setNavigationBarHidden:NO animated:YES];
+	
+	//description = [[UITextView alloc] initWithFrame:CGRectMake( 18.0, 280.0, 284.0, 130.0 )];
+	
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
     pickerCategory = [[NSUserDefaults standardUserDefaults] integerForKey:@"pickerCategory"];
     
     if (pickerCategory == 0) {
@@ -278,31 +300,17 @@
             navBarItself.topItem.rightBarButtonItem.enabled = YES;
         }
     }
-
-	[super viewDidLoad];
     
-	
-
-	//self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-	// self.view.backgroundColor = [[UIColor alloc] initWithRed:40. green:42. blue:57. alpha:1. ];
-
-	// Set up the buttons.
-	/*
-	UIBarButtonItem* done = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-															  target:self action:@selector(done)];
-	done.enabled = YES;
-	self.navigationItem.rightBarButtonItem = done;
-	 */
-	//[self.navigationController setNavigationBarHidden:NO animated:YES];
-	
-	//description = [[UITextView alloc] initWithFrame:CGRectMake( 18.0, 280.0, 284.0, 130.0 )];
-	description = [[UITextView alloc] initWithFrame:CGRectMake( 18.0, 314.0, 284.0, 120.0 )];
+    description = [[UITextView alloc] initWithFrame:CGRectMake( 18.0, 314.0, 284.0, 120.0 )];
 	description.editable = NO;
     description.backgroundColor = [UIColor clearColor];
     description.textColor = [UIColor whiteColor];
     
 	description.font = [UIFont fontWithName:@"Arial" size:16];
 	[self.view addSubview:description];
+    
+    [super viewWillAppear:animated];
+
 }
 
 

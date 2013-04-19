@@ -142,7 +142,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
     self.navigationController.navigationBarHidden = NO;
     
 	if ( trip )
@@ -361,6 +365,7 @@
     LoadingView *loading = (LoadingView*)[self.parentViewController.view viewWithTag:909];
 	//NSLog(@"loading: %@", loading);
 	[loading performSelector:@selector(removeView) withObject:nil afterDelay:0.5];
+    [super viewWillAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{

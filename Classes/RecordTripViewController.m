@@ -217,9 +217,14 @@
 
 - (void)viewDidLoad
 {
-	NSLog(@"RecordTripViewController viewDidLoad");
-    NSLog(@"Bundle ID: %@", [[NSBundle mainBundle] bundleIdentifier]);
     [super viewDidLoad];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    NSLog(@"RecordTripViewController viewDidLoad");
+    NSLog(@"Bundle ID: %@", [[NSBundle mainBundle] bundleIdentifier]);
+
 	[UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleBlackTranslucent;
 	
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
@@ -251,7 +256,7 @@
     
     // setup the noteManager
     [self initNoteManager:[[[NoteManager alloc] initWithManagedObjectContext:context]autorelease]];
-
+    
 	// check if any user data has already been saved and pre-select personal info cell accordingly
 	if ( [self hasUserInfoBeenSaved] )
 		[self setSaved:YES];
@@ -260,6 +265,13 @@
 	[self hasRecordingBeenInterrupted];
     
 	NSLog(@"save");
+    
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    [super viewWillAppear:animated];
 }
 
 
@@ -706,14 +718,6 @@
 }
 
 
-- (void)viewWillAppear:(BOOL)animated 
-{
-    // listen for keyboard hide/show notifications so we can properly adjust the table's height
-	[super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = YES;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-}
 
 
 - (void)viewDidDisappear:(BOOL)animated

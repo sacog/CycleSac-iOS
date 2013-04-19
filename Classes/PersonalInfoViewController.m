@@ -146,9 +146,9 @@
 }
 
 
-- (void)viewDidLoad:(BOOL)animated
+- (void)viewDidLoad
 {
-    [super viewDidLoad:animated];
+    [super viewDidLoad];
 }
 - (void)viewWillAppear:(BOOL)animated{
     

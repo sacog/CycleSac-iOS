@@ -160,6 +160,10 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
     self.tableView.rowHeight = kRowHeight;
     
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
@@ -170,10 +174,8 @@
     pickerCategory = [[NSUserDefaults standardUserDefaults] integerForKey:@"pickerCategory"];
     [[NSUserDefaults standardUserDefaults] setInteger:3 forKey: @"pickerCategory"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-}
 
-- (void)viewWillAppear:(BOOL)animated
-{
+    
 	NSLog(@"SavedNotesViewController viewWillAppear");
 	
 	[self refreshTableView];

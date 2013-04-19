@@ -176,7 +176,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
     self.navigationController.navigationBarHidden = NO;
     
 	if ( note )
@@ -236,7 +240,7 @@
             default:
                 break;
         }
-
+        
 		self.title = title;
 		
 		if ( ![note.details isEqual: @""] || ([note.image_data length] != 0))
@@ -275,7 +279,7 @@
     LoadingView *loading = (LoadingView*)[self.parentViewController.view viewWithTag:999];
 	//NSLog(@"loading: %@", loading);
 	[loading performSelector:@selector(removeView) withObject:nil afterDelay:0.5];
-    
+    [super viewWillAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{

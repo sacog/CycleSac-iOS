@@ -174,8 +174,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	self.tableView.rowHeight = kRowHeight;
+}
 
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.tableView.rowHeight = kRowHeight;
+    
 	// Set up the buttons.
 	self.navigationItem.leftBarButtonItem = self.editButtonItem;
 	self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
@@ -218,11 +223,7 @@
     [[NSUserDefaults standardUserDefaults] setInteger:0 forKey: @"pickerCategory"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-}
-
-
-- (void)viewWillAppear:(BOOL)animated
-{
+    
 	NSLog(@"SavedTripsViewController viewWillAppear");
 
 	// update conditionally as needed
@@ -346,6 +347,7 @@
 - (TripCell *)getCellWithReuseIdentifier:(NSString *)reuseIdentifier
 {
 	TripCell *cell = (TripCell*)[self.tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
+    
 	if (cell == nil)
 	{
 		cell = [[[TripCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier] autorelease];
@@ -458,10 +460,12 @@
     [CaloryText setTextColor:[UIColor grayColor]];
     
 	UIImage	*image;
+
     
 	// completed
 	if ( trip.uploaded )
 	{
+        cell = [tableView dequeueReusableCellWithIdentifier:kCellReuseIdentifierCheck];
 		cell = [self getCellWithReuseIdentifier:kCellReuseIdentifierCheck];
 		
 		
@@ -515,6 +519,7 @@
 	// saved but not yet uploaded
 	else if ( trip.saved )
 	{
+        cell = [tableView dequeueReusableCellWithIdentifier:kCellReuseIdentifierExclamation];
 		cell = [self getCellWithReuseIdentifier:kCellReuseIdentifierExclamation];
 //		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@\n(saved but not uploaded)", 
 //									 [dateFormatter stringFromDate:[trip start]]];
@@ -525,6 +530,7 @@
 	// NOTE: this test may break when attempting re-upload
 	else if ( trip == recordingInProgress )
 	{
+        cell = [tableView dequeueReusableCellWithIdentifier:kCellReuseIdentifierInProgress];
 		cell = [self getCellWithReuseIdentifier:kCellReuseIdentifierInProgress];
 		/*
 		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@\n(recording in progress)", 
@@ -537,6 +543,7 @@
 	// this trip was orphaned (an abandoned previous recording)
 	else
 	{
+        cell = [tableView dequeueReusableCellWithIdentifier:kCellReuseIdentifierExclamation];
 		cell = [self getCellWithReuseIdentifier:kCellReuseIdentifierExclamation];
 		//tripStatus = @"(recording interrupted)";
 	}

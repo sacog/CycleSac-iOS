@@ -53,9 +53,14 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 - (void)viewDidLoad
 {
     //[self.detailTextView setText:@"Enter More Details Here"];
-    [self.detailTextView becomeFirstResponder];
+    
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self.detailTextView becomeFirstResponder];
+    // Do any additional setup after loading the view.
     if (![UIImagePickerController isSourceTypeAvailable:
           UIImagePickerControllerSourceTypeCamera]) {
         addPicButton.hidden = YES;
@@ -65,10 +70,6 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
     detailTextView.layer.borderColor = [[UIColor blackColor] CGColor];
     self.imageFrame = [UIImage imageWithContentsOfFile: [[NSBundle mainBundle] pathForResource:@"photoFrame" ofType:@"png"]];
     imageFrameView.image = imageFrame;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
     [super viewWillAppear:animated];
 }
 
