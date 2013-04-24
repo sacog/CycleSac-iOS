@@ -157,6 +157,7 @@
 		9D47F908160BA50C00B8B14D /* appIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D47F907160BA50C00B8B14D /* appIcon@2x.png */; };
 		9D47F90A160BA52C00B8B14D /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D47F909160BA52C00B8B14D /* Default.png */; };
 		9D47F90C160BA53000B8B14D /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D47F90B160BA53000B8B14D /* Default@2x.png */; };
+		9D4B4EE61722B8B0005A4CDD /* ProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D4B4EE51722B8B0005A4CDD /* ProgressView.m */; };
 		9D4CB08C16EAC2500038A96F /* tripEnd.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D4CB08816EAC2410038A96F /* tripEnd.png */; };
 		9D4CB08D16EAC2500038A96F /* tripEnd@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D4CB08916EAC2420038A96F /* tripEnd@2x.png */; };
 		9D4CB08E16EAC2500038A96F /* tripStart.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D4CB08A16EAC2450038A96F /* tripStart.png */; };
@@ -360,6 +361,8 @@
 		9D47F907160BA50C00B8B14D /* appIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appIcon@2x.png"; sourceTree = "<group>"; };
 		9D47F909160BA52C00B8B14D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		9D47F90B160BA53000B8B14D /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		9D4B4EE41722B8B0005A4CDD /* ProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressView.h; sourceTree = "<group>"; };
+		9D4B4EE51722B8B0005A4CDD /* ProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressView.m; sourceTree = "<group>"; };
 		9D4CB08816EAC2410038A96F /* tripEnd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tripEnd.png; sourceTree = "<group>"; };
 		9D4CB08916EAC2420038A96F /* tripEnd@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tripEnd@2x.png"; sourceTree = "<group>"; };
 		9D4CB08A16EAC2450038A96F /* tripStart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tripStart.png; sourceTree = "<group>"; };
@@ -437,6 +440,8 @@
 				64F824E5106AFFA4001413F8 /* PersonalInfoViewController.m */,
 				64119ABD10689ED800C201F0 /* PickerViewController.h */,
 				64119ABE10689ED800C201F0 /* PickerViewController.m */,
+				9D4B4EE41722B8B0005A4CDD /* ProgressView.h */,
+				9D4B4EE51722B8B0005A4CDD /* ProgressView.m */,
 				64581198107AC1080075DABD /* RecordingInProgressDelegate.h */,
 				6411996010683D7500C201F0 /* RecordTripViewController.h */,
 				6411996110683D7500C201F0 /* RecordTripViewController.m */,
@@ -938,6 +943,7 @@
 				8F316F671703161E0087529E /* Model.xcmappingmodel in Sources */,
 				9D8A1BAF171B03E000509FBD /* FetchUser.m in Sources */,
 				9D8A1BB2171B03E900509FBD /* FetchTripData.m in Sources */,
+				9D4B4EE61722B8B0005A4CDD /* ProgressView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

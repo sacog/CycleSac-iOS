@@ -465,7 +465,7 @@
 	// completed
 	if ( trip.uploaded )
 	{
-        cell = [tableView dequeueReusableCellWithIdentifier:kCellReuseIdentifierCheck];
+        [tableView dequeueReusableCellWithIdentifier:kCellReuseIdentifierCheck];
 		cell = [self getCellWithReuseIdentifier:kCellReuseIdentifierCheck];
 		
 		
@@ -519,7 +519,7 @@
 	// saved but not yet uploaded
 	else if ( trip.saved )
 	{
-        cell = [tableView dequeueReusableCellWithIdentifier:kCellReuseIdentifierExclamation];
+        [tableView dequeueReusableCellWithIdentifier:kCellReuseIdentifierExclamation];
 		cell = [self getCellWithReuseIdentifier:kCellReuseIdentifierExclamation];
 //		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@\n(saved but not uploaded)", 
 //									 [dateFormatter stringFromDate:[trip start]]];
@@ -530,7 +530,7 @@
 	// NOTE: this test may break when attempting re-upload
 	else if ( trip == recordingInProgress )
 	{
-        cell = [tableView dequeueReusableCellWithIdentifier:kCellReuseIdentifierInProgress];
+        [tableView dequeueReusableCellWithIdentifier:kCellReuseIdentifierInProgress];
 		cell = [self getCellWithReuseIdentifier:kCellReuseIdentifierInProgress];
 		/*
 		cell.detailTextLabel.text = [NSString stringWithFormat:@"%@\n(recording in progress)", 
@@ -543,7 +543,7 @@
 	// this trip was orphaned (an abandoned previous recording)
 	else
 	{
-        cell = [tableView dequeueReusableCellWithIdentifier:kCellReuseIdentifierExclamation];
+        [tableView dequeueReusableCellWithIdentifier:kCellReuseIdentifierExclamation];
 		cell = [self getCellWithReuseIdentifier:kCellReuseIdentifierExclamation];
 		//tripStatus = @"(recording interrupted)";
 	}
@@ -684,8 +684,6 @@
 				[tripManager release];
 			
 			tripManager = [[TripManager alloc] initWithTrip:selectedTrip];
-			//tripManager.activityDelegate = self;
-			tripManager.alertDelegate = self;
 			tripManager.parent = self;
 			// prompt to upload
 			[self promptToConfirmPurpose];
@@ -742,21 +740,6 @@
 		NSLog(@"INSERT");
 }
 
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
-
 
 #pragma mark UINavigationController
 
@@ -789,59 +772,10 @@
 	NSLog(@"actionSheet clickedButtonAtIndex %d", buttonIndex);
 	switch ( buttonIndex )
 	{
-			/*
-		case kActionSheetButtonDiscard:
-			NSLog(@"Discard");
 			
-			// Delete the selectedTrip
-			//NSManagedObject *tripToDelete = [trips objectAtIndex:indexPath.row];
-			[tripManager.managedObjectContext deleteObject:selectedTrip];
-			
-			// Update the array and table view.
-			//[trips removeObjectAtIndex:indexPath.row];
-			NSUInteger index = [trips indexOfObject:selectedTrip];
-			[trips removeObjectAtIndex:index];
-			selectedTrip = nil;
-			
-			
-			//[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
-			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:YES];
-			//[self.tableView reloadData];
-			
-			// Commit the change.
-			NSError *error;
-			if (![tripManager.managedObjectContext save:&error]) {
-				// Handle the error.
-				NSLog(@"Unresolved error %@", [error localizedDescription]);
-			}
-			break;
-			*/
-			/*
-		case kActionSheetButtonConfirm:
-			NSLog(@"Confirm => creating Trip Notes dialog");
-			[tripManager promptForTripNotes];
-			break;
-			*/
 		//case kActionSheetButtonChange:
 		case 0:
-			NSLog(@"Upload => push Trip Purpose picker");
-			/*
-			// NOTE: this code to get purposeIndex fails for the load a saved trip case
-			PickerViewController *pickerViewController = [[PickerViewController alloc]
-														  initWithPurpose:[tripManager getPurposeIndex]];
-			[pickerViewController setDelegate:self];
-			[[self navigationController] pushViewController:pickerViewController animated:YES];
-			[pickerViewController release];
-			*/
-			
-			// Trip Purpose
-//			NSLog(@"INIT + PUSH");
-//			PickerViewController *pickerViewController = [[PickerViewController alloc]
-//														  initWithNibName:@"TripPurposePicker" bundle:nil];
-//			[pickerViewController setDelegate:self];
-//			//[[self navigationController] pushViewController:pickerViewController animated:YES];
-//			[self.navigationController presentModalViewController:pickerViewController animated:YES];
-//			[pickerViewController release];
+			NSLog(@"Upload => push Trip Purpose picker");						
             [tripManager saveTrip];
 			break;
 			
@@ -933,7 +867,6 @@
 {
 	[self.navigationController dismissModalViewControllerAnimated:YES];
 	[tripManager setPurpose:index];
-	//[tripManager promptForTripNotes];
 }
 
 - (void)dealloc {

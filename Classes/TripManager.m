@@ -72,7 +72,6 @@
 {
     if ( self = [super init] )
 	{
-		self.activityDelegate		= self;
 		self.coords					= [[[NSMutableArray alloc] initWithCapacity:1000] autorelease];
 		distance					= 0.0;
 		self.managedObjectContext	= context;
@@ -118,15 +117,7 @@
 			// Handle the error.
 			NSLog(@"loadTrip error %@, %@", error, [error localizedDescription]);
             
-		}
-        
-		/*
-		// recalculate trip distance
-		CLLocationDistance newDist	= [self calculateTripDistance:_trip];
-		
-		NSLog(@"newDist: %f", newDist);
-		NSLog(@"oldDist: %f", distance);
-		*/
+		}        
 		
 		// TODO: initialize purposeIndex from trip.purpose
 		purposeIndex				= -1;
@@ -139,7 +130,6 @@
 {
     if ( self = [super init] )
 	{
-		self.activityDelegate = self;
 		[self loadTrip:_trip];
     }
     return self;
@@ -149,9 +139,8 @@
 - (void)createTripNotesText
 {
 	tripNotesText = [[UITextView alloc] initWithFrame:CGRectMake( 12.0, 50.0, 260.0, 65.0 )];
-	tripNotesText.delegate = self;
 	tripNotesText.enablesReturnKeyAutomatically = NO;
-	tripNotesText.font = [UIFont fontWithName:@"Arial" size:16];
+	tripNotesText.font = [UIFont fontWithName:@"Helvetica" size:16];
 	tripNotesText.keyboardAppearance = UIKeyboardAppearanceAlert;
 	tripNotesText.keyboardType = UIKeyboardTypeDefault;
 	tripNotesText.returnKeyType = UIReturnKeyDone;
@@ -213,19 +202,6 @@
 	NSTimeInterval		deltaTime	= [next.recorded timeIntervalSinceDate:prev.recorded];
 	CLLocationDistance	newDist		= 0.;
 	
-	/*
-	 NSLog(@"prev.date = %@", prev.recorded);
-	 NSLog(@"deltaTime = %f", deltaTime);
-	 
-	 NSLog(@"deltaDist = %f", deltaDist);
-	 NSLog(@"est speed = %f", deltaDist / deltaTime);
-	 
-	 if ( [next.speed doubleValue] > 0.1 ) {
-	 NSLog(@"est speed = %f", deltaDist / deltaTime);
-	 NSLog(@"rec speed = %f", [next.speed doubleValue]);
-	 }
-	 */
-	
 	// sanity check accuracy
 	if ( [prev.hAccuracy doubleValue] < kEpsilonAccuracy && 
 		 [next.hAccuracy doubleValue] < kEpsilonAccuracy )
@@ -239,14 +215,7 @@
 				// consider distance delta as valid
 				newDist += deltaDist;
 				
-				// only log non-zero changes
-				/*
-				 if ( deltaDist > 0.1 )
-				 {
-				 NSLog(@"new dist  = %f", newDist);
-				 NSLog(@"est speed = %f", deltaDist / deltaTime);
-				 }
-				 */
+				// only log non-zero changes				
 			}
 			else
 				NSLog(@"WARNING speed exceeds epsilon: %f => throw out deltaDist: %f, deltaTime: %f", 
@@ -307,8 +276,7 @@
 		Coord *first	= [coords lastObject];
 		NSTimeInterval duration = [coord.recorded timeIntervalSinceDate:first.recorded];
 		//NSLog(@"duration = %.0fs", duration);
-		[trip setDuration:[NSNumber numberWithDouble:duration]];
-		
+		[trip setDuration:[NSNumber numberWithDouble:duration]];		
 	}
 	
 	NSError *error;
@@ -397,10 +365,7 @@
 
 - (void)saveTrip
 {
-	NSLog(@"about to save trip with %d coords...", [coords count]);
-//	[activityDelegate updateSavingMessage:kPreparingData];
-	//NSLog(@"%@", trip);
-
+    NSLog(@"about to save trip with %d coords...", [coords count]);
 	// close out Trip record
 	// NOTE: this code assumes we're saving the current recording in progress
 	
@@ -555,8 +520,6 @@
 
     //switch to map w/ trip view
     [parent displayUploadedTripMap];
-    
-    //TODO: get screenshot and store.
 
     if ( theConnection )
      {
@@ -567,7 +530,6 @@
          // inform the user that the download could not be made
      
      }
-    
 }
 
 
@@ -584,8 +546,6 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-	// this method is called when the server has determined that it
-    // has enough information to create the NSURLResponse
 	NSLog(@"didReceiveResponse: %@", response);
 	
 	NSHTTPURLResponse *httpResponse = nil;
@@ -617,11 +577,8 @@
 		
 		NSLog(@"%@: %@", title, message);
         
-        //
         // DEBUG
         NSLog(@"+++++++DEBUG didReceiveResponse %@: %@", [response URL],[(NSHTTPURLResponse*)response allHeaderFields]);
-        //
-        //
 		
 		// update trip.uploaded 
 		if ( success )
@@ -642,47 +599,26 @@
         
 	}
 	
-    // it can be called multiple times, for example in the case of a
-	// redirect, so each time we reset the data.
-	
-    // receivedData is declared as a method instance elsewhere
     [receivedData setLength:0];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {	
-    // append the new data to the receivedData	
-    // receivedData is declared as a method instance elsewhere
-	[receivedData appendData:data];	
-//	[activityDelegate startAnimating];
+	[receivedData appendData:data];
 }
 
 - (void)connection:(NSURLConnection *)connection
   didFailWithError:(NSError *)error
 {
-    // release the connection, and the data object	
     [connection release];
-	
-    // receivedData is declared as a method instance elsewhere
     [receivedData release];
     
-    // TODO: is this really adequate...?
     [uploadingView loadingComplete:kConnectionError delayInterval:1.5];
     
     // inform the user
     NSLog(@"Connection failed! Error - %@ %@",
           [error localizedDescription],
           [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
-    
-
-//	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kConnectionError
-//													message:[error localizedDescription]
-//												   delegate:nil
-//										  cancelButtonTitle:@"OK"
-//										  otherButtonTitles:nil];
-//	[alert show];
-//	[alert release];
-    
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -773,82 +709,6 @@
 		NSLog(@"createTrip error %@, %@", error, [error localizedDescription]);
 	}
 }
-
-
-//- (void)promptForTripNotes
-//{
-//	tripNotes = [[UIAlertView alloc] initWithTitle:kTripNotesTitle
-//										   message:@"\n\n\n"
-//										  delegate:self
-//								 cancelButtonTitle:@"Skip"
-//								 otherButtonTitles:@"OK", nil];
-//
-//	[self createTripNotesText];
-//	[tripNotes addSubview:tripNotesText];
-//	[tripNotes show];
-//    [self.tripNotesText becomeFirstResponder];
-//	[tripNotes release];
-//    NSLog(@"prompt for notes");
-//}
-//
-//
-//#pragma mark UIAlertViewDelegate methods
-//
-//
-//- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
-//{
-//	// determine if we're processing tripNotes or saving alert
-//	if ( alertView == tripNotes )
-//	{
-//		NSLog(@"tripNotes didDismissWithButtonIndex: %d", buttonIndex);
-//		
-//		// save trip notes
-//		if ( buttonIndex == 1 )
-//		{
-//			if ( [tripNotesText.text compare:kTripNotesPlaceholder] != NSOrderedSame )
-//			{
-//				NSLog(@"saving trip notes: %@", tripNotesText.text);
-//				[self saveNotes:tripNotesText.text];
-//			}
-//		}
-//		
-//		// save / upload trip
-//        [self saveTrip];
-//
-//	}
-//	
-//	/*
-//	else // alertView == saving
-//	{
-//		NSLog(@"saving didDismissWithButtonIndex: %d", buttonIndex);
-//		
-//		// reset button states
-//		startButton.enabled = NO;
-//		saveButton.enabled = NO;
-//		lockButton.hidden = YES;
-//		
-//		// reset trip, reminder managers
-//		NSManagedObjectContext *context = tripManager.managedObjectContext;
-//		Trip *trip = tripManager.trip;
-//		[self initTripManager:[[TripManager alloc] initWithManagedObjectContext:context]];
-//		tripManager.dirty = YES;
-//		
-//		if ( reminderManager )
-//		{
-//			[reminderManager release];
-//			reminderManager = nil;
-//		}
-//		
-//		[self resetCounter];
-//		[self resetPurpose];
-//		
-//		// load map view of saved trip
-//		MapViewController *mvc = [[MapViewController alloc] initWithTrip:trip];
-//		[[self navigationController] pushViewController:mvc animated:YES];
-//		[mvc release];
-//	}
-//	 */
-//}
 
 
 #pragma mark ActivityIndicatorDelegate methods
@@ -1090,9 +950,6 @@
 
 -(void)dealloc
 {
-    self.activityDelegate = nil;
-    self.alertDelegate = nil;
-    self.activityIndicator = nil;
     self.uploadingView = nil;
     self.parent = nil;
     self.saving = nil;
@@ -1111,9 +968,6 @@
     [coords release];
     [managedObjectContext release];
     [receivedData release];
-    [_activityDelegate release];
-    [_alertDelegate release];
-    [_activityIndicator release];
     [uploadingView release];
     [parent release];
     
@@ -1146,7 +1000,6 @@
 		return kTripPurposeShopping;
 	else if ( [string isEqualToString:kTripPurposeErrandString] )
 		return kTripPurposeErrand;
-	//	else if ( [string isEqualToString:kTripPurposeOtherString] )
 	else
 		return kTripPurposeOther;
 }

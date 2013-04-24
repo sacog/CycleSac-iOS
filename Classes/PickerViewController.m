@@ -56,22 +56,6 @@
 // return the picker frame based on its size
 - (CGRect)pickerFrameWithSize:(CGSize)size
 {
-	
-	// layout at bottom of page
-	/*
-	CGRect screenRect = [[UIScreen mainScreen] applicationFrame];
-	CGRect pickerRect = CGRectMake(	0.0,
-									screenRect.size.height - 84.0 - size.height,
-									size.width,
-									size.height);
-	 */
-	
-	// layout at top of page
-	//CGRect pickerRect = CGRectMake(	0.0, 0.0, size.width, size.height );	
-	
-	// layout at top of page, leaving room for translucent nav bar
-	//CGRect pickerRect = CGRectMake(	0.0, 43.0, size.width, size.height );
-	
 	CGRect pickerRect = CGRectMake(	0.0, 78.0, size.width, size.height );	
 	return pickerRect;
 }
@@ -133,7 +117,6 @@
         NSLog(@"Issue Save button pressed");
         NSLog(@"detail");
         NSLog(@"INIT + PUSH");
-        //[self dismissModalViewControllerAnimated:YES];
         
         DetailViewController *detailViewController = [[DetailViewController alloc] initWithNibName:@"DetailView" bundle:nil];
         detailViewController.delegate = self.delegate;
@@ -182,14 +165,12 @@
         detailViewController.delegate = self.delegate;
         
         [self presentModalViewController:detailViewController animated:YES];
-        
-        
+            
         //Note: get index of type
         NSInteger row = [customPickerView selectedRowInComponent:0];
         
         NSNumber *tempType = 0;
 
-        
         if(row>=7){
             tempType = [NSNumber numberWithInt:row-7];
         }
@@ -220,9 +201,7 @@
         else if (pickerCategory == 3){
             // picker defaults to top-most item => update the description
             [self pickerView:customPickerView didSelectRow:6 inComponent:0];
-        }
-        
-		
+        }        
 	}
 	return self;
 }
@@ -254,23 +233,6 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-    
-	
-
-	//self.view.backgroundColor = [UIColor groupTableViewBackgroundColor];
-	// self.view.backgroundColor = [[UIColor alloc] initWithRed:40. green:42. blue:57. alpha:1. ];
-
-	// Set up the buttons.
-	/*
-	UIBarButtonItem* done = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave
-															  target:self action:@selector(done)];
-	done.enabled = YES;
-	self.navigationItem.rightBarButtonItem = done;
-	 */
-	//[self.navigationController setNavigationBarHidden:NO animated:YES];
-	
-	//description = [[UITextView alloc] initWithFrame:CGRectMake( 18.0, 280.0, 284.0, 130.0 )];
-	
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -306,7 +268,7 @@
     description.backgroundColor = [UIColor clearColor];
     description.textColor = [UIColor whiteColor];
     
-	description.font = [UIFont fontWithName:@"Arial" size:16];
+	description.font = [UIFont fontWithName:@"Helvetica" size:16];
 	[self.view addSubview:description];
     
     [super viewWillAppear:animated];
@@ -314,16 +276,9 @@
 }
 
 
-// called after the view controller's view is released and set to nil.
-// For example, a memory warning which causes the view to be purged. Not invoked as a result of -dealloc.
-// So release any properties that are loaded in viewDidLoad or can be recreated lazily.
-//
-
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
 }
 
 #pragma mark UIPickerViewDelegate

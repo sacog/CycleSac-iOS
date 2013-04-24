@@ -52,57 +52,60 @@
 #import "DetailViewController.h"
 #import "NoteManager.h"
 #import <CoreData/NSMappingModel.h>
-
+#import "ProgressView.h"
 
 @implementation CycleAtlantaAppDelegate
 
 @synthesize window;
 @synthesize tabBarController;
 @synthesize uniqueIDHash;
-//@synthesize consentFor18;
 @synthesize isRecording;
 @synthesize locationManager;
-@synthesize storeLoading;
 @synthesize storeLoadingView;
+@synthesize managedObjectContext;
 
 #pragma mark -
 #pragma mark Application lifecycle
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application
 {
-	self.storeLoadingView = [[UIView alloc] init];
-       
-    UIImageView * imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"default.png"]];
-    [self.storeLoadingView addSubview:imageView];
-    [imageView release];
-    self.storeLoading = [[LoadingView loadingViewInView:self.storeLoadingView messageString:kInitMessage] retain];
-	
+    // init our unique ID hash
+	[self initUniqueIDHash];
+    
+    self.storeLoadingView = [ProgressView progressViewInView: self.storeLoadingView messageString:@"Initializing..."] ;
     [window addSubview:self.storeLoadingView];
+    
     [window makeKeyAndVisible];
     [self performSelectorInBackground:@selector(loadPersistentStore) withObject:nil];
 }
 
 -(void)loadPersistentStore
-{
-    [self persistentStoreCoordinator];
-    [self performSelectorOnMainThread:@selector(persistentStoreLoaded) withObject:nil waitUntilDone:NO];
+{    
+    NSPersistentStoreCoordinator* coordinator = [self persistentStoreCoordinator];
+    [self performSelectorOnMainThread:@selector(persistentStoreLoaded:) withObject:coordinator waitUntilDone:NO];
 }
 
--(void)persistentStoreLoaded
+-(void)persistentStoreLoaded: (NSPersistentStoreCoordinator *) coordinator;
 {
- //   sleep(5);
-    [self.storeLoadingView.window removeFromSuperview];
+//    sleep(5);
+    [self.storeLoadingView removeFromSuperview];
     self.storeLoadingView = nil;
+    CGRect frame    = [[UIScreen mainScreen] bounds];
+    backgroundView = [[UIView alloc] initWithFrame:frame];
+    backgroundView.backgroundColor = [UIColor colorWithRed:((float) 0 / 255.0f)
+                                                           green:((float) 0 / 255.0f)
+                                                            blue:((float) 0 / 255.0f)
+                                                           alpha:1.0f];
+    
+    [window addSubview:backgroundView];
     
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleBlackTranslucent;
 	
-    NSManagedObjectContext *context = [self managedObjectContext];
+    NSManagedObjectContext *context = [self managedObjectContext: coordinator];
     if (!context) {
         // Handle the error.
-    }
-	
-	// init our unique ID hash
-	[self initUniqueIDHash];
+        NSLog(@"DEBUG: context error");
+    }		
 	
 	// initialize trip manager with the managed object context
 	TripManager *tripManager = [[[TripManager alloc] initWithManagedObjectContext:context] autorelease];
@@ -110,7 +113,7 @@
 	
 	UINavigationController	*recordNav	= (UINavigationController*)[tabBarController.viewControllers
 																	objectAtIndex:0];
-	//[navCon popToRootViewControllerAnimated:NO];
+	
 	RecordTripViewController *recordVC	= (RecordTripViewController *)[recordNav topViewController];
 	[recordVC initTripManager:tripManager];
     [recordVC initNoteManager:noteManager];
@@ -118,32 +121,27 @@
 	
 	UINavigationController	*tripsNav	= (UINavigationController*)[tabBarController.viewControllers
 																	objectAtIndex:1];
-	//[navCon popToRootViewControllerAnimated:NO];
+	
 	SavedTripsViewController *tripsVC	= (SavedTripsViewController *)[tripsNav topViewController];
 	tripsVC.delegate					= recordVC;
 	[tripsVC initTripManager:tripManager];
     
-	// select Record tab at launch
-	tabBarController.selectedIndex = 0;
-	
-	// set delegate to prevent changing tabs when locked
-	tabBarController.delegate = recordVC;
-	
-	// set parent view so we can apply opacity mask to it
-	recordVC.parentView = tabBarController.view;
     
     UINavigationController *notesNav = (UINavigationController*)[tabBarController.viewControllers
                                                                  objectAtIndex:2];
     SavedNotesViewController *notesVC = (SavedNotesViewController *)[notesNav topViewController];
     [notesVC initNoteManager:noteManager];
 	
-	UINavigationController	*nav	= (UINavigationController*)[tabBarController.viewControllers
-                                                                objectAtIndex:3];
-	PersonalInfoViewController *vc	= (PersonalInfoViewController *)[nav topViewController];
-	vc.managedObjectContext			= context;
     
+	UINavigationController	*personalNav	= (UINavigationController*)[tabBarController.viewControllers
+                                                                objectAtIndex:3];
+	PersonalInfoViewController *personalVC	= (PersonalInfoViewController *)[personalNav topViewController];
+	personalVC.managedObjectContext			= context;
+    
+    // select Record tab at launch
+	tabBarController.selectedIndex = 0;
+	
 	// Add the tab bar controller's current view as a subview of the window
-    //[window addSubview:tabBarController.view];
     window.rootViewController = tabBarController;
 }
 
@@ -151,10 +149,8 @@
 - (void)initUniqueIDHash
 {
 	self.uniqueIDHash = [[UIDevice currentDevice] uniqueGlobalDeviceIdentifier]; // save for later.
-	NSLog(@"Hashed uniqueID: %@", uniqueIDHash);
-	
+	NSLog(@"Hashed uniqueID: %@", uniqueIDHash);	
 }
-
 
 /**
  applicationWillTerminate: saves changes in the application's managed object context before the application terminates.
@@ -192,7 +188,6 @@
 {
     //always turnon location updating when active.
     CycleAtlantaAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
-    //[appDelegate.locationManager stoptMonitoringSignificantLocationChanges];
     [appDelegate.locationManager startUpdatingLocation];
 }
 
@@ -204,13 +199,13 @@
  Returns the managed object context for the application.
  If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
  */
-- (NSManagedObjectContext *) managedObjectContext {
+- (NSManagedObjectContext *) managedObjectContext: (NSPersistentStoreCoordinator *) coordinator {
 	
     if (managedObjectContext != nil) {
         return managedObjectContext;
     }
 	
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+    //NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
     if (coordinator != nil) {
         managedObjectContext = [[NSManagedObjectContext alloc] init];
         [managedObjectContext setPersistentStoreCoordinator: coordinator];
@@ -236,34 +231,30 @@
 /**
  Returns the persistent store coordinator for the application.
  If the coordinator doesn't already exist, it is created and the application's store added to it.
+ If it does exist, it tests for and then migrates the store as needed.
  */
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
+    NSError * error;
 	
     if (persistentStoreCoordinator != nil) {
         return persistentStoreCoordinator;
     }
-	
-    NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"CycleTracks.sqlite"]];
+
+    NSURL *storeURL = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"CycleAtlanta.sqlite"]];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if (![fileManager fileExistsAtPath:[storeURL path]]){
+            storeURL = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"CycleTracks.sqlite"]];
+    }
     
-    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
-                             [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption, nil];
-                             //[NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
+    // migrate the store if needed, returns the storeURL
+    NSLog(@"DEBUG: before migration");
+    storeURL = [self migratePersistentStore: storeURL];
+    NSLog(@"DEBUG: after migration");
     
-	NSError *error = nil;
+    // create the coordinator
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    
-    
-    if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:options error:&error]) {
-		/*
-		 Replace this implementation with code to handle the error appropriately.
-		 
-		 abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
-		 
-		 Typical reasons for an error here include:
-		 * The persistent store is not accessible
-		 * The schema for the persistent store is incompatible with current managed object model
-		 Check the error message to determine what the actual problem was.
-		 */
+    if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+		//not the most sophisticated 
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
     }    
@@ -271,6 +262,79 @@
     return persistentStoreCoordinator;
 }
 
+- (NSURL *) migratePersistentStore: (NSURL *) sourceURL {
+    BOOL result;
+    NSError *error = nil;
+    
+    NSDictionary *sourceMetadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:NSSQLiteStoreType
+                                                                                              URL:sourceURL
+                                                                                            error:&error];
+    if(!sourceMetadata)//assume first run, so break w/o migrating anything.
+        return sourceURL;
+    
+    NSURL *destinationURL = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"CycleAtlanta.sqlite"]];
+	NSManagedObjectModel *destinationModel = [self managedObjectModel];
+    NSString *sourcePath = [sourceURL absoluteString];
+    
+    BOOL isStoreCompatibile = [destinationModel
+                          isConfiguration:sourcePath
+              compatibleWithStoreMetadata:sourceMetadata ];
+    
+    
+    if (!isStoreCompatibile) {
+//        NSLog(@"DEBUG Could not open store at: %@", sourcePath);
+    }
+    
+    //do the migration. assuming one step here from previous to current model.
+    NSManagedObjectModel *sourceModel = [NSManagedObjectModel mergedModelFromBundles:nil
+                                                                    forStoreMetadata:sourceMetadata];
+    
+    NSMigrationManager *migrationManager =  [[NSMigrationManager alloc]
+                                                     initWithSourceModel:sourceModel
+                                                        destinationModel:destinationModel];
+    
+    
+    NSMappingModel *mappingModel = [NSMappingModel mappingModelFromBundles:nil
+                                                            forSourceModel:sourceModel
+                                                          destinationModel:destinationModel];
+    
+    if (mappingModel == nil) {
+        NSLog(@"DEBUG no mapping model, no need to migrate.");        
+        [migrationManager release];
+        return destinationURL; 
+    }
+    
+    NSLog(@"DEBUG: start migration");
+    [self performSelectorOnMainThread:@selector(setUpgradeMessage) withObject:nil waitUntilDone:NO];
+
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+    [migrationManager addObserver:self.storeLoadingView forKeyPath:@"migrationProgress" options:0 context:NULL];
+    
+    result = [migrationManager migrateStoreFromURL:sourceURL
+                                               type:NSSQLiteStoreType
+                                            options:nil
+                                   withMappingModel:mappingModel
+                                   toDestinationURL:destinationURL
+                                    destinationType:NSSQLiteStoreType
+                                 destinationOptions:nil
+                                              error:&error];
+    
+    NSLog(@"DEBUG: finish migration");
+    [migrationManager removeObserver:self.storeLoadingView forKeyPath:@"migrationProgress" ];
+    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
+
+    if(!result)
+        destinationURL = nil;
+    
+    [migrationManager release];    
+    
+    return destinationURL;
+    
+}
+
+- (void)setUpgradeMessage{
+        [self.storeLoadingView setVisible:TRUE messageString:kInitMessage ];
+}
 
 #pragma mark -
 #pragma mark Application's Documents directory

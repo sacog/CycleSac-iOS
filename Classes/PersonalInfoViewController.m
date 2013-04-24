@@ -41,6 +41,7 @@
 #import "PersonalInfoViewController.h"
 #import "User.h"
 #import "constants.h"
+#import "ProgressView.h"
 
 #define kMaxCyclingFreq 3
 
@@ -149,13 +150,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-}
-- (void)viewWillAppear:(BOOL)animated{
-    
-    fetchUser = [[FetchUser alloc] init];
-
-	// Set the title.
-	// self.title = @"Personal Info";
     
     genderArray = [[NSArray alloc]initWithObjects: @" ", @"Female",@"Male", nil];
     
@@ -170,8 +164,7 @@
     riderTypeArray = [[NSArray alloc]initWithObjects: @" ", @"Strong & fearless", @"Enthused & confident", @"Comfortable, but cautious", @"Interested, but concerned", nil];
     
     riderHistoryArray = [[NSArray alloc]initWithObjects: @" ", @"Since childhood", @"Several years", @"One year or less", @"Just trying it out / just started", nil];
-    
-    
+
     CGRect pickerFrame = CGRectMake(0, 40, 0, 0);
     pickerView = [[UIPickerView alloc] initWithFrame:pickerFrame];
     pickerView.showsSelectionIndicator = YES;
@@ -191,11 +184,11 @@
     self.cyclingFreq = [self initTextFieldBeta];
     self.riderType  =  [self initTextFieldBeta];
     self.riderHistory =[self initTextFieldBeta];
-
+    
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-
+    
 	// Set up the buttons.
     // this is actually the Save button.
     UIBarButtonItem* done = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(done)];
@@ -203,7 +196,12 @@
     //Initial Save button state is disabled. will be enabled if a change has been made to any of the fields.
 	done.enabled = NO;
 	self.navigationItem.rightBarButtonItem = done;
-	
+    
+    fetchUser = [[FetchUser alloc] init];
+
+}
+- (void)viewWillAppear:(BOOL)animated{
+    
 	NSFetchRequest		*request = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"User" inManagedObjectContext:managedObjectContext];
 	[request setEntity:entity];
@@ -249,14 +247,7 @@
         riderTypeSelectedRow    = [user.rider_type integerValue];
         riderHistory.text       = [riderHistoryArray objectAtIndex:[user.rider_history integerValue]];
         riderHistorySelectedRow = [user.rider_history integerValue];
-		
-		// init cycling frequency
-		//NSLog(@"init cycling freq: %d", [user.cyclingFreq intValue]);
-		//cyclingFreq		= [NSNumber numberWithInt:[user.cyclingFreq intValue]];
-		
-		//if ( !([user.cyclingFreq intValue] > kMaxCyclingFreq) )
-		//	[self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:[user.cyclingFreq integerValue]
-        //    inSection:2]];
+				
 	}
 	else
 		NSLog(@"init FAIL");
@@ -267,7 +258,6 @@
     self.tableView.dataSource = self;
     [self.tableView reloadData];
     [super viewWillAppear:animated];
-
 }
 
 
@@ -316,8 +306,6 @@
         
         UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed:)];
         [barItems addObject:doneBtn];
-        
-        //TODO add a next and previous button to left side to take us to the next/previous thing. and switch to the right kind of input mode.
         
         [doneToolbar setItems:barItems animated:YES];
         
@@ -803,59 +791,6 @@
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 		}
 			break;
-            
-//        case 5:
-//		{
-//			static NSString *CellIdentifier = @"CellTextField";
-//			cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-//			if (cell == nil) {
-//				cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-//			}
-//            
-//			// inner switch statement identifies row
-//			switch ([indexPath indexAtPosition:1])
-//			{
-//				case 0:
-//                    cell.textLabel.text = @"Getting started with Cycle Atlanta";
-//					break;
-//			}
-//			
-//			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//		}
-            
-//		case 2:
-//		{
-//			static NSString *CellIdentifier = @"CellCheckmark";
-//			cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-//			if (cell == nil) {
-//				cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-//			}
-//			
-//			switch ([indexPath indexAtPosition:1])
-//			{
-//				case 0:
-//					cell.textLabel.text = @"Less than once a month";
-//					break;
-//				case 1:
-//					cell.textLabel.text = @"Several times per month";
-//					break;
-//				case 2:
-//					cell.textLabel.text = @"Several times per week";
-//					break;
-//				case 3:
-//					cell.textLabel.text = @"Daily";
-//					break;
-//			}
-//			/*
-//			if ( user != nil )
-//				if ( [user.cyclingFreq intValue] == [indexPath indexAtPosition:1] )
-//					cell.accessoryType = UITableViewCellAccessoryCheckmark;
-//			 */
-//			if ( [cyclingFreq intValue] == [indexPath indexAtPosition:1] )
-//				cell.accessoryType = UITableViewCellAccessoryCheckmark;
-//			else
-//				cell.accessoryType = UITableViewCellAccessoryNone;
-//		}
 	}
 	
 	// debug
@@ -876,9 +811,6 @@
 	// outer switch statement identifies section
     NSURL *url = [NSURL URLWithString:kInstructionsURL];
     NSURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    
-    NSURL *downloadUrl = [NSURL URLWithString:kFetchURL];
-    NSURLRequest *downloadRequest = [NSMutableURLRequest requestWithURL:downloadUrl];
     
 	switch ([indexPath indexAtPosition:0])
 	{
@@ -960,8 +892,8 @@
 			// inner switch statement identifies row
 			switch ([indexPath indexAtPosition:1])
 			{
-				case 0:
-                    [fetchUser fetchUserAndTrip:self];
+				case 0:                                                        
+                    [fetchUser fetchUserAndTrip:self.parentViewController];
                     //reload data didn't seem to refresh the view. this does
                     //[self viewWillAppear:false];
 					break;
@@ -970,71 +902,8 @@
 			}
 			break;
 		}
-		
-//		case 2:
-//		{
-//			// cycling frequency
-//			// remove all checkmarks
-//			UITableViewCell *cell;
-//			cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
-//			cell.accessoryType = UITableViewCellAccessoryNone;
-//			cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:2]];
-//			cell.accessoryType = UITableViewCellAccessoryNone;
-//			cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:2]];
-//			cell.accessoryType = UITableViewCellAccessoryNone;
-//			cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:2]];
-//			cell.accessoryType = UITableViewCellAccessoryNone;
-//			
-//			// apply checkmark to selected cell
-//			cell = [tableView cellForRowAtIndexPath:indexPath];
-//			cell.accessoryType = UITableViewCellAccessoryCheckmark;
-//
-//			// store cycling freq
-//			cyclingFreq = [NSNumber numberWithInt:[indexPath indexAtPosition:1]];
-//			NSLog(@"setting instance variable cycling freq: %d", [cyclingFreq intValue]);
-//		}
 	}
 }
-
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:YES];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)thePickerView {

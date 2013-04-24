@@ -47,46 +47,30 @@
 @class Note;
 
 
-@interface NoteManager : NSObject <ActivityIndicatorDelegate, UIAlertViewDelegate, UITextViewDelegate>
+@interface NoteManager : NSObject 
 {
 	Note *note;
-
     NSManagedObjectContext *managedObjectContext;
-    
 	NSMutableData *receivedDataNoted;
-	
-	//NSMutableArray *unSavedNote;
-	//NSMutableArray *unSyncedNote;
     NSString *deviceUniqueIdHash1;
 }
 
 @property (nonatomic, retain) NSString *deviceUniqueIdHash1;
 @property (nonatomic, retain) id <ActivityIndicatorDelegate> activityDelegate;
 @property (nonatomic, retain) id <UIAlertViewDelegate> alertDelegate;
-
 @property (nonatomic, retain) UIActivityIndicatorView *activityIndicator;
-
 @property (nonatomic, retain) LoadingView *uploadingView;
-
-@property (nonatomic, retain) UIViewController *parent; 
-
+@property (nonatomic, retain) UIViewController *parent;
 @property (assign) BOOL dirty;
 @property (nonatomic, retain) Note *note;
-
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
-
 @property (nonatomic, retain) NSMutableData *receivedDataNoted;
 
-
 - (id)initWithManagedObjectContext:(NSManagedObjectContext*)context;
-
 - (void)saveNote;
 - (void)saveNote:(Note*)note;
-
 - (void)createNote;
-
 - (void)addLocation:(CLLocation*)locationNow;
-
 - (id)initWithNote:(Note*)note;
 - (BOOL)loadNote:(Note *)note;
 

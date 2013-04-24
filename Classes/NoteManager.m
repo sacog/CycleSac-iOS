@@ -58,18 +58,12 @@
 @synthesize uploadingView, parent;
 @synthesize deviceUniqueIdHash1;
 
-// change initialization values
-
-// change this function for note detail view
-
-// change this function for note initialization
 
 - (id)initWithManagedObjectContext:(NSManagedObjectContext*)context
 {
     if ( self = [super init] )
 	{
 		self.managedObjectContext = context;
-        self.activityDelegate = self;
         if (!note) {
             self.note = nil;
         }
@@ -122,9 +116,6 @@
     
     [note setVAccuracy:[NSNumber numberWithDouble:locationNow.verticalAccuracy]];
     NSLog(@"VAccuracy: %f", [note.vAccuracy doubleValue]);
-    
-//    [note setRecorded:locationNow.timestamp];
-//    NSLog(@"Date: %@", note.recorded);
 	
 	NSError *error;
 	if (![managedObjectContext save:&error]) {
@@ -155,9 +146,8 @@
     [noteDict setValue:note.speed     forKey:@"s"];  //speed
     [noteDict setValue:note.hAccuracy forKey:@"h"];  //haccuracy
     [noteDict setValue:note.vAccuracy forKey:@"v"];  //vaccuracy
-    
-    [noteDict setValue:note.note_type     forKey:@"t"];  //note_type
-    [noteDict setValue:note.details forKey:@"d"];  //details
+    [noteDict setValue:note.note_type forKey:@"t"];  //note_type
+    [noteDict setValue:note.details   forKey:@"d"];  //details
     
     NSString *newDateString = [outputFormatter stringFromDate:note.recorded];
     NSString *newDateStringURL = [outputFormatterURL stringFromDate:note.recorded];
@@ -207,7 +197,6 @@
 	NSDictionary *postVars = [NSDictionary dictionaryWithObjectsAndKeys: 
                               noteJson, @"note",
 							  [NSString stringWithFormat:@"%d", kSaveNoteProtocolVersion], @"version",
-//                              [NSData dataWithData:note.image_data], @"image_data",
 							  nil];
 	// create save request
 	SaveRequest *saveRequest = [[SaveRequest alloc] initWithPostVars:postVars with:4 image:uploadData];
@@ -235,8 +224,7 @@
     }
     else
     {
-        // inform the user that the download could not be made
-        
+        // no-op        
     }
     
     [noteJson release];
@@ -350,8 +338,7 @@
     }
     else
     {
-        // inform the user that the download could not be made
-        
+        // inform the user that the download could not be made        
     }
     
     [noteJson release];
@@ -408,7 +395,6 @@
 		
 		NSLog(@"%@: %@", title, message);
         
-        //
         // DEBUG
         NSLog(@"+++++++DEBUG didReceiveResponse %@: %@", [response URL],[(NSHTTPURLResponse*)response allHeaderFields]);
         
@@ -428,18 +414,12 @@
             [uploadingView loadingComplete:kServerError delayInterval:1.5];
         }
 	}
-	
-    // it can be called multiple times, for example in the case of a
-	// redirect, so each time we reset the data.
-	
     // receivedData is declared as a method instance elsewhere
     [receivedDataNoted setLength:0];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
-    // append the new data to the receivedData
-    // receivedData is declared as a method instance elsewhere
 	[receivedDataNoted appendData:data];
     //	[activityDelegate startAnimating];
 }
@@ -453,23 +433,12 @@
     // receivedData is declared as a method instance elsewhere
     [receivedDataNoted release];
     
-    // TODO: is this really adequate...?
     [uploadingView loadingComplete:kConnectionError delayInterval:1.5];
     
     // inform the user
     NSLog(@"Connection failed! Error - %@ %@",
           [error localizedDescription],
-          [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
-    
-    
-    //	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kConnectionError
-    //													message:[error localizedDescription]
-    //												   delegate:nil
-    //										  cancelButtonTitle:@"OK"
-    //										  otherButtonTitles:nil];
-    //	[alert show];
-    //	[alert release];
-    
+          [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);    
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -487,7 +456,7 @@
 {
     if ( self = [super init] )
 	{
-		self.activityDelegate = self;
+//		self.activityDelegate = self;
 		[self loadNote:_note];
     }
     return self;
@@ -513,9 +482,6 @@
 
 - (void)dealloc {
     self.deviceUniqueIdHash1 = nil;
-    self.activityDelegate = nil;
-    self.alertDelegate = nil;
-    self.activityIndicator = nil;
     self.uploadingView = nil;
     self.parent = nil;
     self.dirty = nil;
@@ -525,9 +491,6 @@
     
     
     [deviceUniqueIdHash1 release];
-    [_activityDelegate release];
-    [_alertDelegate release];
-    [_activityIndicator release];
     [uploadingView release];
     [parent release];
     [note release];

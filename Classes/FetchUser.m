@@ -26,7 +26,7 @@
 
 @implementation FetchUser
 
-@synthesize managedObjectContext, receivedData, parent, deviceUniqueIdHash, activityDelegate, alertDelegate, activityIndicator, downloadingView, user, urlRequest;
+@synthesize managedObjectContext, receivedData, parent, deviceUniqueIdHash, activityDelegate, alertDelegate, activityIndicator, downloadingProgressView, user, urlRequest;
 
 - (id)init{
     self.managedObjectContext = [(CycleAtlantaAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
@@ -99,13 +99,13 @@
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     [dateFormat setTimeZone:[NSTimeZone timeZoneWithName:@"PST"]];
-    NSString *tempDateString = [NSString  alloc];
+    NSString *tempDateString;
     
     BOOL tripNotFound = true;
     BOOL noNewData = true;
-    int downloadCount = [tripsDict count];
-    NSLog(@"Total number of trips: %d", downloadCount);
-    //TODO: fix date compare. first issue is oldTrip is 4 hours ahead of newTrip. not sure why. and i think my test is wrong
+    NSMutableArray *tripsToLoad = [[NSMutableArray alloc] init];
+    NSLog(@"Total number of trips: %d", [tripsDict count]);
+
     for(NSDictionary *newTrip in tripsDict){
         tripNotFound = true;
         for(Trip *oldTrip in storedTrips){
@@ -113,35 +113,41 @@
             if( [tempDateString isEqualToString:[newTrip objectForKey:@"start"]]){
                 NSLog(@"trip  found");
                 tripNotFound = false;
-                downloadCount--;
                 break;
             }
         }
         if(tripNotFound){
             noNewData = false;
-            FetchTripData *fetchTrip = [[[FetchTripData alloc] init] autorelease];
-            [fetchTrip fetchTripData:newTrip statusView:downloadingView downloadCount:downloadCount];
-            downloadCount--;
+            [tripsToLoad addObject:newTrip];
         }
     }
+    NSLog(@"Number of trips to download: %d", [tripsToLoad count]);
+    FetchTripData *fetchTrip = [[[FetchTripData alloc] initWithTripCountAndProgessView:[tripsToLoad count] progressView:self.downloadingProgressView] autorelease];
+    [fetchTrip fetchWithTrips:tripsToLoad];
     
     if(noNewData){
-        [self.downloadingView loadingComplete:kSuccessFetchTitle delayInterval:1];
+        [self.downloadingProgressView loadingComplete:@"No more rides to download." delayInterval:.5];
+    }
+    else{
+        [self.downloadingProgressView setVisible:TRUE messageString:kFetchTitle];
     }
     
     [request release];
     [storedTrips release];
     [dateFormat release];
+    [tripsToLoad release];
 }
 
-//after fetching user and trips, send data back to PersonalInfoViewController and TripManager to add into the db
 
-- (void)fetchUserAndTrip:(UIViewController*)parentView;{
+- (void)fetchUserAndTrip:(UIViewController*)parentView
+{
     self.parent = parentView;
-    self.downloadingView = [[LoadingView loadingViewInView:self.parent.parentViewController.view messageString:kFetchTitle] retain];
-    //CycleAtlantaAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    //TODO reset to delegate.uniqueIDHash for production. 
-    self.deviceUniqueIdHash = @"2ecc2e36c3e1a512d349f9b407fb281e";// delegate.uniqueIDHash;  ME://3cab3ca8964ca45b3e24fa7aee4d5e1f
+    self.downloadingProgressView = [ProgressView progressViewInView:self.parent.parentViewController.view messageString:kFetchTitle];
+    [self.downloadingProgressView setVisible:TRUE messageString:kFetchTitle];
+    [self.parent.parentViewController.view addSubview:downloadingProgressView];
+
+    //TODO: reset to delegate.uniqueIDHash for production. 
+    self.deviceUniqueIdHash = @"3cab3ca8964ca45b3e24fa7aee4d5e1f";// delegate.uniqueIDHash;  ME://2ecc2e36c3e1a512d349f9b407fb281e
     NSLog(@"start downloading");
     NSLog(@"DeviceUniqueIdHash: %@", deviceUniqueIdHash);
     
@@ -163,7 +169,6 @@
     
     self.urlRequest = [[[NSMutableURLRequest alloc] init] autorelease];
     [urlRequest setURL:[NSURL URLWithString:kFetchURL]];
-
     [urlRequest setHTTPMethod:@"POST"];
     [urlRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [urlRequest setValue:[NSString stringWithFormat:@"%d", [postData length]] forHTTPHeaderField:@"Content-Length"];
@@ -172,9 +177,6 @@
 	// create the connection with the request and start loading the data
 	NSURLConnection *theConnection=[[NSURLConnection alloc] initWithRequest:urlRequest delegate:self];
 	
-    // create loading view to indicate trip is being uploaded
-    //uploadingView = [[LoadingView loadingViewInView:parent.parentViewController.view messageString:kDownloadingUser] retain];
-    
     if ( theConnection )
     {
         receivedData=[[NSMutableData data] retain];
@@ -183,7 +185,6 @@
     {
         // inform the user that the download could not be made
         NSLog(@"Download failed!");
-        
     }
 }
 
@@ -222,7 +223,7 @@
 			case 500:
 			default:
 				title = @"Internal Server Error";
-				message = kServerError;
+				message = @"Download failed.";
 		}
 		
 		NSLog(@"%@: %@", title, message);
@@ -238,11 +239,8 @@
 				// Handle the error.
 				NSLog(@"FetchUser error %@, %@", error, [error localizedDescription]);
 			}
-            
-            //[uploadingView loadingComplete:kSuccessTitle delayInterval:.7];
 		} else {
-            
-            [downloadingView loadingComplete:kServerError delayInterval:1.5];
+            //no-op
         }
 	}
 	
@@ -252,29 +250,21 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
-    // append the new data to the receivedData
-    // receivedData is declared as a method instance elsewhere
 	[receivedData appendData:data];
-    //	[activityDelegate startAnimating];
 }
 
 - (void)connection:(NSURLConnection *)connection
   didFailWithError:(NSError *)error
 {
-    // release the connection, and the data object
     [connection release];
-	
-    // receivedData is declared as a method instance elsewhere
     [receivedData release];
     
-    // TODO: is this really adequate...?
-    [downloadingView loadingComplete:kConnectionError delayInterval:1.5];
+    [self.downloadingProgressView setErrorMessage:kFetchError];
+    [self.downloadingProgressView loadingComplete:kFetchTitle delayInterval:1.7];
     
-    // inform the user
     NSLog(@"Connection failed! Error - %@ %@",
           [error localizedDescription],
           [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
-    
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -282,13 +272,13 @@
     NSLog(@"+++++++DEBUG: Received %d bytes of data", [receivedData length]);
     NSError *error;
     NSString *jsonString = [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding];
+    NSLog(@"JSON string: %@", jsonString);
     NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData: [jsonString dataUsingEncoding:NSUTF8StringEncoding]
                                                          options: NSJSONReadingMutableContainers
                                                            error: &error];
     
     NSDictionary *userDict = [JSON objectForKey:@"user"];
     NSDictionary *tripsDict = [JSON objectForKey:@"trips"];
-    
     
     //Debugging messages
 //    NSData *JsonDataUser = [[NSData alloc] initWithData:[NSJSONSerialization dataWithJSONObject:userDict options:0 error:&error]];

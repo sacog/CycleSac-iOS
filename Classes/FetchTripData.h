@@ -20,14 +20,14 @@
 
 #import <Foundation/Foundation.h>
 #import "ActivityIndicatorDelegate.h"
-#import "LoadingView.h"
+#import "ProgressView.h"
 #import "Trip.h"
 #import "User.h"
 
 @class User;
 @class Trip;
 
-@interface FetchTripData: NSObject <ActivityIndicatorDelegate, UIAlertViewDelegate, UITextViewDelegate>
+@interface FetchTripData: NSObject
 {
     NSMutableURLRequest *urlRequest;
     NSManagedObjectContext *managedObjectContext;
@@ -39,9 +39,12 @@
 @property (nonatomic, retain) NSMutableURLRequest *urlRequest;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) NSMutableData *receivedData;
-@property (nonatomic, retain) LoadingView *downloadingView;
-@property (nonatomic) int downloadCount;
+@property (nonatomic, retain) ProgressView *downloadingProgressView;
+@property (nonatomic) int *tripDownloadCount;
+@property (nonatomic, retain) NSMutableArray *tripsToLoad;
 
-- (void)fetchTripData:(NSDictionary*) tripToLoad statusView:(LoadingView*) statusView downloadCount:(int) downloadCounter;
+- (void)fetchTripData:(NSDictionary*) tripToLoad;
+- (id)initWithTripCountAndProgessView:(int) tripCount progressView:(ProgressView*) progressView;
+- (void)fetchWithTrips:(NSMutableArray*) trips;
 
 @end

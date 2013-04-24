@@ -47,18 +47,11 @@
 @class Trip;
 
 
-@interface TripManager : NSObject
-<ActivityIndicatorDelegate, 
-TripPurposeDelegate, 
-UIAlertViewDelegate, 
-UITextViewDelegate>
+@interface TripManager : NSObject <TripPurposeDelegate> //<ActivityIndicatorDelegate, , UIAlertViewDelegate, UITextViewDelegate>
 {
 	UIAlertView *saving;
 	UIAlertView *tripNotes;
 	UITextView	*tripNotesText;
-//    id <ActivityIndicatorDelegate> activityDelegate;
-//    id <UIAlertViewDelegate> alertDelegate;
-//    UIActivityIndicatorView *activityIndicator;
 
 	BOOL dirty;
 	Trip *trip;
@@ -75,14 +68,12 @@ UITextViewDelegate>
 	NSMutableArray *zeroDistanceTrips;
 }
 
-@property (nonatomic, retain) id <ActivityIndicatorDelegate> activityDelegate;
-@property (nonatomic, retain) id <UIAlertViewDelegate> alertDelegate;
-
-@property (nonatomic, retain) UIActivityIndicatorView *activityIndicator;
+//@property (nonatomic, retain) id <ActivityIndicatorDelegate> activityDelegate;
+//@property (nonatomic, retain) id <UIAlertViewDelegate> alertDelegate;
+//
+//@property (nonatomic, retain) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, retain) LoadingView *uploadingView;
-
-@property (nonatomic, retain) UIViewController *parent; 
-
+@property (nonatomic, retain) UIViewController *parent;
 @property (nonatomic, retain) UIAlertView *saving;
 @property (nonatomic, retain) UIAlertView *tripNotes;
 @property (nonatomic, retain) UITextView *tripNotesText;
@@ -111,7 +102,7 @@ UITextViewDelegate>
 
 - (NSInteger)getPurposeIndex;
 
-- (void)promptForTripNotes;
+//- (void)promptForTripNotes;
 
 - (int)countUnSavedTrips;
 - (int)countUnSyncedTrips;

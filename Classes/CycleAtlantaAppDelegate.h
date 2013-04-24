@@ -37,7 +37,7 @@
 //	For more information on the project, 
 //	e-mail Billy Charlton at the SFCTA <billy.charlton@sfcta.org>
 #import <CoreLocation/CoreLocation.h>
-#import "LoadingView.h"
+#import "ProgressView.h"
 
 @interface CycleAtlantaAppDelegate : NSObject <UIApplicationDelegate>
 {
@@ -48,10 +48,10 @@
     UIWindow *window;
     UITabBarController *tabBarController;
 	NSString *uniqueIDHash;
-    //UIAlertView *consentFor18;
-    // added to handle location manager background service switching
     BOOL isRecording;
     CLLocationManager *locationManager;
+    UIView *backgroundView;
+    UIImageView *backgroundImage;
 }
 
 @property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
@@ -61,12 +61,9 @@
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet UITabBarController *tabBarController;
 @property (nonatomic, retain) NSString *uniqueIDHash;
-//@property (nonatomic, retain) UIAlertView *consentFor18;
-// added to handle location manager background service switching
 @property (nonatomic, assign) BOOL isRecording;
 @property (nonatomic, retain) CLLocationManager *locationManager;
-@property (nonatomic, retain) LoadingView *storeLoading;
-@property (nonatomic, retain) UIView *storeLoadingView;
+@property (nonatomic, retain) ProgressView *storeLoadingView;
 
 - (NSString *)applicationDocumentsDirectory;
 - (void)initUniqueIDHash;

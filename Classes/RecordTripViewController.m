@@ -50,7 +50,6 @@
 #import "Trip.h"
 #import "User.h"
 
-//TODO: Fix incomplete implementation
 @implementation RecordTripViewController
 
 @synthesize tripManager;// reminderManager;
@@ -218,14 +217,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
+    
     NSLog(@"RecordTripViewController viewDidLoad");
     NSLog(@"Bundle ID: %@", [[NSBundle mainBundle] bundleIdentifier]);
-
-	[UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleBlackTranslucent;
+    
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleBlackTranslucent;
 	
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
     self.navigationController.navigationBarHidden = YES;
@@ -265,7 +261,11 @@
 	[self hasRecordingBeenInterrupted];
     
 	NSLog(@"save");
-    
+
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{    	    
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -482,19 +482,6 @@
 }
 
 
-//- (NSDictionary *)continueTripTimerUserInfo
-//{
-//	if ( tripManager.trip && tripManager.trip.start )
-//		return [NSDictionary dictionaryWithObjectsAndKeys:tripManager.trip.start, @"StartDate",
-//				tripManager, @"TripManager", nil ];
-//	else {
-//		NSLog(@"WARNING: tried to continue trip timer but failed to get trip.start date");
-//		return [self newTripTimerUserInfo];
-//	}
-//	
-//}
-
-
 // handle start button action
 - (IBAction)start:(UIButton *)sender
 {
@@ -540,7 +527,6 @@
                            cancelButtonTitle:@"Continue"
                            destructiveButtonTitle:@"Discard"
                            otherButtonTitles:@"Save",nil];
-        //[saveActionSheet showInView:self.view];
         [saveActionSheet showInView:[UIApplication sharedApplication].keyWindow];
     }
 	
@@ -558,9 +544,8 @@
 													  //initWithPurpose:[tripManager getPurposeIndex]];
 													  initWithNibName:@"TripPurposePicker" bundle:nil];
 		[tripPurposePickerView setDelegate:self];
-		//[[self navigationController] pushViewController:pickerViewController animated:YES];
 		[self.navigationController presentModalViewController:tripPurposePickerView animated:YES];
-		[tripPurposePickerView release];
+		[tripPurposePickerView release];        
 	}
 	
 	// prompt to confirm first
@@ -815,8 +800,6 @@ shouldSelectViewController:(UIViewController *)viewController
 {
 	NSString *purpose = [tripManager setPurpose:index];
 	NSLog(@"setPurpose: %@", purpose);
-
-	//[self.navigationController popViewControllerAnimated:YES];
 	
 	return [self updatePurposeWithString:purpose];
 }
@@ -849,7 +832,6 @@ shouldSelectViewController:(UIViewController *)viewController
 
 - (void)didPickPurpose:(unsigned int)index
 {
-	//[self.navigationController dismissModalViewControllerAnimated:YES];
 	// update UI
     appDelegate = [[UIApplication sharedApplication] delegate];
     appDelegate.isRecording = NO;
@@ -860,7 +842,6 @@ shouldSelectViewController:(UIViewController *)viewController
 	[self resetTimer];
 	
 	[tripManager setPurpose:index];
-	//[tripManager promptForTripNotes];
     //do something here: may change to be the save as a separate view. Not prompt.
 }
 
@@ -941,7 +922,6 @@ shouldSelectViewController:(UIViewController *)viewController
     self.noteManager = nil;
     self.appDelegate = nil;
     
-//    [appDelegate.locationManager release];
     [appDelegate release];
     [infoButton release];
     [saveButton release];
