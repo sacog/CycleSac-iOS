@@ -121,15 +121,15 @@
             [tripsToLoad addObject:newTrip];
         }
     }
-    NSLog(@"Number of trips to download: %d", [tripsToLoad count]);
-    FetchTripData *fetchTrip = [[[FetchTripData alloc] initWithTripCountAndProgessView:[tripsToLoad count] progressView:self.downloadingProgressView] autorelease];
-    [fetchTrip fetchWithTrips:tripsToLoad];
     
     if(noNewData){
         [self.downloadingProgressView loadingComplete:@"No more rides to download." delayInterval:.5];
     }
     else{
         [self.downloadingProgressView setVisible:TRUE messageString:kFetchTitle];
+        NSLog(@"Number of trips to download: %d", [tripsToLoad count]);
+        FetchTripData *fetchTrip = [[[FetchTripData alloc] initWithTripCountAndProgessView:[tripsToLoad count] progressView:self.downloadingProgressView] autorelease];
+        [fetchTrip fetchWithTrips:tripsToLoad];
     }
     
     [request release];
@@ -141,13 +141,15 @@
 
 - (void)fetchUserAndTrip:(UIViewController*)parentView
 {
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     self.parent = parentView;
     self.downloadingProgressView = [ProgressView progressViewInView:self.parent.parentViewController.view messageString:kFetchTitle];
     [self.downloadingProgressView setVisible:TRUE messageString:kFetchTitle];
     [self.parent.parentViewController.view addSubview:downloadingProgressView];
 
-    //TODO: reset to delegate.uniqueIDHash for production. 
-    self.deviceUniqueIdHash = @"3cab3ca8964ca45b3e24fa7aee4d5e1f";// delegate.uniqueIDHash;  ME://2ecc2e36c3e1a512d349f9b407fb281e
+    //TODO: reset to delegate.uniqueIDHash for production.
+    CycleAtlantaAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
+    self.deviceUniqueIdHash = delegate.uniqueIDHash; // test-user://@"3cab3ca8964ca45b3e24fa7aee4d5e1f";   ME://@"2ecc2e36c3e1a512d349f9b407fb281e";
     NSLog(@"start downloading");
     NSLog(@"DeviceUniqueIdHash: %@", deviceUniqueIdHash);
     
@@ -261,6 +263,7 @@
     
     [self.downloadingProgressView setErrorMessage:kFetchError];
     [self.downloadingProgressView loadingComplete:kFetchTitle delayInterval:1.7];
+    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
     
     NSLog(@"Connection failed! Error - %@ %@",
           [error localizedDescription],

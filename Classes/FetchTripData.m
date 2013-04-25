@@ -49,6 +49,10 @@
 }
 
 - (void)saveTrip:(NSDictionary *)coordsDict{
+    UIBackgroundTaskIdentifier taskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void) {
+        // TODO: add better code for clean up if app times out
+        // option: do nothing, user can just hit download again and the rest will come. partially download trips will not be restored
+    }];
 	NSError *error;
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
@@ -108,6 +112,10 @@
 		NSLog(@"TripManager addCoord error %@, %@", error, [error localizedDescription]);
 	}
     [dateFormat release];
+    
+    if (taskId != UIBackgroundTaskInvalid) {
+        [[UIApplication sharedApplication] endBackgroundTask:taskId];
+    }
 }
 
 - (CLLocationDistance)calculateTripDistance:(Trip*)trip
@@ -293,6 +301,7 @@
     
     [self.downloadingProgressView setErrorMessage:kFetchError];
     [self.downloadingProgressView updateProgress:1.0f/[[NSNumber numberWithInt:self.tripDownloadCount] floatValue] ];
+    [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 
     // inform the user
     NSLog(@"Connection failed! Error - %@ %@",

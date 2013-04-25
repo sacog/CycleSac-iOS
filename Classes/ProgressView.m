@@ -127,6 +127,8 @@
     if(self.progressBar.progress+progressToAdd>=1.0f){
         [self.progressBar setProgress:1.0f];
         [self performSelector:@selector(removeView) withObject:nil afterDelay:1];
+        //ensures the idle timer is turned back on after the long-running migration and download.
+        [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
     }
 }
 

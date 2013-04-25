@@ -240,25 +240,47 @@
         return persistentStoreCoordinator;
     }
 
-    NSURL *storeURL = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"CycleAtlanta.sqlite"]];
+    NSURL *storeURL;// = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"CycleTracks.sqlite"]];
+
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    if (![fileManager fileExistsAtPath:[storeURL path]]){
-            storeURL = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"CycleTracks.sqlite"]];
+    
+    if ([fileManager fileExistsAtPath:
+         [[NSURL fileURLWithPath:[[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"CycleTracks.sqlite"]] path]] &&
+        [fileManager fileExistsAtPath:
+         [[NSURL fileURLWithPath:[[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"CycleAtlanta.sqlite"]] path]])
+    {
+        //both existprevious migration failed, start over.
+        if(![fileManager removeItemAtPath:[[NSURL fileURLWithPath:[[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"CycleAtlanta.sqlite"]] path]
+                                    error:&error])
+        {
+            NSLog(@"Remove file error %@", error );
+        }
+        storeURL = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"CycleTracks.sqlite"]];
+    }
+    else if ([fileManager fileExistsAtPath:
+                [[NSURL fileURLWithPath:[[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"CycleTracks.sqlite"]] path]])
+    {
+        //old version store exists, need to migrate
+        storeURL = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"CycleTracks.sqlite"]];
+    }
+    else
+    {
+        //use current name.
+        storeURL = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"CycleAtlanta.sqlite"]];
     }
     
-    // migrate the store if needed, returns the storeURL
-    NSLog(@"DEBUG: before migration");
+    // migrate the store if needed, returns the migrated storeURL
     storeURL = [self migratePersistentStore: storeURL];
-    NSLog(@"DEBUG: after migration");
     
     // create the coordinator
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
-		//not the most sophisticated 
+		//not the most sophisticated error handling
 		NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
 		abort();
     }    
 	
+    [fileManager release];
     return persistentStoreCoordinator;
 }
 
@@ -282,7 +304,7 @@
     
     
     if (!isStoreCompatibile) {
-//        NSLog(@"DEBUG Could not open store at: %@", sourcePath);
+        //no-op. additional code needed if stores aren't compatible; not an expected fail condition.
     }
     
     //do the migration. assuming one step here from previous to current model.
@@ -305,6 +327,10 @@
     }
     
     NSLog(@"DEBUG: start migration");
+    //request migration task continue if the app is backgrounded.
+    UIBackgroundTaskIdentifier taskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void) {
+        // no-op. interrupted migration will simply start over next time.
+    }];
     [self performSelectorOnMainThread:@selector(setUpgradeMessage) withObject:nil waitUntilDone:NO];
 
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
@@ -320,6 +346,15 @@
                                               error:&error];
     
     NSLog(@"DEBUG: finish migration");
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if(![fileManager removeItemAtPath:[[NSURL fileURLWithPath:[[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"CycleTracks.sqlite"]] path]
+                                error:&error])
+    {
+        NSLog(@"Remove file error %@", error );
+    }
+    if (taskId != UIBackgroundTaskInvalid) {
+        [[UIApplication sharedApplication] endBackgroundTask:taskId];
+    }
     [migrationManager removeObserver:self.storeLoadingView forKeyPath:@"migrationProgress" ];
     [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 
