@@ -399,13 +399,13 @@
 	NSLog(@"actionSheet clickedButtonAtIndex %d", buttonIndex);
 	switch ( buttonIndex )
 	{			
-           case 0:
-           {
-               NSLog(@"Discard!!!!");
-               [self resetRecordingInProgress];
-               //discard that trip
-               break;
-           }
+       case 0:
+       {
+           NSLog(@"Discard!!!!");
+           [self resetRecordingInProgress];
+           //discard that trip
+           break;
+       }
         case 1:{
             [self save];
             break;

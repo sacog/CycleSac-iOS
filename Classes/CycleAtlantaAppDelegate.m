@@ -346,21 +346,27 @@
                                               error:&error];
     
     NSLog(@"DEBUG: finish migration");
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if(![fileManager removeItemAtPath:[[NSURL fileURLWithPath:[[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"CycleTracks.sqlite"]] path]
-                                error:&error])
-    {
-        NSLog(@"Remove file error %@", error );
-    }
     if (taskId != UIBackgroundTaskInvalid) {
         [[UIApplication sharedApplication] endBackgroundTask:taskId];
     }
     [migrationManager removeObserver:self.storeLoadingView forKeyPath:@"migrationProgress" ];
     [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
-
-    if(!result)
-        destinationURL = nil;
     
+    if(result)
+    {
+        //only remove the previous store if the migration succeeded.
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        if(![fileManager removeItemAtPath:[[NSURL fileURLWithPath:[[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"CycleTracks.sqlite"]] path]
+                                    error:&error])
+        {
+            NSLog(@"Remove file error %@", error );
+        }
+    }
+    else
+    {
+        destinationURL = nil;
+    }
+        
     [migrationManager release];    
     
     return destinationURL;
