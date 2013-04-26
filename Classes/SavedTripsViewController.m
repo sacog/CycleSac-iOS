@@ -406,7 +406,8 @@
 
 // Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{    
+{
+    
 	//NSLog(@"cellForRowAtIndexPath");
 	
     // A date formatter for timestamp
@@ -424,6 +425,12 @@
 	
 	Trip *trip = (Trip *)[trips objectAtIndex:indexPath.row];
 	TripCell *cell = nil;
+    
+//    for(UIView *view in cell.contentView.subviews){
+//        if ([view isKindOfClass:[UIView class]]) {
+//            [view removeFromSuperview];
+//        }
+//    }
 	
 	// check for recordingInProgress
 	Trip *recordingInProgress = [delegate getRecordingInProgress];
@@ -552,6 +559,7 @@
     cell.textLabel.text = [NSString stringWithFormat:@"%@ (%.0fm, %.fs)", 
 						   trip.purpose, [trip.distance doubleValue], [trip.duration doubleValue]];
     */
+    
 	cell.detailTextLabel.tag	= kTagDetail;
 	cell.textLabel.tag			= kTagTitle;
 

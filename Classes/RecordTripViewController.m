@@ -270,8 +270,6 @@
     self.navigationController.navigationBarHidden = YES;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    
-    [super viewWillAppear:animated];
 }
 
 
@@ -383,9 +381,69 @@
 	NSManagedObjectContext *context = tripManager.managedObjectContext;
 	[self initTripManager:[[[TripManager alloc] initWithManagedObjectContext:context] autorelease]];
 	tripManager.dirty = YES;
+    
+	[self resetCounter];
+	[self resetTimer];
+}
+
+- (void)resetRecordingInProgressDelete
+{
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Trip" inManagedObjectContext:tripManager.managedObjectContext];
+	[request setEntity:entity];
+	
+	// configure sort order
+	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"start" ascending:NO];
+    NSSortDescriptor *sortDescriptorSaved = [[NSSortDescriptor alloc] initWithKey:@"saved" ascending:NO];
+	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, sortDescriptorSaved, nil];
+	[request setSortDescriptors:sortDescriptors];
+	[sortDescriptors release];
+	[sortDescriptor release];
+	
+	NSError *error;
+	NSInteger count = [tripManager.managedObjectContext countForFetchRequest:request error:&error];
+	NSLog(@"count = %d", count);
+	
+	NSMutableArray *mutableFetchResults = [[tripManager.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
+    
+    NSManagedObject *tripToDelete = [mutableFetchResults objectAtIndex:0];
+    
+    
+    if (tripManager.trip!= nil && tripManager.trip.saved == nil) {
+        [noteManager.managedObjectContext deleteObject:tripToDelete];
+    }
+    
+    
+    if (![tripManager.managedObjectContext save:&error]) {
+        // Handle the error.
+        NSLog(@"Unresolved error %@", [error localizedDescription]);
+    }
+
+    
+	// reset button states
+    appDelegate = [[UIApplication sharedApplication] delegate];
+    appDelegate.isRecording = NO;
+	recording = NO;
+    [[NSUserDefaults standardUserDefaults] setInteger:0 forKey: @"recording"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+	startButton.enabled = YES;
+    UIImage *buttonImage = [[UIImage imageNamed:@"greenButton.png"]
+                            resizableImageWithCapInsets:UIEdgeInsetsMake(18, 18, 18, 18)];
+    UIImage *buttonImageHighlight = [[UIImage imageNamed:@"greenButtonHighlight.png"]
+                                     resizableImageWithCapInsets:UIEdgeInsetsMake(18, 18, 18, 18)];
+    
+    [startButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
+    [startButton setBackgroundImage:buttonImageHighlight forState:UIControlStateHighlighted];
+    [startButton setTitle:@"Start" forState:UIControlStateNormal];
+	
+	// reset trip, reminder managers
+	NSManagedObjectContext *context = tripManager.managedObjectContext;
+	[self initTripManager:[[[TripManager alloc] initWithManagedObjectContext:context] autorelease]];
+	tripManager.dirty = YES;
 
 	[self resetCounter];
 	[self resetTimer];
+
 }
 
 
@@ -402,7 +460,7 @@
        case 0:
        {
            NSLog(@"Discard!!!!");
-           [self resetRecordingInProgress];
+           [self resetRecordingInProgressDelete];
            //discard that trip
            break;
        }
@@ -584,8 +642,6 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     NSLog(@"Note This");
-    
-    [noteManager createNote];
     
     if (myLocation){
         [noteManager addLocation:myLocation];
@@ -822,11 +878,48 @@ shouldSelectViewController:(UIViewController *)viewController
 	shouldUpdateCounter = YES;
 }
 
-
 - (void)didCancelNote
 {
 	[self.navigationController dismissModalViewControllerAnimated:YES];
     appDelegate = [[UIApplication sharedApplication] delegate];
+}
+
+
+- (void)didCancelNoteDelete
+{
+	[self.navigationController dismissModalViewControllerAnimated:YES];
+    appDelegate = [[UIApplication sharedApplication] delegate];
+    
+    
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Note" inManagedObjectContext:noteManager.managedObjectContext];
+	[request setEntity:entity];
+    
+    [request setReturnsDistinctResults:YES];
+    [request setPropertiesToFetch:[NSArray arrayWithObjects:@"note_type",@"recorded",nil]];
+    
+	// configure sort order
+	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"recorded" ascending:NO];
+	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+	[request setSortDescriptors:sortDescriptors];
+	[sortDescriptors release];
+	[sortDescriptor release];
+	
+	NSError *error;
+	NSInteger count = [noteManager.managedObjectContext countForFetchRequest:request error:&error];
+	NSLog(@"count = %d", count);
+	
+	NSMutableArray *mutableFetchResults = [[noteManager.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
+    
+    
+    NSManagedObject *noteToDelete = [mutableFetchResults objectAtIndex:0];
+    [noteManager.managedObjectContext deleteObject:noteToDelete];
+    
+    if (![noteManager.managedObjectContext save:&error]) {
+        // Handle the error.
+        NSLog(@"Unresolved error %@", [error localizedDescription]);
+    }
+
 }
 
 

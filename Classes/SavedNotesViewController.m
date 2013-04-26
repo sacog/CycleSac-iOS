@@ -135,6 +135,7 @@
 	NSLog(@"count = %d", count);
 	
 	NSMutableArray *mutableFetchResults = [[noteManager.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
+
 	if (mutableFetchResults == nil) {
 		// Handle the error.
 		NSLog(@"no saved notes");

@@ -95,6 +95,8 @@
 {
     NSLog(@"This is very very special!");
     
+    [self createNote];
+    
     if(!note){
         NSLog(@"Note nil");
     }

@@ -92,9 +92,19 @@
 //add value to be sent in
 {
     pickerCategory = [[NSUserDefaults standardUserDefaults] integerForKey:@"pickerCategory"];
+    
+    if (pickerCategory == 3) {
+        [delegate didCancelNoteDelete];
+        NSLog(@"Note Cancel Pressed!!!!!!!!!!!!");
+    }
+    
+    if (pickerCategory == 0) {
+        [delegate didCancelNote];
+        NSLog(@"Trip Cancel Pressed!!!!!!!!!!!!");
+    }
+    
     [[NSUserDefaults standardUserDefaults] setInteger:0 forKey: @"pickerCategory"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-	[delegate didCancelNote];
 }
 
 
@@ -232,11 +242,7 @@
 
 - (void)viewDidLoad
 {
-	[super viewDidLoad];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
+    [super viewDidLoad];
     pickerCategory = [[NSUserDefaults standardUserDefaults] integerForKey:@"pickerCategory"];
     
     if (pickerCategory == 0) {
@@ -270,7 +276,10 @@
     
 	description.font = [UIFont fontWithName:@"Helvetica" size:16];
 	[self.view addSubview:description];
-    
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
 
 }

@@ -92,6 +92,7 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
 
 -(IBAction)skip:(id)sender{
     NSLog(@"Skip");
+    [detailTextView resignFirstResponder];
     [delegate didCancelNote];
     
     pickerCategory = [[NSUserDefaults standardUserDefaults] integerForKey:@"pickerCategory"];
