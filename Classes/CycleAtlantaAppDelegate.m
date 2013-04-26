@@ -72,7 +72,7 @@
     // init our unique ID hash
 	[self initUniqueIDHash];
     
-    self.storeLoadingView = [ProgressView progressViewInView: self.storeLoadingView messageString:@"Initializing..."] ;
+    self.storeLoadingView = [ProgressView progressViewInView: self.storeLoadingView messageString:nil] ;
     [window addSubview:self.storeLoadingView];
     
     [window makeKeyAndVisible];

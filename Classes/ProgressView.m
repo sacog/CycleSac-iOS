@@ -33,38 +33,24 @@
 
 + (id) progressViewInView:(UIView *)aSuperview messageString:(NSString *)message
 {
-
-    if (message==NULL)
-        NSLocalizedString(@"Initializing...", nil);
-    
     CGRect frame    = [[UIScreen mainScreen] bounds];
     ProgressView *progressView = [[[ProgressView alloc] initWithFrame:frame] autorelease];
-    progressView.backgroundColor = [UIColor colorWithRed:((float) 0 / 255.0f)
-                                                  green:((float) 0 / 255.0f)
-                                                   blue:((float) 0 / 255.0f)
-                                                   alpha:8.0f];
 
-    progressView.activityIndicator = [[[UIActivityIndicatorView alloc]
-                                          initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge]
-                                         autorelease];
-	CGRect activityIndicatorRect = progressView.activityIndicator.frame;
-    progressView.activityIndicator.hidesWhenStopped = YES;
-	activityIndicatorRect.origin.x = 0.5 * (progressView.frame.size.width - activityIndicatorRect.size.width);
-	activityIndicatorRect.origin.y = 0.5 * (progressView.frame.size.height - activityIndicatorRect.size.height);
-	progressView.activityIndicator.frame = activityIndicatorRect;
-	
-	[progressView.activityIndicator startAnimating];
-	[progressView addSubview:progressView.activityIndicator];
+    progressView.backgroundColor = [UIColor colorWithRed:((float) 0 / 255.0f)
+                                                   green:((float) 0 / 255.0f)
+                                                    blue:((float) 0 / 255.0f)
+                                                   alpha:8.0f];
+    
     
     CGRect labelFrame = CGRectMake(30, 115, DEFAULT_LABEL_WIDTH, DEFAULT_LABEL_HEIGHT);
-	progressView.progressLabel =[[[UILabel alloc] initWithFrame:labelFrame] autorelease];
-	progressView.progressLabel.text = message;
-	progressView.progressLabel.textColor = [UIColor whiteColor];
+    progressView.progressLabel =[[[UILabel alloc] initWithFrame:labelFrame] autorelease];
+    progressView.progressLabel.text = @"";
+    progressView.progressLabel.textColor = [UIColor whiteColor];
     progressView.progressLabel.numberOfLines = 4;
     progressView.progressLabel.lineBreakMode = UILineBreakModeWordWrap;
-	progressView.progressLabel.backgroundColor = [UIColor clearColor];
-	progressView.progressLabel.textAlignment = UITextAlignmentCenter;
-	progressView.progressLabel.font = [UIFont boldSystemFontOfSize:[UIFont labelFontSize]];
+    progressView.progressLabel.backgroundColor = [UIColor clearColor];
+    progressView.progressLabel.textAlignment = UITextAlignmentCenter;
+    progressView.progressLabel.font = [UIFont boldSystemFontOfSize:[UIFont labelFontSize]];
     
     [progressView addSubview:progressView.progressLabel];
     
@@ -78,16 +64,38 @@
     [progressView addSubview:progressView.progressBar];
     
     CGRect errorLabelFrame = CGRectMake(30, 275, DEFAULT_LABEL_WIDTH, DEFAULT_LABEL_HEIGHT);
-	progressView.errorLabel =[[[UILabel alloc] initWithFrame:errorLabelFrame] autorelease];
-	progressView.errorLabel.text = @"";
-	progressView.errorLabel.textColor = [UIColor whiteColor];
+    progressView.errorLabel =[[[UILabel alloc] initWithFrame:errorLabelFrame] autorelease];
+    progressView.errorLabel.text = @"";
+    progressView.errorLabel.textColor = [UIColor whiteColor];
     progressView.errorLabel.numberOfLines = 4;
     progressView.errorLabel.lineBreakMode = UILineBreakModeWordWrap;
-	progressView.errorLabel.backgroundColor = [UIColor clearColor];
-	progressView.errorLabel.textAlignment = UITextAlignmentCenter;
-	progressView.errorLabel.font = [UIFont systemFontOfSize:14.0];
+    progressView.errorLabel.backgroundColor = [UIColor clearColor];
+    progressView.errorLabel.textAlignment = UITextAlignmentCenter;
+    progressView.errorLabel.font = [UIFont systemFontOfSize:14.0];
     
     [progressView addSubview:progressView.errorLabel];
+    
+    if (message==nil)
+    {
+        progressView.backgroundColor =  [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default.png"]];
+        progressView.errorLabel.hidden = TRUE;
+        progressView.progressBar.hidden = TRUE;
+        progressView.progressLabel.hidden = TRUE;
+        
+        progressView.activityIndicator = [[[UIActivityIndicatorView alloc]
+                                           initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge]
+                                          autorelease];
+        CGRect activityIndicatorRect = progressView.activityIndicator.frame;
+        progressView.activityIndicator.hidesWhenStopped = YES;
+        activityIndicatorRect.origin.x = 0.5 * (progressView.frame.size.width - activityIndicatorRect.size.width);
+        activityIndicatorRect.origin.y = 0.5 * (progressView.frame.size.height - activityIndicatorRect.size.height);
+        progressView.activityIndicator.frame = activityIndicatorRect;
+        
+        [progressView.activityIndicator startAnimating];
+        [progressView addSubview:progressView.activityIndicator];
+    } else {
+        progressView.progressLabel.text = message;
+    }
     
     if (!progressView)
     {
@@ -98,6 +106,7 @@
 	CATransition *animation = [CATransition animation];
 	[animation setType:kCATransitionFade];
 	[[aSuperview layer] addAnimation:animation forKey:@"layerAnimation"];
+        
 
     return progressView;
 }
@@ -116,9 +125,16 @@
 }
 
 - (void)setVisible:(BOOL)isBarVisible messageString:(NSString *)message{
+    self.progressLabel.hidden = !isBarVisible;
+    self.errorLabel.hidden = !isBarVisible;
+    self.backgroundColor = [UIColor colorWithRed:((float) 0 / 255.0f)
+                                                   green:((float) 0 / 255.0f)
+                                                    blue:((float) 0 / 255.0f)
+                                                   alpha:8.0f];
     self.progressLabel.text = message;
     self.progressBar.hidden = !isBarVisible;
-    self.activityIndicator.hidden = isBarVisible;
+    if(self.activityIndicator != nil)
+        self.activityIndicator.hidden = isBarVisible;
 }
 
 - (void)updateProgress:(float)progressToAdd{

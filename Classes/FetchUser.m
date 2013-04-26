@@ -123,7 +123,7 @@
     }
     
     if(noNewData){
-        [self.downloadingProgressView loadingComplete:@"No more rides to download." delayInterval:.5];
+        [self.downloadingProgressView loadingComplete:@"No more trips to download." delayInterval:.5];
     }
     else{
         [self.downloadingProgressView setVisible:TRUE messageString:kFetchTitle];
@@ -149,7 +149,7 @@
 
     //TODO: reset to delegate.uniqueIDHash for production.
     CycleAtlantaAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    self.deviceUniqueIdHash = delegate.uniqueIDHash; // test-user://@"3cab3ca8964ca45b3e24fa7aee4d5e1f";   ME://@"2ecc2e36c3e1a512d349f9b407fb281e";
+    self.deviceUniqueIdHash = delegate.uniqueIDHash;//production @"2ecc2e36c3e1a512d349f9b407fb281e";//me  @"3cab3ca8964ca45b3e24fa7aee4d5e1f";//test-user
     NSLog(@"start downloading");
     NSLog(@"DeviceUniqueIdHash: %@", deviceUniqueIdHash);
     
