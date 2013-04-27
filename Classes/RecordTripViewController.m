@@ -388,7 +388,7 @@
 
 - (void)resetRecordingInProgressDelete
 {
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Trip" inManagedObjectContext:tripManager.managedObjectContext];
 	[request setEntity:entity];
 	
@@ -399,6 +399,7 @@
 	[request setSortDescriptors:sortDescriptors];
 	[sortDescriptors release];
 	[sortDescriptor release];
+    [sortDescriptorSaved release];
 	
 	NSError *error;
 	NSInteger count = [tripManager.managedObjectContext countForFetchRequest:request error:&error];
@@ -443,6 +444,7 @@
 
 	[self resetCounter];
 	[self resetTimer];
+    [mutableFetchResults release];
 
 }
 
@@ -919,6 +921,9 @@ shouldSelectViewController:(UIViewController *)viewController
         // Handle the error.
         NSLog(@"Unresolved error %@", [error localizedDescription]);
     }
+    
+    [mutableFetchResults release];
+    [request release];
 
 }
 

@@ -280,7 +280,6 @@
 		abort();
     }    
 	
-    [fileManager release];
     return persistentStoreCoordinator;
 }
 
