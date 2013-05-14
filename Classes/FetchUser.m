@@ -53,7 +53,7 @@
         if ( [userDict objectForKey:@"age"] != (id)[NSNull null]) {
             [user setAge:[NSNumber numberWithInteger:[[userDict objectForKey:@"age"] integerValue]]];
         }
-        if ([userDict objectForKey:@"email"]!= NULL) {
+        if ([userDict objectForKey:@"email"]!= (id)[NSNull null]) {
             [user setEmail:[userDict objectForKey:@"email"]];
         }
         if ([userDict objectForKey:@"gender"] != (id)[NSNull null]) {

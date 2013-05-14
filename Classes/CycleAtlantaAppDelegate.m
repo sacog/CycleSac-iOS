@@ -295,17 +295,7 @@
     
     NSURL *destinationURL = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"CycleAtlanta.sqlite"]];
 	NSManagedObjectModel *destinationModel = [self managedObjectModel];
-    NSString *sourcePath = [sourceURL absoluteString];
-    
-    BOOL isStoreCompatibile = [destinationModel
-                          isConfiguration:sourcePath
-              compatibleWithStoreMetadata:sourceMetadata ];
-    
-    
-    if (!isStoreCompatibile) {
-        //no-op. additional code needed if stores aren't compatible; not an expected fail condition.
-    }
-    
+        
     //do the migration. assuming one step here from previous to current model.
     NSManagedObjectModel *sourceModel = [NSManagedObjectModel mergedModelFromBundles:nil
                                                                     forStoreMetadata:sourceMetadata];
