@@ -72,7 +72,7 @@
     // init our unique ID hash
 	[self initUniqueIDHash];
     
-    self.storeLoadingView = [ProgressView progressViewInView: self.storeLoadingView messageString:nil] ;
+    self.storeLoadingView = [ProgressView progressViewInView: self.storeLoadingView messageString:nil progressTypePlain:NO] ;
     [window addSubview:self.storeLoadingView];
     
     [window makeKeyAndVisible];
@@ -87,7 +87,6 @@
 
 -(void)persistentStoreLoaded: (NSPersistentStoreCoordinator *) coordinator;
 {
-//    sleep(5);
     [self.storeLoadingView removeFromSuperview];
     self.storeLoadingView = nil;
     CGRect frame    = [[UIScreen mainScreen] bounds];

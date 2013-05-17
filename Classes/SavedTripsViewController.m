@@ -174,47 +174,48 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-}
-
-
-- (void)viewWillAppear:(BOOL)animated
-{
+    
     self.tableView.rowHeight = kRowHeight;
     
 	// Set up the buttons.
 	self.navigationItem.leftBarButtonItem = self.editButtonItem;
 	self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-	
+}
+
+
+- (void)viewWillAppear:(BOOL)animated
+{    	
 	// load trips from CoreData
 	[self refreshTableView];
 	
 	// check for countZeroDistanceTrips
-	if ( [tripManager countZeroDistanceTrips] )
-	{
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kZeroDistanceTitle
-														message:kZeroDistanceMessage
-													   delegate:self
-											  cancelButtonTitle:@"Cancel"
-											  otherButtonTitles:@"Recalculate", nil];
-		alert.tag = 202;
-		[alert show];
-		[alert release];
-	}
-	
-	// check for countUnSyncedTrips
-	else if ( [tripManager countUnSyncedTrips] )
-	{
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kUnsyncedTitle
-														message:kUnsyncedMessage
-													   delegate:nil
-											  cancelButtonTitle:nil
-											  otherButtonTitles:@"OK", nil];
-		alert.tag = 303;
-		[alert show];
-		[alert release];
-	}
-	else
-		NSLog(@"no zero distance or unsynced trips found");
+//  commenting out the alert for zero-distance trips and unuploaded trips. this was pretty annoying and somewhat unnecessary
+//	if ( [tripManager countZeroDistanceTrips] )
+//	{
+//		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kZeroDistanceTitle
+//														message:kZeroDistanceMessage
+//													   delegate:self
+//											  cancelButtonTitle:@"Cancel"
+//											  otherButtonTitles:@"Recalculate", nil];
+//		alert.tag = 202;
+//		[alert show];
+//		[alert release];
+//	}
+//	
+//	// check for countUnSyncedTrips
+//	else if ( [tripManager countUnSyncedTrips] )
+//	{
+//		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kUnsyncedTitle
+//														message:kUnsyncedMessage
+//													   delegate:nil
+//											  cancelButtonTitle:nil
+//											  otherButtonTitles:@"OK", nil];
+//		alert.tag = 303;
+//		[alert show];
+//		[alert release];
+//	}
+//	else
+//		NSLog(@"no zero distance or unsynced trips found");
 	
 	// no trip selection by default
 	selectedTrip = nil;
@@ -236,7 +237,7 @@
 	}
 	 */
 	
-	[self refreshTableView];
+//	[self refreshTableView];
 
 	[super viewWillAppear:animated];
 }

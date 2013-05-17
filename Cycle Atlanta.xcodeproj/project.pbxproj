@@ -67,6 +67,9 @@
 		8FD62A3C16B2253100B54A35 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8FD62A3B16B2253100B54A35 /* Default-568h@2x.png */; };
 		8FD696E61655E35800324E6E /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FD696E51655E35800324E6E /* MobileCoreServices.framework */; };
 		8FD696E91655E36600324E6E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FD696E81655E36600324E6E /* MediaPlayer.framework */; };
+		9D3056F017440BC00091B214 /* YLProgressBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3056EF17440AE80091B214 /* YLProgressBar.m */; };
+		9D3056F2174410EA0091B214 /* noise.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D3056F1174410EA0091B214 /* noise.png */; };
+		9D3056F5174412F40091B214 /* YLBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D3056F4174412EB0091B214 /* YLBackgroundView.m */; };
 		9D3281DD16EE46C8004C4AF2 /* noteAssetMapGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D3281D916EE46C8004C4AF2 /* noteAssetMapGlyph.png */; };
 		9D3281DE16EE46C8004C4AF2 /* noteAssetMapGlyph@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D3281DA16EE46C8004C4AF2 /* noteAssetMapGlyph@2x.png */; };
 		9D3281DF16EE46C8004C4AF2 /* noteIssueMapGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D3281DB16EE46C8004C4AF2 /* noteIssueMapGlyph.png */; };
@@ -271,6 +274,12 @@
 		8FD62A3B16B2253100B54A35 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		8FD696E51655E35800324E6E /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		8FD696E81655E36600324E6E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		9D3056ED17440AE80091B214 /* ARCMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARCMacro.h; sourceTree = "<group>"; };
+		9D3056EE17440AE80091B214 /* YLProgressBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLProgressBar.h; sourceTree = "<group>"; };
+		9D3056EF17440AE80091B214 /* YLProgressBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLProgressBar.m; sourceTree = "<group>"; };
+		9D3056F1174410EA0091B214 /* noise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noise.png; sourceTree = "<group>"; };
+		9D3056F3174412EB0091B214 /* YLBackgroundView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLBackgroundView.h; sourceTree = "<group>"; };
+		9D3056F4174412EB0091B214 /* YLBackgroundView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLBackgroundView.m; sourceTree = "<group>"; };
 		9D3281D916EE46C8004C4AF2 /* noteAssetMapGlyph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noteAssetMapGlyph.png; sourceTree = "<group>"; };
 		9D3281DA16EE46C8004C4AF2 /* noteAssetMapGlyph@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "noteAssetMapGlyph@2x.png"; sourceTree = "<group>"; };
 		9D3281DB16EE46C8004C4AF2 /* noteIssueMapGlyph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noteIssueMapGlyph.png; sourceTree = "<group>"; };
@@ -410,6 +419,11 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				9D3056ED17440AE80091B214 /* ARCMacro.h */,
+				9D3056F3174412EB0091B214 /* YLBackgroundView.h */,
+				9D3056F4174412EB0091B214 /* YLBackgroundView.m */,
+				9D3056EE17440AE80091B214 /* YLProgressBar.h */,
+				9D3056EF17440AE80091B214 /* YLProgressBar.m */,
 				64210F5F11350C8500415F1A /* AboutViewController.h */,
 				64210F6011350C8500415F1A /* AboutViewController.m */,
 				6433E5D3106D66EA00C27387 /* ActivityIndicatorDelegate.h */,
@@ -575,6 +589,7 @@
 		6411A16A106A05DE00C201F0 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				9D3056F1174410EA0091B214 /* noise.png */,
 				9D3CDAD016D6F7A900F423B8 /* lcdScreen.png */,
 				9D3CDAD116D6F7A900F423B8 /* lcdScreen@2x.png */,
 				9D3CDAD216D6F7A900F423B8 /* photoFrame.png */,
@@ -900,6 +915,7 @@
 				9D3281DF16EE46C8004C4AF2 /* noteIssueMapGlyph.png in Resources */,
 				9D3281E016EE46C8004C4AF2 /* noteIssueMapGlyph@2x.png in Resources */,
 				8F20B0AD16F0F08A00031712 /* TripDetailViewController.xib in Resources */,
+				9D3056F2174410EA0091B214 /* noise.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -910,6 +926,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D3056F5174412F40091B214 /* YLBackgroundView.m in Sources */,
+				9D3056F017440BC00091B214 /* YLProgressBar.m in Sources */,
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* CycleAtlantaAppDelegate.m in Sources */,
 				6411996210683D7500C201F0 /* RecordTripViewController.m in Sources */,

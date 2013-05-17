@@ -20,6 +20,8 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "YLProgressBar.h"
+#import "YLBackgroundView.h"
 
 @interface ProgressView : UIView{
     
@@ -27,10 +29,11 @@
 
 @property (nonatomic, retain) UILabel *progressLabel;
 @property (nonatomic, retain) UILabel *errorLabel;
-@property (nonatomic, retain) UIProgressView *progressBar;
+@property (nonatomic, retain) YLProgressBar *progressBar;
+@property (nonatomic, retain) YLBackgroundView *background;
 @property (nonatomic, retain) UIActivityIndicatorView *activityIndicator;
 
-+ (id)progressViewInView:(UIView *)aSuperview messageString:(NSString *)message;
++ (id)progressViewInView:(UIView *)aSuperview messageString:(NSString *)message progressTypePlain:(BOOL)progressTypePlain;
 - (void)setVisible:(BOOL)isBarVisible messageString:(NSString *)message;
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context;
 - (void)setErrorMessage:(NSString *)message;

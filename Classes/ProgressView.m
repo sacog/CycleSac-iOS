@@ -22,6 +22,8 @@
 #import "ProgressView.h"
 #import <QuartzCore/QuartzCore.h>
 #import <UIKit/UIKit.h>
+#import "YLProgressBar.h"
+#import "YLBackgroundView.h"
 
 #define DEFAULT_LABEL_WIDTH		260.
 #define DEFAULT_LABEL_HEIGHT	90.
@@ -29,17 +31,21 @@
 #define DEFAULT_BAR_HEIGHT      12.
 
 @implementation ProgressView
-@synthesize progressBar, progressLabel, errorLabel, activityIndicator;
+@synthesize background, progressBar, progressLabel, errorLabel, activityIndicator;
 
-+ (id) progressViewInView:(UIView *)aSuperview messageString:(NSString *)message
++ (id)progressViewInView:(UIView *)aSuperview messageString:(NSString *)message progressTypePlain:(BOOL)progressTypePlain
 {
     CGRect frame    = [[UIScreen mainScreen] bounds];
     ProgressView *progressView = [[[ProgressView alloc] initWithFrame:frame] autorelease];
+    
+    progressView.background = [[[YLBackgroundView alloc] initWithFrame:frame] autorelease];
+    [progressView addSubview:progressView.background];
 
     progressView.backgroundColor = [UIColor colorWithRed:((float) 0 / 255.0f)
                                                    green:((float) 0 / 255.0f)
                                                     blue:((float) 0 / 255.0f)
                                                    alpha:8.0f];
+       
     
     
     CGRect labelFrame = CGRectMake(30, 115, DEFAULT_LABEL_WIDTH, DEFAULT_LABEL_HEIGHT);
@@ -55,10 +61,13 @@
     [progressView addSubview:progressView.progressLabel];
     
     CGRect barFrame = CGRectMake(40, 225, DEFAULT_BAR_WIDTH, DEFAULT_BAR_HEIGHT);
-    progressView.progressBar = [[[UIProgressView alloc] initWithFrame:barFrame ] autorelease];
+    if(progressTypePlain)
+        progressView.progressBar = [[[UIProgressView alloc] initWithFrame:barFrame ] autorelease];
+    else
+        progressView.progressBar = [[[YLProgressBar alloc] initWithFrame:barFrame ] autorelease];
     progressView.progressBar.progressViewStyle = UIProgressViewStyleBar;
     progressView.progressBar.progressTintColor = [UIColor lightGrayColor];
-    progressView.progressBar.trackTintColor = [UIColor darkGrayColor];
+    progressView.progressBar.trackTintColor = [UIColor colorWithRed:0.0980f green:0.1137f blue:0.1294f alpha:1.0f];
     progressView.progressBar.hidden = TRUE;
 
     [progressView addSubview:progressView.progressBar];
@@ -77,6 +86,8 @@
     
     if (message==nil)
     {
+        //[background removeFromSuperview];
+        progressView.background.hidden = TRUE;
         progressView.backgroundColor =  [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default.png"]];
         progressView.errorLabel.hidden = TRUE;
         progressView.progressBar.hidden = TRUE;
@@ -125,6 +136,7 @@
 }
 
 - (void)setVisible:(BOOL)isBarVisible messageString:(NSString *)message{
+    self.background.hidden = FALSE;
     self.progressLabel.hidden = !isBarVisible;
     self.errorLabel.hidden = !isBarVisible;
     self.backgroundColor = [UIColor colorWithRed:((float) 0 / 255.0f)

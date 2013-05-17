@@ -143,7 +143,7 @@
 {
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     self.parent = parentView;
-    self.downloadingProgressView = [ProgressView progressViewInView:self.parent.parentViewController.view messageString:kFetchTitle];
+    self.downloadingProgressView = [ProgressView progressViewInView:self.parent.parentViewController.view messageString:kFetchTitle progressTypePlain:YES];
     [self.downloadingProgressView setVisible:TRUE messageString:kFetchTitle];
     [self.parent.parentViewController.view addSubview:downloadingProgressView];
 
