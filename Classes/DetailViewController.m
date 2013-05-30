@@ -65,7 +65,9 @@ static UIImage *shrinkImage(UIImage *original, CGSize size);
           UIImagePickerControllerSourceTypeCamera]) {
         addPicButton.hidden = YES;
     }
-    
+    //needed to center button title text on ios5 (attributed title does not work prior to ios6)
+    addPicButton.titleLabel.textAlignment = UITextAlignmentCenter;
+
     detailTextView.layer.borderWidth = 1.0;
     detailTextView.layer.borderColor = [[UIColor blackColor] CGColor];
     self.imageFrame = [UIImage imageWithContentsOfFile: [[NSBundle mainBundle] pathForResource:@"photoFrame" ofType:@"png"]];

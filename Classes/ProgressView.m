@@ -48,7 +48,16 @@
        
     
     
-    CGRect labelFrame = CGRectMake(30, 115, DEFAULT_LABEL_WIDTH, DEFAULT_LABEL_HEIGHT);
+    
+    CGRect labelFrame;
+    if ([UIScreen mainScreen].scale == 2.f && [[UIScreen mainScreen] bounds].size.height == 568.0f)
+    {
+        labelFrame = CGRectMake(30, 159, DEFAULT_LABEL_WIDTH, DEFAULT_LABEL_HEIGHT);
+    }
+    else
+    {
+        labelFrame = CGRectMake(30, 115, DEFAULT_LABEL_WIDTH, DEFAULT_LABEL_HEIGHT);
+    }
     progressView.progressLabel =[[[UILabel alloc] initWithFrame:labelFrame] autorelease];
     progressView.progressLabel.text = @"";
     progressView.progressLabel.textColor = [UIColor whiteColor];
@@ -60,7 +69,15 @@
     
     [progressView addSubview:progressView.progressLabel];
     
-    CGRect barFrame = CGRectMake(40, 225, DEFAULT_BAR_WIDTH, DEFAULT_BAR_HEIGHT);
+    CGRect barFrame;
+    if ([UIScreen mainScreen].scale == 2.f && [[UIScreen mainScreen] bounds].size.height == 568.0f)
+    {
+        barFrame = CGRectMake(40, 269, DEFAULT_BAR_WIDTH, DEFAULT_BAR_HEIGHT);
+    }
+    else
+    {
+        barFrame = CGRectMake(40, 225, DEFAULT_BAR_WIDTH, DEFAULT_BAR_HEIGHT);
+    }
     if(progressTypePlain)
         progressView.progressBar = [[[UIProgressView alloc] initWithFrame:barFrame ] autorelease];
     else
@@ -88,7 +105,15 @@
     {
         //[background removeFromSuperview];
         progressView.background.hidden = TRUE;
-        progressView.backgroundColor =  [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default.png"]];
+        if ([UIScreen mainScreen].scale == 2.f && [[UIScreen mainScreen] bounds].size.height == 568.0f)
+        {
+            progressView.backgroundColor =  [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default-568h.png"]];
+        }
+        else
+        {
+            progressView.backgroundColor =  [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default.png"]];
+        }
+        
         progressView.errorLabel.hidden = TRUE;
         progressView.progressBar.hidden = TRUE;
         progressView.progressLabel.hidden = TRUE;

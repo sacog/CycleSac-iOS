@@ -534,7 +534,7 @@
 	}
 }
 
-
+//TODO memory leak here... autorelease instead?
 - (NSDictionary *)newTripTimerUserInfo
 {
     return [[NSDictionary dictionaryWithObjectsAndKeys:[NSDate date], @"StartDate",

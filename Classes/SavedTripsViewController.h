@@ -72,6 +72,9 @@
 @property (nonatomic, retain) TripManager *tripManager;
 @property (nonatomic, retain) Trip *selectedTrip;
 
+@property (nonatomic, retain) UILabel *tripInProgressTime;
+@property (nonatomic, retain) NSTimer * timer;
+
 - (void)initTripManager:(TripManager*)manager;
 
 - (void)displayUploadedTripMap;
