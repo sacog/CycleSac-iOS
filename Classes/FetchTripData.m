@@ -22,7 +22,6 @@
 #import "FetchTripData.h"
 #import "constants.h"
 #import "CycleAtlantaAppDelegate.h"
-#import "PersonalInfoViewController.h"
 #import "Coord.h"
 #import "Trip.h"
 
@@ -34,7 +33,7 @@
 
 @implementation FetchTripData
 
-@synthesize managedObjectContext, receivedData, urlRequest, tripDict, downloadingProgressView, tripDownloadCount, tripsToLoad;
+@synthesize managedObjectContext, receivedData, urlRequest, tripDict, downloadingProgressView, downloadCount, tripsToLoad;
 
 - (id)init{
     self.managedObjectContext = [(CycleAtlantaAppDelegate *)[[UIApplication sharedApplication] delegate] managedObjectContext];
@@ -42,9 +41,9 @@
     return self;
 }
 
-- (id)initWithTripCountAndProgessView:(int) tripCount progressView:(ProgressView*) progressView{
+- (id)initWithDataCountAndProgessView:(int) dataCount progressView:(ProgressView*) progressView{
     self.downloadingProgressView = progressView;
-    self.tripDownloadCount = tripCount;
+    self.downloadCount = dataCount;
     return [self init];
 }
 
@@ -179,7 +178,7 @@
 
 - (void)fetchWithTrips:(NSMutableArray*) trips
 {
-    [self.downloadingProgressView updateProgress:1.0f/[[NSNumber numberWithInt:tripDownloadCount] floatValue] ];
+    [self.downloadingProgressView updateProgress:1.0f/[[NSNumber numberWithInt:downloadCount] floatValue] ];
     self.tripsToLoad = trips;
     NSDictionary* trip = [[self.tripsToLoad lastObject] retain];
     [self.tripsToLoad removeLastObject];
@@ -300,7 +299,7 @@
     [receivedData release];
     
     [self.downloadingProgressView setErrorMessage:kFetchError];
-    [self.downloadingProgressView updateProgress:1.0f/[[NSNumber numberWithInt:self.tripDownloadCount] floatValue] ];
+    [self.downloadingProgressView updateProgress:1.0f/[[NSNumber numberWithInt:self.downloadCount] floatValue] ];
     [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 
     // inform the user

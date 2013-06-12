@@ -23,6 +23,7 @@
 #import "ProgressView.h"
 #import "Trip.h"
 #import "User.h"
+#import "Note.h"
 
 @class User;
 @class Trip;

@@ -21,30 +21,26 @@
 #import <Foundation/Foundation.h>
 #import "ActivityIndicatorDelegate.h"
 #import "ProgressView.h"
-#import "Trip.h"
+#import "Note.h"
 #import "User.h"
 
 @class User;
-@class Trip;
+@class Note;
 
-@interface FetchTripData: NSObject
+@interface FetchNoteData: NSObject
 {
     NSMutableURLRequest *urlRequest;
     NSManagedObjectContext *managedObjectContext;
 	NSMutableData *receivedData;
-    NSDictionary *tripDict;
+//    NSDictionary *noteDict;
 }
 
-@property (nonatomic, retain) NSDictionary *tripDict;
-@property (nonatomic, retain) NSMutableURLRequest *urlRequest;
+
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, retain) NSMutableData *receivedData;
 @property (nonatomic, retain) ProgressView *downloadingProgressView;
 @property (nonatomic) int *downloadCount;
-@property (nonatomic, retain) NSMutableArray *tripsToLoad;
 
-- (void)fetchTripData:(NSDictionary*) tripToLoad;
+- (void)fetchWithNotes:(NSMutableArray*) notes;
 - (id)initWithDataCountAndProgessView:(int) dataCount progressView:(ProgressView*) progressView;
-- (void)fetchWithTrips:(NSMutableArray*) trips;
 
 @end

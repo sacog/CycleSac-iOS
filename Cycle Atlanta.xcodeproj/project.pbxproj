@@ -176,6 +176,7 @@
 		9D8A1BAF171B03E000509FBD /* FetchUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D8A1BAE171B03E000509FBD /* FetchUser.m */; };
 		9D8A1BB2171B03E900509FBD /* FetchTripData.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D8A1BB1171B03E900509FBD /* FetchTripData.m */; };
 		9DD65FBB16FEA3CC00F2EB63 /* ImageResize.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DD65FBA16FEA3CC00F2EB63 /* ImageResize.m */; };
+		9DF4254D17590D820030759A /* FetchNoteData.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DF4254C17590D820030759A /* FetchNoteData.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -391,6 +392,8 @@
 		9D8A1BB1171B03E900509FBD /* FetchTripData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FetchTripData.m; sourceTree = "<group>"; };
 		9DD65FB916FEA3CC00F2EB63 /* ImageResize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageResize.h; sourceTree = "<group>"; };
 		9DD65FBA16FEA3CC00F2EB63 /* ImageResize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageResize.m; sourceTree = "<group>"; };
+		9DF4254B17590D820030759A /* FetchNoteData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FetchNoteData.h; sourceTree = "<group>"; };
+		9DF4254C17590D820030759A /* FetchNoteData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FetchNoteData.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -433,6 +436,8 @@
 				8F1B1D3E164B94C60022B776 /* DetailViewController.m */,
 				9D8A1BAD171B03E000509FBD /* FetchUser.h */,
 				9D8A1BAE171B03E000509FBD /* FetchUser.m */,
+				9DF4254B17590D820030759A /* FetchNoteData.h */,
+				9DF4254C17590D820030759A /* FetchNoteData.m */,
 				9D8A1BB0171B03E900509FBD /* FetchTripData.h */,
 				9D8A1BB1171B03E900509FBD /* FetchTripData.m */,
 				9DD65FB916FEA3CC00F2EB63 /* ImageResize.h */,
@@ -962,6 +967,7 @@
 				9D8A1BAF171B03E000509FBD /* FetchUser.m in Sources */,
 				9D8A1BB2171B03E900509FBD /* FetchTripData.m in Sources */,
 				9D4B4EE61722B8B0005A4CDD /* ProgressView.m in Sources */,
+				9DF4254D17590D820030759A /* FetchNoteData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

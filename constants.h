@@ -66,7 +66,7 @@
 #define kBatteryTitle		@"Battery Low"
 #define kRetryTitle			@"Retry Upload?"
 #define	kSavingTitle		@"Uploading your trip"
-#define kFetchTitle         @"Downloading your saved trips. \n\nThis may take a minute..."
+#define kFetchTitle         @"Downloading your data. \n\nThis may take a minute..."
 #define kFetchError         @"There was a problem downloading some of your trips. Please try again later."
 #define kSavingNoteTitle    @"Uploading your note"
 #define kInitMessage        @"Upgrading internal database. \n\nThis may take a minute..."
@@ -98,7 +98,7 @@
 #define kInfoURL			@"http://cycleatlanta.org/CycleAtlantaInfo"
 #define kInstructionsURL	@"http://cycleatlanta.org/instructions-v2/"
 
-#define kSaveURL			@"http://cycleatlanta.org/post_dev/"
+#define kSaveURL			@"http://cycleatlanta.org/post/"
 #define kFetchURL			@"http://cycleatlanta.org/fetch/"
 
 #define kTripNotesPlaceholder	@"Comments"

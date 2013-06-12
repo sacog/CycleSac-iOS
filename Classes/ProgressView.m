@@ -38,8 +38,9 @@
     CGRect frame    = [[UIScreen mainScreen] bounds];
     ProgressView *progressView = [[[ProgressView alloc] initWithFrame:frame] autorelease];
     
-    progressView.background = [[[YLBackgroundView alloc] initWithFrame:frame] autorelease];
+    progressView.background = [[YLBackgroundView alloc] initWithFrame:frame];
     [progressView addSubview:progressView.background];
+    [progressView.background release];
 
     progressView.backgroundColor = [UIColor colorWithRed:((float) 0 / 255.0f)
                                                    green:((float) 0 / 255.0f)

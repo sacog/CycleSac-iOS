@@ -20,6 +20,7 @@
 
 #import "FetchUser.h"
 #import "FetchTripData.h"
+#import "FetchNoteData.h"
 #import "constants.h"
 #import "CycleAtlantaAppDelegate.h"
 #import "PersonalInfoViewController.h"
@@ -90,22 +91,31 @@
 	[request release];
 }
 
--(void)loadTrip:(NSDictionary *)tripsDict{
+-(void)loadTripAndNotes:(NSDictionary *)tripsDict notes:(NSDictionary *)notesDict{
     NSFetchRequest		*request = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Trip" inManagedObjectContext:self.managedObjectContext];
-	[request setEntity:entity];
-	NSError *error;
+    NSError *error;
+	//get stored trips
+    NSEntityDescription *tripEntity = [NSEntityDescription entityForName:@"Trip" inManagedObjectContext:self.managedObjectContext];
+	[request setEntity:tripEntity];
 	NSMutableArray *storedTrips = [[self.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
+    //get stored notes
+    NSEntityDescription *noteEntity = [NSEntityDescription entityForName:@"Note" inManagedObjectContext:self.managedObjectContext];
+    [request setEntity:noteEntity];
+    NSMutableArray *storedNotes = [[self.managedObjectContext executeFetchRequest:request error:&error] mutableCopy];
+    
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     [dateFormat setTimeZone:[NSTimeZone timeZoneWithName:@"PST"]];
     NSString *tempDateString;
     
+    BOOL noteNotFound = true;
     BOOL tripNotFound = true;
     BOOL noNewData = true;
     NSMutableArray *tripsToLoad = [[NSMutableArray alloc] init];
+    NSMutableArray *notesToLoad = [[NSMutableArray alloc] init];
     NSLog(@"Total number of trips: %d", [tripsDict count]);
-
+    
+    //see if any fetched trips are already saved
     for(NSDictionary *newTrip in tripsDict){
         tripNotFound = true;
         for(Trip *oldTrip in storedTrips){
@@ -122,19 +132,47 @@
         }
     }
     
+    NSDateFormatter *dateFormatNote = [[NSDateFormatter alloc] init];
+    [dateFormatNote setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    [dateFormatNote setTimeZone:[NSTimeZone timeZoneWithName:@"EST"]];
+    //see if any fetched notes are already saved
+    for(NSDictionary *newNote in notesDict){
+        noteNotFound = true;
+        for(Note *oldNote in storedNotes){
+            tempDateString=[dateFormatNote stringFromDate:oldNote.recorded];
+            if( [tempDateString isEqualToString:[newNote objectForKey:@"recorded"]]){
+                NSLog(@"note  found");
+                noteNotFound = false;
+                break;
+            }
+        }
+        if(noteNotFound){
+            noNewData = false;
+            [notesToLoad addObject:newNote];
+        }
+    }
+    
     if(noNewData){
-        [self.downloadingProgressView loadingComplete:@"No more trips to download." delayInterval:.5];
+        [self.downloadingProgressView loadingComplete:@"Nothing to download." delayInterval:.5];
     }
     else{
         [self.downloadingProgressView setVisible:TRUE messageString:kFetchTitle];
         NSLog(@"Number of trips to download: %d", [tripsToLoad count]);
-        FetchTripData *fetchTrip = [[[FetchTripData alloc] initWithTripCountAndProgessView:[tripsToLoad count] progressView:self.downloadingProgressView] autorelease];
+        NSLog(@"Number of notes to downlaod: %d", [notesToLoad count]);
+        //get the note data
+        FetchNoteData *fetchNote = [[[FetchNoteData alloc] initWithDataCountAndProgessView:[tripsToLoad count]+[notesToLoad count] progressView:self.downloadingProgressView] autorelease];
+        [fetchNote fetchWithNotes:notesToLoad];
+        //get the trip data
+        FetchTripData *fetchTrip = [[[FetchTripData alloc] initWithDataCountAndProgessView:[tripsToLoad count]+[notesToLoad count] progressView:self.downloadingProgressView] autorelease];
         [fetchTrip fetchWithTrips:tripsToLoad];
     }
     
     [request release];
     [storedTrips release];
+    [storedNotes release];
     [dateFormat release];
+    [dateFormatNote release];
+    [notesToLoad release];
     [tripsToLoad release];
 }
 
@@ -149,12 +187,12 @@
 
     //TODO: reset to delegate.uniqueIDHash for production.
     CycleAtlantaAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
-    self.deviceUniqueIdHash = delegate.uniqueIDHash;//production @"2ecc2e36c3e1a512d349f9b407fb281e";//me  @"3cab3ca8964ca45b3e24fa7aee4d5e1f";//test-user
+    self.deviceUniqueIdHash = delegate.uniqueIDHash; 
     NSLog(@"start downloading");
     NSLog(@"DeviceUniqueIdHash: %@", deviceUniqueIdHash);
     
     NSDictionary *fetchDict = [NSDictionary dictionaryWithObjectsAndKeys:
-                               @"get_user_and_trips", @"t", deviceUniqueIdHash, @"d", nil];
+                               @"get_user_and_data", @"t", deviceUniqueIdHash, @"d", nil];
     
     NSMutableString *postBody = [NSMutableString string];
     NSString *sep = @"";
@@ -282,15 +320,19 @@
     
     NSDictionary *userDict = [JSON objectForKey:@"user"];
     NSDictionary *tripsDict = [JSON objectForKey:@"trips"];
+    NSDictionary *notesDict = [JSON objectForKey:@"notes"];
     
     //Debugging messages
 //    NSData *JsonDataUser = [[NSData alloc] initWithData:[NSJSONSerialization dataWithJSONObject:userDict options:0 error:&error]];
 //    NSLog(@"User Data: \n%@", [[[NSString alloc] initWithData:JsonDataUser encoding:NSUTF8StringEncoding] autorelease] );
 //    NSData *JsonDataTrips = [[NSData alloc] initWithData:[NSJSONSerialization dataWithJSONObject:tripsDict options:0 error:&error]];
 //    NSLog(@"Trip Data: \n%@", [[[NSString alloc] initWithData:JsonDataTrips encoding:NSUTF8StringEncoding] autorelease] );
+//    NSData *JsonDataNotes = [[NSData alloc] initWithData:[NSJSONSerialization dataWithJSONObject:notesDict options:0 error:&error]];
+//    NSLog(@"Note Data: \n%@", [[[NSString alloc] initWithData:JsonDataNotes encoding:NSUTF8StringEncoding] autorelease] );
+
     
     [self loadUser:userDict];
-    [self loadTrip:tripsDict];
+    [self loadTripAndNotes:tripsDict notes:notesDict];
     
     // release the connection, and the data object
     [connection release];

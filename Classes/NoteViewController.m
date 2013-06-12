@@ -93,12 +93,22 @@
         infoView.alpha = 1.0;
         infoView.backgroundColor = [UIColor blackColor];
         
-        UIScrollView *scrollView = [[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 427)] autorelease];
+        UIScrollView *scrollView;
+        UIImageViewResizable *noteImageResize;
         
-        UIImageViewResizable *noteImageResize = [[[UIImageViewResizable alloc] initWithFrame:CGRectMake(0, 0, 320, 427)] autorelease];
+        if ([UIScreen mainScreen].scale == 2.f && [[UIScreen mainScreen] bounds].size.height == 568.0f)
+        {
+            scrollView = [[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 500)] autorelease];
+            noteImageResize = [[[UIImageViewResizable alloc] initWithFrame:CGRectMake(0, 0, 320, 500)] autorelease];
+        }
+        else
+        {
+            scrollView = [[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 413)] autorelease];
+            noteImageResize = [[[UIImageViewResizable alloc] initWithFrame:CGRectMake(0, 0, 320, 413)] autorelease];
+        }
         
         noteImageResize.image= [UIImage imageWithData:note.image_data];
-        noteImageResize.contentMode = UIViewContentModeScaleAspectFit;
+        noteImageResize.contentMode = UIViewContentModeScaleAspectFill;
         
 //        [noteImageResize applyGestures];
         
@@ -140,10 +150,22 @@
         infoView.alpha = 1.0;
         infoView.backgroundColor = [UIColor blackColor];
         
-        UIScrollView *scrollView = [[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 427)] autorelease];
-        UIImageView *noteImage   = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 427)] autorelease];
+        UIScrollView *scrollView;
+        UIImageView *noteImage;
+        if ([UIScreen mainScreen].scale == 2.f && [[UIScreen mainScreen] bounds].size.height == 568.0f)
+        {
+            scrollView = [[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 500)] autorelease];
+            noteImage   = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 500)] autorelease];
+        }
+        else
+        {
+            scrollView = [[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 413)] autorelease];
+            noteImage   = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 413)] autorelease];
+        }
+        
         noteImage.image= [UIImage imageWithData:note.image_data];
         noteImage.contentMode = UIViewContentModeScaleAspectFill;
+        //noteImage.contentMode = UIViewContentModeScaleAspectFit;
         
         [scrollView addSubview:noteImage];
         
