@@ -62,6 +62,7 @@
 #import "DetailViewController.h"
 #import "NoteManager.h"
 #import <CoreData/NSMappingModel.h>
+#import "TestFlight.h"
 
 
 @implementation CycleAtlantaAppDelegate
@@ -78,6 +79,9 @@
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application
 {
+    // set up TestFlight
+    [TestFlight takeOff:@"6813ab1c-bec1-422d-b6fa-ab7abd8b96c5"];
+    
 	// disable screen lock
 	//[UIApplication sharedApplication].idleTimerDisabled = NO;
 	//[UIApplication sharedApplication].idleTimerDisabled = YES;

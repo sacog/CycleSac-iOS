@@ -12,6 +12,9 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		28D801B40F44B63D00FB423F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D801B30F44B63D00FB423F /* CoreData.framework */; };
+		466FB7DE188B740100F980B5 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 466FB7D8188B740100F980B5 /* libTestFlight.a */; };
+		466FB7DF188B740100F980B5 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 466FB7D9188B740100F980B5 /* README.md */; };
+		466FB7E0188B740100F980B5 /* release_notes.md in Resources */ = {isa = PBXBuildFile; fileRef = 466FB7DA188B740100F980B5 /* release_notes.md */; };
 		6411996210683D7500C201F0 /* RecordTripViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6411996110683D7500C201F0 /* RecordTripViewController.m */; };
 		6411996D10683DCD00C201F0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6411996C10683DCD00C201F0 /* CoreLocation.framework */; };
 		641199B2106851AA00C201F0 /* SavedTripsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 641199B1106851AA00C201F0 /* SavedTripsViewController.m */; };
@@ -182,6 +185,12 @@
 		28D801B30F44B63D00FB423F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Cycle Philly_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Cycle Philly_Prefix.pch"; sourceTree = "<group>"; };
+		466FB7D8188B740100F980B5 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
+		466FB7D9188B740100F980B5 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		466FB7DA188B740100F980B5 /* release_notes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = release_notes.md; sourceTree = "<group>"; };
+		466FB7DB188B740100F980B5 /* TestFlight+AsyncLogging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+AsyncLogging.h"; sourceTree = "<group>"; };
+		466FB7DC188B740100F980B5 /* TestFlight+ManualSessions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TestFlight+ManualSessions.h"; sourceTree = "<group>"; };
+		466FB7DD188B740100F980B5 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		6411996010683D7500C201F0 /* RecordTripViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RecordTripViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		6411996110683D7500C201F0 /* RecordTripViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RecordTripViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		6411996C10683DCD00C201F0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -394,6 +403,7 @@
 				28D801B40F44B63D00FB423F /* CoreData.framework in Frameworks */,
 				6411996D10683DCD00C201F0 /* CoreLocation.framework in Frameworks */,
 				64F823C6106AB42B001413F8 /* Security.framework in Frameworks */,
+				466FB7DE188B740100F980B5 /* libTestFlight.a in Frameworks */,
 				642F151C1071D9DD0050BCB9 /* MapKit.framework in Frameworks */,
 				642647FD107435A200E43DEF /* AudioToolbox.framework in Frameworks */,
 				64ED1621112F364200E617E1 /* QuartzCore.framework in Frameworks */,
@@ -469,6 +479,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				466FB7D7188B740100F980B5 /* TestFlightSDK2.1.4 */,
 				DA9A6F1A1832C7500038A071 /* appIcon@Retina.png */,
 				DA9A6F191832C70D0038A071 /* appIcon58x58.png */,
 				DA9A6F181832C6C40038A071 /* appIcon29x29.png */,
@@ -537,6 +548,19 @@
 				64ED1620112F364200E617E1 /* QuartzCore.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		466FB7D7188B740100F980B5 /* TestFlightSDK2.1.4 */ = {
+			isa = PBXGroup;
+			children = (
+				466FB7D8188B740100F980B5 /* libTestFlight.a */,
+				466FB7D9188B740100F980B5 /* README.md */,
+				466FB7DA188B740100F980B5 /* release_notes.md */,
+				466FB7DB188B740100F980B5 /* TestFlight+AsyncLogging.h */,
+				466FB7DC188B740100F980B5 /* TestFlight+ManualSessions.h */,
+				466FB7DD188B740100F980B5 /* TestFlight.h */,
+			);
+			path = TestFlightSDK2.1.4;
 			sourceTree = "<group>";
 		};
 		6411992B1068371B00C201F0 /* Data Model */ = {
@@ -798,6 +822,7 @@
 				64C8D40311386B26008BCADE /* RecordMap.xib in Resources */,
 				9D4647B71604EBF400A4F9CB /* blueButton.png in Resources */,
 				9D4647B81604EBF400A4F9CB /* blueButton@2x.png in Resources */,
+				466FB7E0188B740100F980B5 /* release_notes.md in Resources */,
 				9D4647B91604EBF400A4F9CB /* blueButtonHighlight.png in Resources */,
 				9D4647BA1604EBF400A4F9CB /* blueButtonHighlight@2x.png in Resources */,
 				9D4647BB1604EBF400A4F9CB /* greenButton.png in Resources */,
@@ -844,6 +869,7 @@
 				9D4648141604EF2600A4F9CB /* failedUpload.png in Resources */,
 				9D4648151604EF2600A4F9CB /* failedUpload@2x.png in Resources */,
 				9D4648161604EF2600A4F9CB /* other.png in Resources */,
+				466FB7DF188B740100F980B5 /* README.md in Resources */,
 				9D4648171604EF2600A4F9CB /* other@2x.png in Resources */,
 				9D4648181604EF2600A4F9CB /* school.png in Resources */,
 				9D4648191604EF2600A4F9CB /* school@2x.png in Resources */,
@@ -961,6 +987,10 @@
 				GCC_PREFIX_HEADER = "Cycle Philly_Prefix.pch";
 				INFOPLIST_FILE = "Cycle Philly-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/kat/Cycle-Philly-iOS/TestFlightSDK2.1.4",
+				);
 				PRODUCT_NAME = "Cycle Philly";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -979,6 +1009,10 @@
 				GCC_PREFIX_HEADER = "Cycle Philly_Prefix.pch";
 				INFOPLIST_FILE = "Cycle Philly-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/kat/Cycle-Philly-iOS/TestFlightSDK2.1.4",
+				);
 				PRODUCT_NAME = "Cycle Philly";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -989,12 +1023,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Christopher Le Dantec (PKMEYDVVL2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7682DFBF-AE70-4C0B-AED0-DC1BBCD2D87F";
+				PROVISIONING_PROFILE = "B45186F7-C438-44AC-AD9F-7CF6371BD9D9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B45186F7-C438-44AC-AD9F-7CF6371BD9D9";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = iphoneos;
+				VERSIONING_SYSTEM = "";
 			};
 			name = Distribution;
 		};
@@ -1010,6 +1047,10 @@
 				GCC_PREFIX_HEADER = "Cycle Philly_Prefix.pch";
 				INFOPLIST_FILE = "Cycle Philly-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/kat/Cycle-Philly-iOS/TestFlightSDK2.1.4",
+				);
 				PRODUCT_NAME = "Cycle Philly";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -1022,12 +1063,15 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_ENTITLEMENTS = dist.plist;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Christopher Le Dantec (PKMEYDVVL2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7682DFBF-AE70-4C0B-AED0-DC1BBCD2D87F";
+				PROVISIONING_PROFILE = "B45186F7-C438-44AC-AD9F-7CF6371BD9D9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B45186F7-C438-44AC-AD9F-7CF6371BD9D9";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = iphoneos;
+				VERSIONING_SYSTEM = "";
 			};
 			name = Beta;
 		};
@@ -1046,6 +1090,10 @@
 				GCC_PREFIX_HEADER = "Cycle Philly_Prefix.pch";
 				INFOPLIST_FILE = "Cycle Philly-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/kat/Cycle-Philly-iOS/TestFlightSDK2.1.4",
+				);
 				PRODUCT_NAME = "Cycle Philly";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -1056,12 +1104,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Christopher Le Dantec (PKMEYDVVL2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7682DFBF-AE70-4C0B-AED0-DC1BBCD2D87F";
+				PROVISIONING_PROFILE = "B45186F7-C438-44AC-AD9F-7CF6371BD9D9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B45186F7-C438-44AC-AD9F-7CF6371BD9D9";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = iphoneos;
+				VERSIONING_SYSTEM = "";
 			};
 			name = "Release Beta";
 		};
@@ -1078,6 +1129,10 @@
 				GCC_PREFIX_HEADER = "Cycle Philly_Prefix.pch";
 				INFOPLIST_FILE = "Cycle Philly-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/kat/Cycle-Philly-iOS/TestFlightSDK2.1.4",
+				);
 				PRODUCT_NAME = "Cycle Philly";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -1088,12 +1143,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Christopher Le Dantec (PKMEYDVVL2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7682DFBF-AE70-4C0B-AED0-DC1BBCD2D87F";
+				PROVISIONING_PROFILE = "B45186F7-C438-44AC-AD9F-7CF6371BD9D9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B45186F7-C438-44AC-AD9F-7CF6371BD9D9";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = iphoneos;
+				VERSIONING_SYSTEM = "";
 			};
 			name = Debug;
 		};
@@ -1101,12 +1159,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Christopher Le Dantec (PKMEYDVVL2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7682DFBF-AE70-4C0B-AED0-DC1BBCD2D87F";
+				PROVISIONING_PROFILE = "B45186F7-C438-44AC-AD9F-7CF6371BD9D9";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B45186F7-C438-44AC-AD9F-7CF6371BD9D9";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SDKROOT = iphoneos;
+				VERSIONING_SYSTEM = "";
 			};
 			name = Release;
 		};

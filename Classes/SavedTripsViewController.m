@@ -57,6 +57,7 @@
 #import "Trip.h"
 #import "TripManager.h"
 #import "TripPurposeDelegate.h"
+#import "testFlight.h"
 
 
 #define kAccessoryViewX	282.0
@@ -715,6 +716,8 @@
 - (void)promptToConfirmPurpose
 {
 	NSLog(@"promptToConfirmPurpose");
+    
+    [TestFlight passCheckpoint:@"Prompting for trip purpose to retry upload"];
 	   
     // Trip Purpose
     NSLog(@"INIT + PUSH");
@@ -779,6 +782,8 @@
 - (void)displayUploadedTripMap
 {
     Trip *trip = tripManager.trip;
+    
+    [TestFlight passCheckpoint:@"Displaying uploaded trip"];
     
     // load map view of saved trip
     MapViewController *mvc = [[MapViewController alloc] initWithTrip:trip];

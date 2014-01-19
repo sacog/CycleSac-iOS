@@ -51,6 +51,7 @@
 #import "CycleAtlantaAppDelegate.h"
 #import "SaveRequest.h"
 #import "ZipUtil.h"
+#import "TestFlight.h"
 
 @implementation SaveRequest
 
@@ -146,6 +147,8 @@
             
             NSLog(@"Initializing HTTP POST request to %@ of size %d, orig size %d",
                   kSaveURL, [postBodyDataZipped length], [originalData length]);
+            
+            [TestFlight passCheckpoint:@"Going to POST to server"];
             
             [request setValue:[NSString stringWithFormat:@"%d", [postBodyDataZipped length]] forHTTPHeaderField:@"Content-Length"];
             //set the POST body

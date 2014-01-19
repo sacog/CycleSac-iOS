@@ -56,6 +56,7 @@
 #import "User.h"
 #import "LoadingView.h"
 #import "RecordTripViewController.h"
+#import "TestFlight.h"
 
 // use this epsilon for both real-time and post-processing distance calculations
 #define kEpsilonAccuracy		100.0
@@ -623,6 +624,8 @@
 {
     //delete trip from trip manager
     NSLog(@"discardTrip");
+    
+    [TestFlight passCheckpoint:@"Discarding a recorded trip (not saving it)."];
 	
 	// delete trip instance
     [managedObjectContext deleteObject:trip];
@@ -694,6 +697,8 @@
 		if ( success )
 		{
 			[trip setUploaded:[NSDate date]];
+            
+            [TestFlight passCheckpoint:@"Successfully uploaded a trip"];
 			
 			NSError *error;
 			if (![managedObjectContext save:&error]) {
@@ -703,6 +708,8 @@
             
             [uploadingView loadingComplete:kSuccessTitle delayInterval:.7];
 		} else {
+
+            [TestFlight passCheckpoint:@"Failed to upload a trip"];
 
             [uploadingView loadingComplete:kServerError delayInterval:1.5];
         }
@@ -734,6 +741,8 @@
     NSLog(@"Connection failed! Error - %@ %@",
           [error localizedDescription],
           [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
+    
+    [TestFlight passCheckpoint:@"Connection failed for trip upload"];
     
 
 //	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:kConnectionError
@@ -804,6 +813,8 @@
 - (void)createTrip
 {
 	NSLog(@"createTrip");
+    
+    [TestFlight passCheckpoint:@"Starting a new trip"];
 	
 	// Create and configure a new instance of the Trip entity
 	trip = (Trip *)[[NSEntityDescription insertNewObjectForEntityForName:@"Trip" 
