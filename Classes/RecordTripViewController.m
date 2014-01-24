@@ -59,6 +59,7 @@
 #import "NoteManager.h"
 #import "Trip.h"
 #import "User.h"
+#import "TestFlight.h"
 
 //TODO: Fix incomplete implementation
 @implementation RecordTripViewController
@@ -187,6 +188,7 @@
 				NSLog(@"found saved user info");
 				self.userInfoSaved = YES;
 				response = YES;
+                [TestFlight passCheckpoint:@"Found saved user info."];
 			}
 			else
 				NSLog(@"no saved user info");
@@ -407,6 +409,7 @@
 
                [self resetRecordingInProgress];
                
+               [TestFlight passCheckpoint:@"Finished discarding a recorded trip."];
                break;
            }
         case 1:{

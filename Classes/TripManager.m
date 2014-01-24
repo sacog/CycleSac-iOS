@@ -623,9 +623,9 @@
 -(void)discardTrip
 {
     //delete trip from trip manager
-    NSLog(@"discardTrip");
+    //NSLog(@"discardTrip");
     
-    [TestFlight passCheckpoint:@"Discarding a recorded trip (not saving it)."];
+    //[TestFlight passCheckpoint:@"Discarding a recorded trip (not saving it)."];
 	
 	// delete trip instance
     [managedObjectContext deleteObject:trip];
