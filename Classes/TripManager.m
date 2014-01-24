@@ -628,7 +628,7 @@
     //[TestFlight passCheckpoint:@"Discarding a recorded trip (not saving it)."];
 	
 	// delete trip instance
-    [managedObjectContext deleteObject:trip];
+    if (trip != nil) [managedObjectContext deleteObject:trip];
     
     NSError *error;
 	if (![managedObjectContext save:&error]) {
