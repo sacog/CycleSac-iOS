@@ -5,36 +5,36 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>8CDC3EE8-E2D7-4BF6-B686-6B14D1EB681E</string>
+	<string>4C1E4C0D-89F7-4C0C-9011-94350CB48364</string>
 	<key>IDESourceControlProjectName</key>
 	<string>Cycle Philly</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>71F631D7-15F7-4B2D-8E42-853890540A56</key>
-		<string>https://github.com/PhillyOpen/Cycle-Philly-iOS.git</string>
+		<key>78752411-F9B1-4D2D-BB3F-152D1D765A79</key>
+		<string>https://github.com/sacog/CycleSac-iOS.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>Cycle Philly.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>71F631D7-15F7-4B2D-8E42-853890540A56</key>
+		<key>78752411-F9B1-4D2D-BB3F-152D1D765A79</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/PhillyOpen/Cycle-Philly-iOS.git</string>
+	<string>https://github.com/sacog/CycleSac-iOS.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>71F631D7-15F7-4B2D-8E42-853890540A56</string>
+	<string>78752411-F9B1-4D2D-BB3F-152D1D765A79</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>71F631D7-15F7-4B2D-8E42-853890540A56</string>
+			<string>78752411-F9B1-4D2D-BB3F-152D1D765A79</string>
 			<key>IDESourceControlWCCName</key>
-			<string>Cycle-Philly-iOS</string>
+			<string>CycleSac-iOS</string>
 		</dict>
 	</array>
 </dict>

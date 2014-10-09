@@ -157,9 +157,9 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
 	loadingView.loadingLabel.text = message;
 	loadingView.loadingLabel.textColor = [UIColor whiteColor];
     loadingView.loadingLabel.numberOfLines = 3;
-    loadingView.loadingLabel.lineBreakMode = UILineBreakModeWordWrap;
+    loadingView.loadingLabel.lineBreakMode = NSLineBreakByWordWrapping;
 	loadingView.loadingLabel.backgroundColor = [UIColor clearColor];
-	loadingView.loadingLabel.textAlignment = UITextAlignmentCenter;
+	loadingView.loadingLabel.textAlignment = NSTextAlignmentCenter;
 	loadingView.loadingLabel.font = [UIFont boldSystemFontOfSize:[UIFont labelFontSize]];
 	loadingView.loadingLabel.autoresizingMask =
 		UIViewAutoresizingFlexibleLeftMargin |
@@ -212,8 +212,12 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
 //	labelFrame.origin.x = floor(0.5 * (self.frame.size.width - DEFAULT_LABEL_WIDTH));
 //	labelFrame.origin.y = floor(0.5 * (self.frame.size.height - totalHeight));
     
-    CGSize maxLabelSize = CGSizeMake(DEFAULT_LABEL_WIDTH, 400);
-    CGSize labelSize = [self.loadingLabel.text sizeWithFont:self.loadingLabel.font constrainedToSize:maxLabelSize lineBreakMode:self.loadingLabel.lineBreakMode];
+    //I would like to test this on an actual device to ensure the sizing is right before removing these comments.
+    //CGSize maxLabelSize = CGSizeMake(DEFAULT_LABEL_WIDTH, 400);
+    //CGSize labelSize = [self.loadingLabel.text sizeWithFont:self.loadingLabel.font constrainedToSize:maxLabelSize lineBreakMode:self.loadingLabel.lineBreakMode];
+    
+    CGSize labelSize = [self.loadingLabel.text sizeWithAttributes:
+                   @{NSFontAttributeName: self.loadingLabel.font}];
     
     CGRect newFrame = self.loadingLabel.frame;
     newFrame.size.height = labelSize.height;

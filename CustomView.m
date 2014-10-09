@@ -86,13 +86,29 @@ const CGFloat kViewHeight = 44;
 	
 	yCoord = (self.bounds.size.height - MAIN_FONT_SIZE) / 2;
 	point = CGPointMake(10.0 + self.image.size.width + 10.0, yCoord);
-	[self.title drawAtPoint:point
+    
+    // Create text attributes
+    NSDictionary *textAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize:MAIN_FONT_SIZE]};
+    
+    // Create string drawing context
+    NSStringDrawingContext *drawingContext = [[NSStringDrawingContext alloc] init];
+    drawingContext.minimumScaleFactor = 0.5; // Half the font size
+    
+    CGRect drawRect = CGRectMake(0.0, 0.0, 200.0, 100.0);
+    [self.title drawWithRect:drawRect
+                 options:NSStringDrawingUsesLineFragmentOrigin
+              attributes:textAttributes
+                 context:drawingContext];
+    
+    /* Keeping this code around, as I'd like to test my changes on an actual device-sized screen to ensure it works.
+    [self.title drawAtPoint:point
 					forWidth:self.bounds.size.width
 					withFont:[UIFont systemFontOfSize:MAIN_FONT_SIZE]
 					minFontSize:MIN_MAIN_FONT_SIZE
 					actualFontSize:NULL
-					lineBreakMode:UILineBreakModeTailTruncation
-					baselineAdjustment:UIBaselineAdjustmentAlignBaselines];
+					lineBreakMode:NSLineBreakByTruncatingTail
+					baselineAdjustment:UIBaselineAdjustmentAlignBaselines];*/
+    
 }
 
 - (void)dealloc
