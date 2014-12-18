@@ -416,7 +416,6 @@
 			[userDict setValue:user.gender          forKey:@"gender"];
 			[userDict setValue:user.homeZIP         forKey:@"homeZIP"];
 			[userDict setValue:user.workZIP         forKey:@"workZIP"];
-			[userDict setValue:user.schoolZIP       forKey:@"schoolZIP"];
 			[userDict setValue:user.cyclingFreq     forKey:@"cyclingFreq"];
             [userDict setValue:user.ethnicity       forKey:@"ethnicity"];
             [userDict setValue:user.income          forKey:@"income"];
@@ -721,7 +720,7 @@
             
             [uploadingView loadingComplete:kSuccessTitle delayInterval:.7];
 		} else {
-
+            NSLog(@"--------- Note if (success) don't think it uploaded ------------");
             [uploadingView loadingComplete:kServerError delayInterval:1.5];
         }
         

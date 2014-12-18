@@ -187,7 +187,7 @@
 		
 		//self.title = trip.purpose;
 		
-		// only add info view for trips with non-null notes
+		// only add info view for trips with non-null notes philadelphia
 		if ( ![trip.notes isEqualToString: @""] && trip.notes != NULL)
 		{
 			doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(infoAction:)];

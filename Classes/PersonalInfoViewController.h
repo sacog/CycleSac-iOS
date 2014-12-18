@@ -67,10 +67,8 @@
     UITextField *income;
 	UITextField *homeZIP;
 	UITextField *workZIP;
-	UITextField *schoolZIP;
     UITextField *cyclingFreq;
     UITextField *riderType;
-    UITextField *riderHistory;
     UIToolbar *doneToolbar;
     UIActionSheet *actionSheet;
     UIPickerView *pickerView;
@@ -82,7 +80,6 @@
     NSArray *incomeArray;
     NSArray *cyclingFreqArray;
     NSArray *riderTypeArray;
-    NSArray *riderHistoryArray;
     
     NSInteger ageSelectedRow;
     NSInteger genderSelectedRow;
@@ -90,7 +87,6 @@
     NSInteger incomeSelectedRow;
     NSInteger cyclingFreqSelectedRow;
     NSInteger riderTypeSelectedRow;
-    NSInteger riderHistorySelectedRow;
     NSInteger selectedItem;
 }
 
@@ -106,11 +102,9 @@
 @property (nonatomic, retain) UITextField   *income;
 @property (nonatomic, retain) UITextField	*homeZIP;
 @property (nonatomic, retain) UITextField	*workZIP;
-@property (nonatomic, retain) UITextField	*schoolZIP;
 
 @property (nonatomic, retain) UITextField   *cyclingFreq;
 @property (nonatomic, retain) UITextField   *riderType;
-@property (nonatomic, retain) UITextField   *riderHistory;
 
 @property (nonatomic) NSInteger ageSelectedRow;
 @property (nonatomic) NSInteger genderSelectedRow;
@@ -118,7 +112,6 @@
 @property (nonatomic) NSInteger incomeSelectedRow;
 @property (nonatomic) NSInteger cyclingFreqSelectedRow;
 @property (nonatomic) NSInteger riderTypeSelectedRow;
-@property (nonatomic) NSInteger riderHistorySelectedRow;
 @property (nonatomic) NSInteger selectedItem;
 
 // DEPRECATED

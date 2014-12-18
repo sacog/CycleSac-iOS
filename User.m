@@ -20,7 +20,6 @@
 @dynamic income;
 @dynamic ethnicity;
 @dynamic homeZIP;
-@dynamic schoolZIP;
 @dynamic workZIP;
 @dynamic gender;
 @dynamic email;

@@ -81,6 +81,11 @@
     
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 - (UIButton *)createSaveButton {
     return [[UIButton alloc] init];
 }
@@ -192,7 +197,6 @@
 				 user.email		!= nil ||
 				 user.homeZIP	!= nil ||
 				 user.workZIP	!= nil ||
-				 user.schoolZIP	!= nil ||
 				 ([user.cyclingFreq intValue] < 4 )))
 			{
 				NSLog(@"found saved user info");
@@ -311,9 +315,9 @@
 // instantiate start button
 - (UIButton *)createStartButton
 {
-    UIImage *buttonImage = [[UIImage imageNamed:@"greenButton.png"]
+    UIImage *buttonImage = [[UIImage imageNamed:@"redButton.png"]
                             resizableImageWithCapInsets:UIEdgeInsetsMake(18, 18, 18, 18)];
-    UIImage *buttonImageHighlight = [[UIImage imageNamed:@"greenButtonHighlight.png"]
+    UIImage *buttonImageHighlight = [[UIImage imageNamed:@"redButton.png"]
                                      resizableImageWithCapInsets:UIEdgeInsetsMake(18, 18, 18, 18)];
     
     [startButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
@@ -322,11 +326,11 @@
     startButton.backgroundColor = [UIColor clearColor];
     startButton.enabled = YES;
     
-    [startButton setTitle:@"Start" forState:UIControlStateNormal];
-    [startButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [startButton setTitle:@"START TRIP" forState:UIControlStateNormal];
+    [startButton setTitleColor:[UIColor colorWithRed: 253.0/255.0 green: 184.0/255.0 blue: 19.0/255.0 alpha: 1.0] forState:UIControlStateNormal];
     startButton.titleLabel.font = [UIFont boldSystemFontOfSize: 18];
     startButton.titleLabel.shadowOffset = CGSizeMake (0, 0);
-    startButton.titleLabel.textColor = [UIColor whiteColor];
+    startButton.titleLabel.textColor = [UIColor colorWithRed: 253.0/255.0 green: 184.0/255.0 blue: 19.0/255.0 alpha: 1.0];//[UIColor whiteColor];
     [startButton addTarget:self action:@selector(start:) forControlEvents:UIControlEventTouchUpInside];
     
 	return startButton;
@@ -397,15 +401,16 @@
     [[NSUserDefaults standardUserDefaults] setInteger:0 forKey: @"recording"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 	startButton.enabled = YES;
-    UIImage *buttonImage = [[UIImage imageNamed:@"greenButton.png"]
+    UIImage *buttonImage = [[UIImage imageNamed:@"redButton.png"]
                             resizableImageWithCapInsets:UIEdgeInsetsMake(18, 18, 18, 18)];
-    UIImage *buttonImageHighlight = [[UIImage imageNamed:@"greenButtonHighlight.png"]
+    UIImage *buttonImageHighlight = [[UIImage imageNamed:@"redButton.png"]
                                      resizableImageWithCapInsets:UIEdgeInsetsMake(18, 18, 18, 18)];
     
     [startButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
     [startButton setBackgroundImage:buttonImageHighlight forState:UIControlStateHighlighted];
-    [startButton setTitle:@"Start" forState:UIControlStateNormal];
-	
+    [startButton setTitle:@"START TRIP" forState:UIControlStateNormal];
+	[startButton setTitleColor:[UIColor colorWithRed: 253.0/255.0 green: 184.0/255.0 blue: 19.0/255.0 alpha: 1.0] forState:UIControlStateNormal];
+    startButton.titleLabel.textColor = [UIColor colorWithRed: 253.0/255.0 green: 184.0/255.0 blue: 19.0/255.0 alpha: 1.0];
 	// reset trip, reminder managers
     [tripManager release];
 	NSManagedObjectContext *context = tripManager.managedObjectContext;
@@ -552,14 +557,16 @@
 												   userInfo:[[self newTripTimerUserInfo] autorelease] repeats:YES];
         }
         
-        UIImage *buttonImage = [[UIImage imageNamed:@"blueButton.png"]
+        UIImage *buttonImage = [[UIImage imageNamed:@"yellowButton.png"]
                                 resizableImageWithCapInsets:UIEdgeInsetsMake(18, 18, 18, 18)];
         UIImage *buttonImageHighlight = [[UIImage imageNamed:@"blueButtonHighlight.png"]
                                          resizableImageWithCapInsets:UIEdgeInsetsMake(18, 18, 18, 18)];
         [startButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
         [startButton setBackgroundImage:buttonImageHighlight forState:UIControlStateHighlighted];
-        [startButton setTitle:@"Save" forState:UIControlStateNormal];
-
+        [startButton setTitle:@"SAVE" forState:UIControlStateNormal];
+        [startButton setTitleColor:[UIColor colorWithRed: 239.0/255.0 green: 64.0/255.0 blue: 54.0/255.0 alpha: 1.0] forState:UIControlStateNormal];
+        startButton.titleLabel.textColor = [UIColor colorWithRed: 253.0/255.0 green: 184.0/255.0 blue: 19.0/255.0 alpha: 1.0];
+        
         // set recording flag so future location updates will be added as coords
         appDelegate = [[UIApplication sharedApplication] delegate];
         appDelegate.isRecording = YES;

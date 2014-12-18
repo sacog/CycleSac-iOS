@@ -58,9 +58,9 @@
 @implementation PersonalInfoViewController
 
 @synthesize delegate, managedObjectContext, user;
-@synthesize age, email, gender, ethnicity, income, homeZIP, workZIP, schoolZIP;
-@synthesize cyclingFreq, riderType, riderHistory;
-@synthesize ageSelectedRow, genderSelectedRow, ethnicitySelectedRow, incomeSelectedRow, cyclingFreqSelectedRow, riderTypeSelectedRow, riderHistorySelectedRow, selectedItem;
+@synthesize age, email, gender, ethnicity, income, homeZIP, workZIP;
+@synthesize cyclingFreq, riderType;
+@synthesize ageSelectedRow, genderSelectedRow, ethnicitySelectedRow, incomeSelectedRow, cyclingFreqSelectedRow, riderTypeSelectedRow, selectedItem;
 
 
 - (id)initWithStyle:(UITableViewStyle)style {
@@ -167,15 +167,13 @@
     
     ageArray = [[NSArray alloc]initWithObjects: @" ", @"Less than 18", @"18-24", @"25-34", @"35-44", @"45-54", @"55-64", @"65+", nil];
     
-    ethnicityArray = [[NSArray alloc]initWithObjects: @" ", @"White", @"African American", @"Asian", @"Native American", @"Pacific Islander", @"Multi-racial", @"Hispanic / Mexican / Latino", @"Other", nil];
+    ethnicityArray = [[NSArray alloc]initWithObjects: @" ", @"African-American", @"Asian", @"Caucasian/White", @"Hispanic/Latino", @"Native American/Alaskan", @"Pacific Islander/Hawaiian", @"Other", nil];
     
-    incomeArray = [[NSArray alloc]initWithObjects: @" ", @"Less than $20,000", @"$20,000 to $39,999", @"$40,000 to $59,999", @"$60,000 to $74,999", @"$75,000 to $99,999", @"$100,000 or greater", nil];
+    incomeArray = [[NSArray alloc]initWithObjects: @" ", @"Less than $15,000", @"$15,000 - $24,999", @"$25,000 - $34,999", @"$35,000 - $49,999", @"$50,000 - $74,999", @"$75,000 - $99,999", @"$100,000 - $149,999", @"$150,000 - $199,999", @"More than $200,000", nil];
     
     cyclingFreqArray = [[NSArray alloc]initWithObjects: @" ", @"Less than once a month", @"Several times per month", @"Several times per week", @"Daily", nil];
     
-    riderTypeArray = [[NSArray alloc]initWithObjects: @" ", @"Strong & fearless", @"Enthused & confident", @"Comfortable, but cautious", @"Interested, but concerned", nil];
-    
-    riderHistoryArray = [[NSArray alloc]initWithObjects: @" ", @"Since childhood", @"Several years", @"One year or less", @"Just trying it out / just started", nil];
+    riderTypeArray = [[NSArray alloc]initWithObjects: @" ", @"Strong & Fearless", @"Enthused & Confident", @"Comfortable but Cautious", @"Interested but Concerned", nil];
     
     
     CGRect pickerFrame = CGRectMake(0, 40, 0, 0);
@@ -193,10 +191,8 @@
     self.income     = [self initTextFieldAlpha];
 	self.homeZIP	= [self initTextFieldNumeric];
 	self.workZIP	= [self initTextFieldNumeric];
-	self.schoolZIP	= [self initTextFieldNumeric];
     self.cyclingFreq = [self initTextFieldBeta];
     self.riderType  =  [self initTextFieldBeta];
-    self.riderHistory =[self initTextFieldBeta];
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -205,10 +201,11 @@
 	// Set up the buttons.
     // this is actually the Save button.
     UIBarButtonItem* done = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(done)];
-    
+    [done setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithRed:239.0/255.0 green:64.0/255.0 blue:54.0/255.0 alpha:1.0]} forState:UIControlStateNormal];
     //Initial Save button state is disabled. will be enabled if a change has been made to any of the fields.
 	done.enabled = NO;
 	self.navigationItem.rightBarButtonItem = done;
+    
 	
 	NSFetchRequest		*request = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"User" inManagedObjectContext:managedObjectContext];
@@ -247,14 +244,11 @@
 		
         homeZIP.text        = user.homeZIP;
 		workZIP.text        = user.workZIP;
-		schoolZIP.text      = user.schoolZIP;
         
         cyclingFreq.text        = [cyclingFreqArray objectAtIndex:[user.cyclingFreq integerValue]];
         cyclingFreqSelectedRow  = [user.cyclingFreq integerValue];
         riderType.text          = [riderTypeArray objectAtIndex:[user.rider_type integerValue]];
         riderTypeSelectedRow    = [user.rider_type integerValue];
-        riderHistory.text       = [riderHistoryArray objectAtIndex:[user.rider_history integerValue]];
-        riderHistorySelectedRow = [user.rider_history integerValue];
 		
 		// init cycling frequency
 		//NSLog(@"init cycling freq: %d", [user.cyclingFreq intValue]);
@@ -275,7 +269,7 @@
 #pragma mark UITextFieldDelegate methods
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    if(currentTextField == email || currentTextField == workZIP || currentTextField == homeZIP || currentTextField == schoolZIP || textField != email || textField != workZIP || textField != homeZIP || textField != schoolZIP){
+    if(currentTextField == email || currentTextField == workZIP || currentTextField == homeZIP || textField != email || textField != workZIP || textField != homeZIP){
         NSLog(@"currentTextField: text2");
         [currentTextField resignFirstResponder];
         [textField resignFirstResponder];
@@ -293,7 +287,7 @@
     NSLog(@"currentTextfield: picker");*/
     currentTextField = myTextField;
     
-    if(myTextField == gender || myTextField == age || myTextField == ethnicity || myTextField == income || myTextField == cyclingFreq || myTextField == riderType || myTextField == riderHistory){
+    if(myTextField == gender || myTextField == age || myTextField == ethnicity || myTextField == income || myTextField == cyclingFreq || myTextField == riderType){
         
         [myTextField resignFirstResponder];
         
@@ -337,8 +331,6 @@
             selectedItem = [user.cyclingFreq integerValue];
         }else if (myTextField == riderType){
             selectedItem = [user.rider_type integerValue];
-        }else if (myTextField == riderHistory){
-            selectedItem = [user.rider_history integerValue];
         }
         
         [pickerView selectRow:selectedItem inComponent:0 animated:NO];
@@ -388,14 +380,6 @@
 			NSLog(@"saving homeZIP: %@", homeZIP.text);
 			[user setHomeZIP:homeZIP.text];
 		}
-		if ( textField == schoolZIP )
-		{
-            if (schoolZIP.text != user.schoolZIP){
-                self.navigationItem.rightBarButtonItem.enabled = YES;
-            }
-			NSLog(@"saving schoolZIP: %@", schoolZIP.text);
-			[user setSchoolZIP:schoolZIP.text];
-		}
 		if ( textField == workZIP )
 		{
             if (workZIP.text != user.workZIP){
@@ -420,7 +404,6 @@
     [email resignFirstResponder];
     [homeZIP resignFirstResponder];
     [workZIP resignFirstResponder];
-    [schoolZIP resignFirstResponder];
     
     NSLog(@"Saving User Data");
 	if ( user != nil )
@@ -443,9 +426,6 @@
 		[user setHomeZIP:homeZIP.text];
         NSLog(@"saved homeZIP: %@", homeZIP.text);
 
-		[user setSchoolZIP:schoolZIP.text];
-        NSLog(@"saved schoolZIP: %@", schoolZIP.text);
-
 		[user setWorkZIP:workZIP.text];
         NSLog(@"saved workZIP: %@", workZIP.text);
                 
@@ -454,9 +434,6 @@
         
         [user setRider_type:[NSNumber numberWithLong:riderTypeSelectedRow]];
         NSLog(@"saved rider type index: %@ and text: %@", user.rider_type, riderType.text);
-        
-        [user setRider_history:[NSNumber numberWithLong:riderHistorySelectedRow]];
-        NSLog(@"saved rider history index: %@ and text: %@", user.rider_history, riderHistory.text);
 		
 		//NSLog(@"saving cycling freq: %d", [cyclingFreq intValue]);
 		//[user setCyclingFreq:cyclingFreq];
@@ -539,10 +516,7 @@
 			return @"How often do you cycle?";
 			break;
         case 4:
-			return @"What kind of rider are you?";
-			break;
-        case 5:
-			return @"How long have you been a cyclist?";
+			return @"How confident are you riding your bike?";
 			break;
 	}
     return nil;
@@ -705,10 +679,6 @@
 					cell.textLabel.text = @"Work ZIP";
 					[cell.contentView addSubview:workZIP];
 					break;
-				case 2:
-					cell.textLabel.text = @"School ZIP";
-					[cell.contentView addSubview:schoolZIP];
-					break;
 			}
 			
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -762,15 +732,6 @@
 			cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 			if (cell == nil) {
 				cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-			}
-            
-			// inner switch statement identifies row
-			switch ([indexPath indexAtPosition:1])
-			{
-				case 0:
-                    cell.textLabel.text = @"Rider History";
-                    [cell.contentView addSubview:riderHistory];
-					break;
 			}
 			
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -1014,9 +975,6 @@
     else if(currentTextField == riderType){
         return [riderTypeArray count];
     }
-    else if(currentTextField == riderHistory){
-        return [riderHistoryArray count];
-    }
     return 0;
 }
 
@@ -1038,9 +996,6 @@
     }
     else if(currentTextField == riderType){
         return [riderTypeArray objectAtIndex:row];
-    }
-    else if(currentTextField == riderHistory){
-        return [riderHistoryArray objectAtIndex:row];
     }
     return nil;
 }
@@ -1108,16 +1063,6 @@
         NSString *riderTypeSelect = [riderTypeArray objectAtIndex:selectedRow];
         riderType.text = riderTypeSelect;
     }
-    if(currentTextField == riderHistory){
-        //enable save button if value has been changed.
-        if (selectedRow != [user.rider_history integerValue]){
-            self.navigationItem.rightBarButtonItem.enabled = YES;
-        }
-
-        riderHistorySelectedRow = selectedRow;
-        NSString *riderHistorySelect = [riderHistoryArray objectAtIndex:selectedRow];
-        riderHistory.text = riderHistorySelect;
-    }
     [actionSheet dismissWithClickedButtonIndex:1 animated:YES];
 }
 
@@ -1136,17 +1081,14 @@
     self.income = nil;
     self.homeZIP = nil;
     self.workZIP = nil;
-    self.schoolZIP = nil;
     self.cyclingFreq = nil;
     self.riderType = nil;
-    self.riderHistory = nil;
     self.ageSelectedRow = nil;
     self.genderSelectedRow = nil;
     self.ethnicitySelectedRow = nil;
     self.incomeSelectedRow = nil;
     self.cyclingFreqSelectedRow = nil;
     self.riderTypeSelectedRow = nil;
-    self.riderHistorySelectedRow = nil;
     self.selectedItem = nil;
     
     [delegate release];
@@ -1159,10 +1101,8 @@
     [income release];
     [homeZIP release];
     [workZIP release];
-    [schoolZIP release];
     [cyclingFreq release];
     [riderType release];
-    [riderHistory release];
     
     [doneToolbar release];
     [actionSheet release];

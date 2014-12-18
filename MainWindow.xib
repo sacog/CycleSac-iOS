@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment version="1296" defaultVersion="1280" identifier="iOS"/>
+        <deployment version="1296" defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
@@ -21,24 +21,26 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="tintColor" red="0.93725490199999995" green="0.25098039220000001" blue="0.21176470589999999" alpha="1" colorSpace="calibratedRGB"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
         </window>
         <tabBarController id="17">
             <extendedEdge key="edgesForExtendedLayout"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
             <nil key="simulatedTopBarMetrics"/>
-            <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
             <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
             <nil key="simulatedDestinationMetrics"/>
-            <tabBar key="tabBar" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" selectedItem="39" id="18">
+            <tabBar key="tabBar" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" selectedItem="49" id="18">
                 <rect key="frame" x="0.0" y="431" width="320" height="49"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                <color key="tintColor" red="0.93725490196078431" green="0.25098039215686274" blue="0.21176470588235294" alpha="1" colorSpace="calibratedRGB"/>
+                <color key="barTintColor" red="0.23529411759999999" green="0.22352941179999999" blue="0.2784313725" alpha="1" colorSpace="calibratedRGB"/>
             </tabBar>
             <viewControllers>
                 <navigationController title="Record" id="30">
                     <extendedEdge key="edgesForExtendedLayout"/>
-                    <tabBarItem key="tabBarItem" title="Record" image="tabbar_record.png" id="34"/>
+                    <tabBarItem key="tabBarItem" title="RECORD" image="tabbar_record.png" id="34"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
@@ -46,6 +48,11 @@
                     <nil key="simulatedDestinationMetrics"/>
                     <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="32">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.93725490199999995" green="0.25098039220000001" blue="0.21176470589999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" red="0.23529411759999999" green="0.22352941179999999" blue="0.2784313725" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
                     </navigationBar>
                     <viewControllers>
                         <viewController title="Record" nibName="RecordMap" id="31" customClass="RecordTripViewController">
@@ -59,9 +66,9 @@
                         </viewController>
                     </viewControllers>
                 </navigationController>
-                <navigationController title="My Trips" id="35">
+                <navigationController title="Trips" id="35">
                     <extendedEdge key="edgesForExtendedLayout"/>
-                    <tabBarItem key="tabBarItem" title="My Trips" image="tabbar_view.png" id="39"/>
+                    <tabBarItem key="tabBarItem" title="TRIPS" image="tabbar_view.png" id="39"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
@@ -69,6 +76,8 @@
                     <nil key="simulatedDestinationMetrics"/>
                     <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="37">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.93725490199999995" green="0.25098039220000001" blue="0.21176470589999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" red="0.23529411759999999" green="0.22352941179999999" blue="0.2784313725" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <viewControllers>
                         <viewController title="Trips" id="36" customClass="SavedTripsViewController">
@@ -92,11 +101,13 @@
                     <nil key="simulatedDestinationMetrics"/>
                     <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="110">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.93725490199999995" green="0.25098039220000001" blue="0.21176470589999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" red="0.23529411759999999" green="0.22352941179999999" blue="0.2784313725" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <viewControllers>
                         <tableViewController title="My Notes" id="115" customClass="SavedNotesViewController">
                             <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="116">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="431"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -116,7 +127,7 @@
                 </navigationController>
                 <navigationController title="Personal Info" id="45">
                     <extendedEdge key="edgesForExtendedLayout"/>
-                    <tabBarItem key="tabBarItem" title="Settings" image="tabbar_settings.png" id="49"/>
+                    <tabBarItem key="tabBarItem" title="SETTINGS" image="tabbar_settings.png" id="49"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
@@ -124,6 +135,8 @@
                     <nil key="simulatedDestinationMetrics"/>
                     <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="47">
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.93725490199999995" green="0.25098039220000001" blue="0.21176470589999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="barTintColor" red="0.23529411759999999" green="0.22352941179999999" blue="0.2784313725" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <viewControllers>
                         <viewController title="Personal Info" nibName="PersonalInfo" id="46" customClass="PersonalInfoViewController">

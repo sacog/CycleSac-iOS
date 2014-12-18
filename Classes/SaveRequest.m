@@ -76,6 +76,7 @@
         [postVars setObject:deviceUniqueIdHash forKey:@"device"];
         
         if (type == 3) {
+            NSLog(@"-_-_-_-_-_- Protocol 3 -_-_-_-_-_-_-");
             [request setValue:@"3" forHTTPHeaderField:@"Cycleatl-Protocol-Version"];
         }
         else if (type == 4){

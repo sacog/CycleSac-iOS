@@ -20,7 +20,6 @@
 @property (nonatomic, retain) NSNumber * income;
 @property (nonatomic, retain) NSNumber * ethnicity;
 @property (nonatomic, retain) NSString * homeZIP;
-@property (nonatomic, retain) NSString * schoolZIP;
 @property (nonatomic, retain) NSString * workZIP;
 @property (nonatomic, retain) NSNumber * gender;
 @property (nonatomic, retain) NSString * email;

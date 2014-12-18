@@ -104,7 +104,7 @@
 #define kInfoURL			@"http://www.cyclephilly.org/#about"
 #define kInstructionsURL	@"mailto:support@cyclephilly.org"
 
-#define kSaveURL			@"http://www.cyclephilly.org/post/"
+#define kSaveURL			@"http://10.146.0.187/cyclesac.org/cyclesac.org" //@"http://www.cyclephilly.org/post/"
 
 #define kFireDomain			@"https://cyclephilly.firebaseio.com/"
 //#define kSaveURL			@""

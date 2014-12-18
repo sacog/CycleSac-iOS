@@ -54,6 +54,47 @@
     // Do any additional setup after loading the view from its nib.
     detailTextView.layer.borderWidth = 1.0;
     detailTextView.layer.borderColor = [[UIColor blackColor] CGColor];
+    
+    UIScrollView *scroll = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 320, 435)];
+    scroll.contentSize = CGSizeMake(320, 700);
+    scroll.showsHorizontalScrollIndicator = YES;
+    
+    UIImage* unstoppable = [UIImage imageNamed:@"Unstoppable.png"];
+    unstoppable = [unstoppable imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIImage* great = [UIImage imageNamed:@"Great"];
+    great = [great imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIImage* soso = [UIImage imageNamed:@"SoSo.png"];
+    soso = [soso imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIImage* tired = [UIImage imageNamed:@"Tired.png"];
+    tired = [tired imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIImage* injured = [UIImage imageNamed:@"Injured.png"];
+    injured = [injured imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
+    NSArray *itemArray = [NSArray arrayWithObjects: unstoppable, great, soso, tired, injured, nil];
+    UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:itemArray];
+    segmentedControl.frame = CGRectMake(21,65,280,50);
+    segmentedControl.selectedSegmentIndex = 1;
+    [segmentedControl addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
+    
+    [self.view addSubview:segmentedControl];
+    [segmentedControl release];
+}
+
+
+-(void)segmentAction:(UISegmentedControl*)sender {
+    
+   // UIImage* great = [UIImage imageNamed:@"Great"];
+   // great = [great imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+   // [sender setImage:great forSegmentAtIndex:sender.selectedSegmentIndex];
+    
+}
+
+- (void)MySegmentControlAction:(UISegmentedControl *)segment
+{
+    if(segment.selectedSegmentIndex == 0)
+    {
+        // code for the first button, make sure this gets sent to the server
+    }
 }
 
 -(IBAction)skip:(id)sender{
