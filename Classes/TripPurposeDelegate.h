@@ -75,7 +75,6 @@
 #define kTripPurposeWorkString		@"Work-Related"
 #define kTripPurposeExerciseString	@"Exercise"
 #define kTripPurposeSocialString	@"Social"
-#define kTripPurposeShoppingString	@"Shopping"
 #define kTripPurposeErrandString	@"Errand"
 #define kTripPurposeOtherString		@"Other"
 
@@ -95,10 +94,12 @@
 - (void)didPickNoteType:(NSNumber *)index;
 - (void)didEnterNoteDetails:(NSString *)details;
 - (void)didEnterTripDetails:(NSString *)details;
+- (void)didEnterTripComfort:(NSString *)comfort;
 - (void)didSaveImage:(NSData *)imgData;
 - (void)getNoteThumbnail:(NSData *)imgData;
 - (void)getTripThumbnail:(NSData *)imgData;
 - (void)saveNote;
+- (void)saveComfort;
 - (void)saveTrip;
 
 @end

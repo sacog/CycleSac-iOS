@@ -439,24 +439,38 @@
     /* Note if user took public transit by appending |took_transit to
        end of notes field */
     if (trip) {
-        NSString *tripNote = @"|took_transit";
+        NSString *tripNote = @"took_transit";
         if (trip.notes) {
             tripNote = [trip.notes stringByAppendingString:tripNote];
         }
         [trip setNotes:tripNote];
+        NSLog(@"Saved took transit");
     }
 }
 
 - (void)saveNotes:(NSString*)notes
 {
 	if ( trip && notes ) {
-        NSString *useNotes = notes;
+        NSString *useNotes = [NSString stringWithFormat:@"|%@|", notes];
         if (trip.notes) {
             // if trip already noted, prefix with this note
             // (so |took_transit note will be at end)
             useNotes = [useNotes stringByAppendingString:trip.notes];
         }
         [trip setNotes:useNotes];
+        NSLog(@"Saved notes");
+    }
+}
+
+- (void) saveComfort:(NSString *)comfort
+{
+    if ( trip && comfort ) {
+        NSString *comfortNotes = comfort;
+        if(trip.notes) {
+            comfortNotes = [comfortNotes stringByAppendingString:trip.notes];
+        }
+        [trip setNotes:comfortNotes];
+        NSLog(@"Saved comfort");
     }
 }
 
@@ -493,7 +507,7 @@
 	}
 	
 	[trip setSaved:[NSDate date]];
-	
+
 	NSError *error;
 	if (![managedObjectContext save:&error])
 	{
@@ -521,16 +535,17 @@
 	while (coord = [enumerator nextObject])
 	{
 		NSMutableDictionary *coordsDict = [NSMutableDictionary dictionaryWithCapacity:7];
-		[coordsDict setValue:coord.altitude  forKey:@"a"];  //altitude
+        
+        NSString *newDateString = [outputFormatter stringFromDate:coord.recorded];
+		[coordsDict setValue:newDateString forKey:@"r"];    //recorded timestamp
 		[coordsDict setValue:coord.latitude  forKey:@"l"];  //latitude
 		[coordsDict setValue:coord.longitude forKey:@"n"];  //longitude
+        [coordsDict setValue:coord.altitude  forKey:@"a"];  //altitude
 		[coordsDict setValue:coord.speed     forKey:@"s"];  //speed
 		[coordsDict setValue:coord.hAccuracy forKey:@"h"];  //haccuracy
 		[coordsDict setValue:coord.vAccuracy forKey:@"v"];  //vaccuracy
-		
-		NSString *newDateString = [outputFormatter stringFromDate:coord.recorded];
-		[coordsDict setValue:newDateString forKey:@"r"];    //recorded timestamp
-		[tripDict setValue:coordsDict forKey:newDateString];
+        
+        [tripDict setValue:coordsDict forKey:newDateString];
 	}
 #elif kSaveProtocolVersion == kSaveProtocolVersion_2
 	NSLog(@"saving using protocol version 2");
@@ -575,12 +590,18 @@
 		purpose = trip.purpose;
 	else
 		purpose = @"unknown";
-	
-	// get trip notes
+
+	// get trip notes, comfort, and public transit
 	NSString *notes = @"";
-	if ( trip.notes )
-		notes = trip.notes;
-	
+    NSString *comfort = @"";
+    NSString *transit = @"";
+	if ( trip.notes ) {
+        NSArray *tripDetails = [trip.notes componentsSeparatedByString:@"|"];
+        comfort = tripDetails[0];
+        notes = tripDetails[1];
+        transit = tripDetails[2];
+    }
+    
 	// get start date
 	NSString *start = [outputFormatter stringFromDate:trip.start];
 	NSLog(@"start: %@", start);
@@ -599,18 +620,17 @@
     NSData *tripJsonData = [NSJSONSerialization dataWithJSONObject:tripDict options:0 error:&writeError];
     NSString *tripJson = [[[NSString alloc] initWithData:tripJsonData encoding:NSUTF8StringEncoding] autorelease];
     //NSLog(@"trip data %@", tripJson);
-
-        
+    NSString* device = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
 	// NOTE: device hash added by SaveRequest initWithPostVars
 	NSDictionary *postVars = [NSDictionary dictionaryWithObjectsAndKeys:
 							  tripJson, @"coords",
-							  purpose, @"purpose",
-							  notes, @"notes",
-							  start, @"start",
-							  userJson, @"user",
-                              
-							  [NSString stringWithFormat:@"%d", kSaveProtocolVersion], @"version",
-							  nil];
+                              device, @"device",
+                              notes, @"notes",
+                              purpose, @"purpose",
+                              comfort, @"comfort",
+                              start, @"start",
+                              userJson, @"user", nil];
+
 	// create save request
 	SaveRequest *saveRequest = [[[SaveRequest alloc] initWithPostVars:postVars with:3 image:NULL] autorelease];
 	
@@ -719,6 +739,7 @@
 			}
             
             [uploadingView loadingComplete:kSuccessTitle delayInterval:.7];
+            NSLog(@"Should have been a success and uploaded!");
 		} else {
             NSLog(@"--------- Note if (success) don't think it uploaded ------------");
             [uploadingView loadingComplete:kServerError delayInterval:1.5];
@@ -1223,8 +1244,6 @@
 		return kTripPurposeExercise;
 	else if ( [string isEqualToString:kTripPurposeSocialString] )
 		return kTripPurposeSocial;
-	else if ( [string isEqualToString:kTripPurposeShoppingString] )
-		return kTripPurposeShopping;
 	else if ( [string isEqualToString:kTripPurposeErrandString] )
 		return kTripPurposeErrand;
 	//	else if ( [string isEqualToString:kTripPurposeOtherString] )
@@ -1249,9 +1268,6 @@
 			break;
 		case kTripPurposeSocial:
 			return @"Social";
-			break;
-		case kTripPurposeShopping:
-			return @"Shopping";
 			break;
 		case kTripPurposeErrand:
 			return @"Errand";

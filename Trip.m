@@ -16,6 +16,7 @@
 @dynamic distance;
 @dynamic start;
 @dynamic notes;
+@dynamic comfort;
 @dynamic uploaded;
 @dynamic purpose;
 @dynamic duration;

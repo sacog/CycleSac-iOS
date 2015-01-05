@@ -31,18 +31,27 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import "TripPurposeDelegate.h"
+#import "ComfortDataSource.h"
 
-@interface TripDetailViewController : UIViewController<UINavigationControllerDelegate, UITextViewDelegate>
+@interface TripDetailViewController : UIViewController<UINavigationControllerDelegate, UITextViewDelegate,
+    UIPickerViewDataSource, UIPickerViewDelegate>
 {
     id <TripPurposeDelegate> delegate;
     UITextView *detailTextView;
+    UIPickerView *detailPicker;
     NSInteger pickerCategory;
     NSString *details;
+    NSString *comfort;
+    ComfortDataSource	*comfortDataSource;
 }
 
 @property (nonatomic, retain) id <TripPurposeDelegate> delegate;
 
 @property (nonatomic, retain) IBOutlet UITextView *detailTextView;
+
+@property (retain, nonatomic) IBOutlet UIPickerView *detailPicker;
+
+@property (nonatomic, retain) ComfortDataSource *comfortDataSource;
 
 
 -(IBAction)skip:(id)sender;

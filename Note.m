@@ -13,6 +13,7 @@
 @implementation Note
 
 @dynamic details;
+@dynamic comfort;
 @dynamic speed;
 @dynamic vAccuracy;
 @dynamic longitude;

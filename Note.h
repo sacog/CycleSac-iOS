@@ -14,6 +14,7 @@
 @interface Note : NSManagedObject
 
 @property (nonatomic, retain) NSString * details;
+@property (nonatomic, retain) NSString * comfort;
 @property (nonatomic, retain) NSNumber * speed;
 @property (nonatomic, retain) NSNumber * vAccuracy;
 @property (nonatomic, retain) NSNumber * longitude;

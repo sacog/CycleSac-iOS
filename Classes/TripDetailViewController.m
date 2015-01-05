@@ -31,12 +31,17 @@
 #import "TripDetailViewController.h"
 
 @interface TripDetailViewController ()
-
+{
+    NSArray *pickerData;
+}
 @end
 
 @implementation TripDetailViewController
 @synthesize delegate;
 @synthesize detailTextView;
+@synthesize detailPicker;
+@synthesize comfortDataSource;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -59,42 +64,12 @@
     scroll.contentSize = CGSizeMake(320, 700);
     scroll.showsHorizontalScrollIndicator = YES;
     
-    UIImage* unstoppable = [UIImage imageNamed:@"Unstoppable.png"];
-    unstoppable = [unstoppable imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    UIImage* great = [UIImage imageNamed:@"Great"];
-    great = [great imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    UIImage* soso = [UIImage imageNamed:@"SoSo.png"];
-    soso = [soso imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    UIImage* tired = [UIImage imageNamed:@"Tired.png"];
-    tired = [tired imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    UIImage* injured = [UIImage imageNamed:@"Injured.png"];
-    injured = [injured imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    
-    NSArray *itemArray = [NSArray arrayWithObjects: unstoppable, great, soso, tired, injured, nil];
-    UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:itemArray];
-    segmentedControl.frame = CGRectMake(21,65,280,50);
-    segmentedControl.selectedSegmentIndex = 1;
-    [segmentedControl addTarget:self action:@selector(segmentAction:) forControlEvents:UIControlEventValueChanged];
-    
-    [self.view addSubview:segmentedControl];
-    [segmentedControl release];
-}
+    pickerData = @[@"Excellent", @"Good", @"Fair", @"Poor", @"Terrible"];
+    comfortDataSource = [[ComfortDataSource alloc] init];
+	comfortDataSource.parent = self;
 
-
--(void)segmentAction:(UISegmentedControl*)sender {
-    
-   // UIImage* great = [UIImage imageNamed:@"Great"];
-   // great = [great imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-   // [sender setImage:great forSegmentAtIndex:sender.selectedSegmentIndex];
-    
-}
-
-- (void)MySegmentControlAction:(UISegmentedControl *)segment
-{
-    if(segment.selectedSegmentIndex == 0)
-    {
-        // code for the first button, make sure this gets sent to the server
-    }
+    self.detailPicker.dataSource = comfortDataSource;
+    self.detailPicker.delegate = comfortDataSource;
 }
 
 -(IBAction)skip:(id)sender{
@@ -108,12 +83,15 @@
     details = @"";
     
     [delegate didEnterTripDetails:details];
+    [delegate didEnterTripComfort:comfort];
     [delegate saveTrip];
 }
 
 -(IBAction)saveDetail:(id)sender{
     NSLog(@"Save Detail");
     [detailTextView resignFirstResponder];
+    [detailPicker resignFirstResponder];
+    
     [delegate didCancelNote];
     
     pickerCategory = [[NSUserDefaults standardUserDefaults] integerForKey:@"pickerCategory"];
@@ -121,8 +99,9 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     details = detailTextView.text;
-    
+
     [delegate didEnterTripDetails:details];
+    [delegate didEnterTripComfort:comfort];
     [delegate saveTrip];
 }
 
@@ -133,12 +112,48 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (int)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+- (int)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return 5;
+}
+
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    switch (row) {
+        case 0:
+            comfort = @"Excellent";
+            break;
+        case 1:
+            comfort = @"Good";
+            break;
+        case 2:
+            comfort = @"Fair";
+            break;
+        case 3:
+            comfort = @"Poor";
+            break;
+        case 4:
+            comfort = @"Terrible";
+            break;
+        default:
+            comfort = @"Excellent";
+            break;
+    }
+}
+
 - (void)dealloc {
     self.delegate = nil;
     self.detailTextView = nil;
+    self.detailPicker = nil;
     
     [delegate release];
     [detailTextView release];
+    [detailPicker release];
     
     [super dealloc];
 }

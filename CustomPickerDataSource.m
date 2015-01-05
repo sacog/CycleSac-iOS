@@ -101,12 +101,6 @@
             [view release];
             
             view = [[CustomView alloc] initWithFrame:CGRectZero];
-            view.title = @"Shopping";
-            view.image = [UIImage imageNamed:kTripPurposeShoppingIcon];
-            [viewArray addObject:view];
-            [view release];
-            
-            view = [[CustomView alloc] initWithFrame:CGRectZero];
             view.title = @"Errand";
             view.image = [UIImage imageNamed:kTripPurposeErrandIcon];
             [viewArray addObject:view];
@@ -276,10 +270,9 @@
     } else {
         // ios7 or later
         if (pickerCategory == 0) {
-            self.pickerTitles = [NSArray arrayWithObjects:@"Commute", @"School", @"Work-Related", @"Exercise", @"Social", @"Shopping", @"Errand", @"Other", nil];
+            self.pickerTitles = [NSArray arrayWithObjects:@"Commute", @"School", @"Work-Related", @"Exercise", @"Social", @"Errand", @"Other", nil];
             self.pickerImages = [NSArray arrayWithObjects: [UIImage imageNamed:kTripPurposeCommuteIcon], [UIImage imageNamed:kTripPurposeSchoolIcon],
-                                 [UIImage imageNamed:kTripPurposeWorkIcon], [UIImage imageNamed:kTripPurposeExerciseIcon], [UIImage imageNamed:kTripPurposeSocialIcon],
-                                 [UIImage imageNamed:kTripPurposeShoppingIcon], [UIImage imageNamed:kTripPurposeErrandIcon], [UIImage imageNamed:kTripPurposeOtherIcon], nil];
+                                 [UIImage imageNamed:kTripPurposeWorkIcon], [UIImage imageNamed:kTripPurposeExerciseIcon], [UIImage imageNamed:kTripPurposeSocialIcon], [UIImage imageNamed:kTripPurposeErrandIcon], [UIImage imageNamed:kTripPurposeOtherIcon], nil];
         } else if (pickerCategory == 1){
             self.pickerTitles = [NSArray arrayWithObjects: @"Pavement issue", @"Traffic signal", @"Enforcement", @"Bike parking", @"Bike lane issue",
                                  @"Note this spot", nil];

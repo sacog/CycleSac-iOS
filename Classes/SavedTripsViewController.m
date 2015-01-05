@@ -480,9 +480,6 @@
 			case kTripPurposeSocial:
 				image = [UIImage imageNamed:kTripPurposeSocialIcon];
 				break;
-			case kTripPurposeShopping:
-				image = [UIImage imageNamed:kTripPurposeShoppingIcon];
-				break;
 			case kTripPurposeErrand:
 				image = [UIImage imageNamed:kTripPurposeErrandIcon];
 				break;
@@ -1033,6 +1030,11 @@
 - (void)didEnterTripDetails:(NSString *)details{
     [tripManager saveNotes:details];
     NSLog(@"Trip Added details: %@",details);
+}
+
+- (void)didEnterTripComfort:(NSString *)comfort{
+    [tripManager saveComfort:comfort];
+    NSLog(@"Trip Added comfort: %@",comfort);
 }
 
 - (void)didTakeTransit {

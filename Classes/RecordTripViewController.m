@@ -953,6 +953,11 @@ shouldSelectViewController:(UIViewController *)viewController
     NSLog(@"Trip Added details: %@",details);
 }
 
+- (void)didEnterTripComfort:(NSString *)comfort{
+    [tripManager saveComfort:comfort];
+    NSLog(@"Trip Added comfort: %@",comfort);
+}
+
 - (void)didTakeTransit {
     [tripManager saveTookTransit];
     NSLog(@"Noted rider took public transit in RecordTripViewController.");

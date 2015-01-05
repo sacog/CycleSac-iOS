@@ -209,6 +209,12 @@
 		D2EE0A761A43550C0062F157 /* SoSo.png in Resources */ = {isa = PBXBuildFile; fileRef = D2EE0A711A43550C0062F157 /* SoSo.png */; };
 		D2EE0A771A43550C0062F157 /* Injured.png in Resources */ = {isa = PBXBuildFile; fileRef = D2EE0A721A43550C0062F157 /* Injured.png */; };
 		D2EE0A781A43550C0062F157 /* Great.png in Resources */ = {isa = PBXBuildFile; fileRef = D2EE0A731A43550C0062F157 /* Great.png */; };
+		D2EE0A7E1A446FE50062F157 /* Excellent.png in Resources */ = {isa = PBXBuildFile; fileRef = D2EE0A791A446FE50062F157 /* Excellent.png */; };
+		D2EE0A7F1A446FE50062F157 /* Fair.png in Resources */ = {isa = PBXBuildFile; fileRef = D2EE0A7A1A446FE50062F157 /* Fair.png */; };
+		D2EE0A801A446FE50062F157 /* Good.png in Resources */ = {isa = PBXBuildFile; fileRef = D2EE0A7B1A446FE50062F157 /* Good.png */; };
+		D2EE0A811A446FE50062F157 /* Poor.png in Resources */ = {isa = PBXBuildFile; fileRef = D2EE0A7C1A446FE50062F157 /* Poor.png */; };
+		D2EE0A821A446FE50062F157 /* Terrible.png in Resources */ = {isa = PBXBuildFile; fileRef = D2EE0A7D1A446FE50062F157 /* Terrible.png */; };
+		D2EE0A871A449C410062F157 /* ComfortDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = D2EE0A861A449C410062F157 /* ComfortDataSource.m */; };
 		DA78811F18DF417C008A5BE9 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DA78811E18DF417C008A5BE9 /* libicucore.dylib */; };
 		DA78812118DF418A008A5BE9 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA78812018DF418A008A5BE9 /* CFNetwork.framework */; };
 		DA78812518DF46DE008A5BE9 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DA78812418DF46DE008A5BE9 /* libc++.dylib */; };
@@ -457,6 +463,13 @@
 		D2EE0A711A43550C0062F157 /* SoSo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SoSo.png; sourceTree = "<group>"; };
 		D2EE0A721A43550C0062F157 /* Injured.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Injured.png; sourceTree = "<group>"; };
 		D2EE0A731A43550C0062F157 /* Great.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Great.png; sourceTree = "<group>"; };
+		D2EE0A791A446FE50062F157 /* Excellent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Excellent.png; sourceTree = "<group>"; };
+		D2EE0A7A1A446FE50062F157 /* Fair.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Fair.png; sourceTree = "<group>"; };
+		D2EE0A7B1A446FE50062F157 /* Good.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Good.png; sourceTree = "<group>"; };
+		D2EE0A7C1A446FE50062F157 /* Poor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Poor.png; sourceTree = "<group>"; };
+		D2EE0A7D1A446FE50062F157 /* Terrible.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Terrible.png; sourceTree = "<group>"; };
+		D2EE0A831A449B980062F157 /* ComfortDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComfortDataSource.h; sourceTree = "<group>"; };
+		D2EE0A861A449C410062F157 /* ComfortDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComfortDataSource.m; sourceTree = "<group>"; };
 		DA78811E18DF417C008A5BE9 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		DA78812018DF418A008A5BE9 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		DA78812418DF46DE008A5BE9 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
@@ -672,6 +685,8 @@
 				64119AAC1068672100C201F0 /* CustomPickerDataSource.m */,
 				64119AA91068672100C201F0 /* CustomView.h */,
 				64119AAA1068672100C201F0 /* CustomView.m */,
+				D2EE0A831A449B980062F157 /* ComfortDataSource.h */,
+				D2EE0A861A449C410062F157 /* ComfortDataSource.m */,
 			);
 			name = "Trip Purpose data source";
 			sourceTree = "<group>";
@@ -869,6 +884,11 @@
 				D2EE0A711A43550C0062F157 /* SoSo.png */,
 				D2EE0A721A43550C0062F157 /* Injured.png */,
 				D2EE0A731A43550C0062F157 /* Great.png */,
+				D2EE0A791A446FE50062F157 /* Excellent.png */,
+				D2EE0A7A1A446FE50062F157 /* Fair.png */,
+				D2EE0A7B1A446FE50062F157 /* Good.png */,
+				D2EE0A7C1A446FE50062F157 /* Poor.png */,
+				D2EE0A7D1A446FE50062F157 /* Terrible.png */,
 			);
 			name = "Ranking Icons";
 			sourceTree = "<group>";
@@ -932,6 +952,7 @@
 				6411A18F106A90E400C201F0 /* errands.tif in Resources */,
 				D2C8B91A1A40D289002E4317 /* Default.png in Resources */,
 				D236D1151A41F55A007EF583 /* redButton.png in Resources */,
+				D2EE0A821A446FE50062F157 /* Terrible.png in Resources */,
 				D236D12C1A4237BA007EF583 /* school.png in Resources */,
 				6411A190106A90E400C201F0 /* exercise.tif in Resources */,
 				6411A191106A90E400C201F0 /* other.tif in Resources */,
@@ -954,6 +975,7 @@
 				9D4647B81604EBF400A4F9CB /* blueButton@2x.png in Resources */,
 				D2C8B95B1A40D6CE002E4317 /* commute.png in Resources */,
 				D236D1351A4237E9007EF583 /* workRelated@2x.png in Resources */,
+				D2EE0A811A446FE50062F157 /* Poor.png in Resources */,
 				9D4647B91604EBF400A4F9CB /* blueButtonHighlight.png in Resources */,
 				D2C8B9191A40D289002E4317 /* Default-568h@2x.png in Resources */,
 				D2C8B91F1A40D483002E4317 /* appIcon@Retina.png in Resources */,
@@ -1041,6 +1063,7 @@
 				9D4648351604EF3800A4F9CB /* tabbar_instructions@2x.png in Resources */,
 				9D4648361604EF3800A4F9CB /* tabbar_record_old.png in Resources */,
 				9D4648371604EF3800A4F9CB /* tabbar_record@2x_old.png in Resources */,
+				D2EE0A7E1A446FE50062F157 /* Excellent.png in Resources */,
 				9D4648381604EF3800A4F9CB /* tabbar_settings_old.png in Resources */,
 				9D4648391604EF3800A4F9CB /* tabbar_settings@2x_old.png in Resources */,
 				9D46483A1604EF3800A4F9CB /* tabbar_view_old.png in Resources */,
@@ -1083,6 +1106,8 @@
 				9D3281DE16EE46C8004C4AF2 /* noteAssetMapGlyph@2x.png in Resources */,
 				9D3281DF16EE46C8004C4AF2 /* noteIssueMapGlyph.png in Resources */,
 				D2C8B9161A40D217002E4317 /* Default@2x.png in Resources */,
+				D2EE0A7F1A446FE50062F157 /* Fair.png in Resources */,
+				D2EE0A801A446FE50062F157 /* Good.png in Resources */,
 				9D3281E016EE46C8004C4AF2 /* noteIssueMapGlyph@2x.png in Resources */,
 				8F20B0AD16F0F08A00031712 /* TripDetailViewController.xib in Resources */,
 			);
@@ -1120,6 +1145,7 @@
 				8F9C086A16DC947A003EA308 /* User.m in Sources */,
 				4688ACA81902B8EF00A67FAF /* TookTransitViewController.m in Sources */,
 				8F9C086D16DC947A003EA308 /* Coord.m in Sources */,
+				D2EE0A871A449C410062F157 /* ComfortDataSource.m in Sources */,
 				8FBCD3CA16E0E58100C11EBE /* NoteViewController.m in Sources */,
 				8F25EC7916E13E7C004263D4 /* SavedNotesViewController.m in Sources */,
 				8F20B0AC16F0F08A00031712 /* TripDetailViewController.m in Sources */,

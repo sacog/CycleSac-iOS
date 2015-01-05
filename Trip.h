@@ -16,6 +16,7 @@
 @property (nonatomic, retain) NSNumber * distance;
 @property (nonatomic, retain) NSDate * start;
 @property (nonatomic, retain) NSString * notes;
+@property (nonatomic, retain) NSString * comfort;
 @property (nonatomic, retain) NSDate * uploaded;
 @property (nonatomic, retain) NSString * purpose;
 @property (nonatomic, retain) NSNumber * duration;
