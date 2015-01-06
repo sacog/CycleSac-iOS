@@ -416,10 +416,10 @@
 			[userDict setValue:user.gender          forKey:@"gender"];
 			[userDict setValue:user.homeZIP         forKey:@"homeZIP"];
 			[userDict setValue:user.workZIP         forKey:@"workZIP"];
-			[userDict setValue:user.cyclingFreq     forKey:@"cyclingFreq"];
+			[userDict setValue:user.cyclingFreq     forKey:@"cycling_freq"];
             [userDict setValue:user.ethnicity       forKey:@"ethnicity"];
             [userDict setValue:user.income          forKey:@"income"];
-            [userDict setValue:user.rider_type      forKey:@"rider_type"];
+            [userDict setValue:user.rider_type      forKey:@"rider_confidence"];
             [userDict setValue:user.rider_history	forKey:@"rider_history"];
             [userDict setValue:appVersion           forKey:@"app_version"];
 		}
