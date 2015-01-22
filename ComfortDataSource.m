@@ -21,10 +21,12 @@
     
     pickerCategory = [[NSUserDefaults standardUserDefaults] integerForKey:@"pickerCategory"];
     
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(92, 54), NO, 0.0);
+    UIImage *blankImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
         // ios7 or later
-    self.pickerTitles = [NSArray arrayWithObjects:@"Excellent", @"Good", @"Fair", @"Poor", @"Terrible", nil];
-    self.pickerImages = [NSArray arrayWithObjects: [UIImage imageNamed:@"Excellent.png"], [UIImage imageNamed:@"Good.png"],
-        [UIImage imageNamed:@"Fair.png"], [UIImage imageNamed:@"Poor.png"], [UIImage imageNamed:@"Terrible.png"], nil];
+    self.pickerTitles = [NSArray arrayWithObjects:@"", @"Excellent", @"Good", @"Fair", @"Poor", @"Terrible", nil];
+    self.pickerImages = [NSArray arrayWithObjects: blankImage, [UIImage imageNamed:@"Excellent.png"], [UIImage imageNamed:@"Good.png"],[UIImage imageNamed:@"Fair.png"], [UIImage imageNamed:@"Poor.png"], [UIImage imageNamed:@"Terrible.png"], nil];
     
     return self;
 }

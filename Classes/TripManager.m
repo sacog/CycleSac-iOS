@@ -622,6 +622,7 @@
     //NSLog(@"trip data %@", tripJson);
     NSString* device = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
 	// NOTE: device hash added by SaveRequest initWithPostVars
+    NSLog(@"This is start time: %@", start);
 	NSDictionary *postVars = [NSDictionary dictionaryWithObjectsAndKeys:
 							  tripJson, @"coords",
                               device, @"device",
