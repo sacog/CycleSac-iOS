@@ -53,16 +53,14 @@
 #define kTripPurposeWork		2
 #define kTripPurposeExercise	3
 #define kTripPurposeSocial		4
-#define kTripPurposeShopping	5
-#define kTripPurposeErrand		6
-#define kTripPurposeOther		7
+#define kTripPurposeErrand		5
+#define kTripPurposeOther		6
 
 #define kTripPurposeCommuteIcon		@"commute.png"
 #define kTripPurposeSchoolIcon		@"school.png"
 #define kTripPurposeWorkIcon		@"workRelated.png"
 #define kTripPurposeExerciseIcon	@"exercise.png"
 #define kTripPurposeSocialIcon		@"social.png"
-#define kTripPurposeShoppingIcon	@"shopping.png"
 #define kTripPurposeErrandIcon		@"errands.png"
 #define kTripPurposeOtherIcon		@"other.png"
 

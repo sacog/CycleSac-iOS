@@ -43,6 +43,7 @@
     NSString *details;
     NSString *comfort;
     ComfortDataSource	*comfortDataSource;
+    UITapGestureRecognizer *tapRecognizer;
 }
 
 @property (nonatomic, retain) id <TripPurposeDelegate> delegate;
@@ -53,6 +54,7 @@
 
 @property (nonatomic, retain) ComfortDataSource *comfortDataSource;
 
+@property (nonatomic) UITapGestureRecognizer *tapRecognizer;
 
 -(IBAction)skip:(id)sender;
 -(IBAction)saveDetail:(id)sender;

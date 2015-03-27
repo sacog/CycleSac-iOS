@@ -25,5 +25,6 @@
 @dynamic email;
 @dynamic notes;
 @dynamic trips;
+@synthesize futureSurvey;
 
 @end

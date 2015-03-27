@@ -95,11 +95,18 @@
     if (appDelegate.locationManager != nil) {
         return appDelegate.locationManager;
     }
-	
+    
     appDelegate.locationManager = [[[CLLocationManager alloc] init] autorelease];
     appDelegate.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     //locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
     appDelegate.locationManager.delegate = self;
+    
+    
+    //Added these two required calls due to building against the iOS 8 SDK
+    if([appDelegate.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+        [appDelegate.locationManager requestWhenInUseAuthorization];
+        [appDelegate.locationManager requestAlwaysAuthorization];
+    }
     
     return appDelegate.locationManager;
 }
@@ -250,8 +257,8 @@
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
     self.navigationController.navigationBarHidden = YES;
 	
-    // init map region to Philadelphia
-	MKCoordinateRegion region = { { 39.954491, -75.163758 }, { 0.0078, 0.0068 } };
+    // init map region to Sacramento, California
+	MKCoordinateRegion region = { { 38.3320, -121.2808 }, { 0.0078, 0.0068 } };
 	[mapView setRegion:region animated:NO];
 	
 	// setup info button used when showing recorded trips
@@ -281,7 +288,9 @@
 	if ( [self hasUserInfoBeenSaved] )
 		[self setSaved:YES];
 	
-	// check for any unsaved trips / interrupted recordings
+    
+    
+    // check for any unsaved trips / interrupted recordings
 	[self hasRecordingBeenInterrupted];
     
 	NSLog(@"save");
@@ -328,7 +337,7 @@
     
     [startButton setTitle:@"START TRIP" forState:UIControlStateNormal];
     [startButton setTitleColor:[UIColor colorWithRed: 253.0/255.0 green: 184.0/255.0 blue: 19.0/255.0 alpha: 1.0] forState:UIControlStateNormal];
-    startButton.titleLabel.font = [UIFont boldSystemFontOfSize: 18];
+    startButton.titleLabel.font = [UIFont fontWithName:@"MuseoSans-900" size:18];
     startButton.titleLabel.shadowOffset = CGSizeMake (0, 0);
     startButton.titleLabel.textColor = [UIColor colorWithRed: 253.0/255.0 green: 184.0/255.0 blue: 19.0/255.0 alpha: 1.0];//[UIColor whiteColor];
     [startButton addTarget:self action:@selector(start:) forControlEvents:UIControlEventTouchUpInside];
@@ -489,7 +498,7 @@
 
 					startButton.enabled = YES;
 
-                    [startButton setTitle:@"Continue" forState:UIControlStateNormal];
+                    [startButton setTitle:@"Continue Trip" forState:UIControlStateNormal];
 					break;
 			}
 		}
@@ -613,7 +622,7 @@
         saveActionSheet = [[UIActionSheet alloc]
                            initWithTitle:@""
                            delegate:self
-                           cancelButtonTitle:@"Continue"
+                           cancelButtonTitle:@"Continue Trip"
                            destructiveButtonTitle:@"Discard"
                            otherButtonTitles:@"Save",nil];
         //[saveActionSheet showInView:self.view];

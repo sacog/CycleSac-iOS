@@ -95,9 +95,9 @@
 	// initialize trip manager with the managed object context
 	TripManager *tripManager = [[[TripManager alloc] initWithManagedObjectContext:context] autorelease];
     NoteManager *noteManager = [[[NoteManager alloc] initWithManagedObjectContext:context] autorelease];
-	
-	
-	/*
+
+    
+	 /*
 	 // initialize each tab's root view controller with the trip manager	
 	 RecordTripViewController *recordTripViewController = [[[RecordTripViewController alloc]
 	 initWithTripManager:manager]
@@ -107,7 +107,7 @@
 	 UIImage *image = [UIImage imageNamed:@"tabbar_record.png"];
 	 UITabBarItem *recordTab = [[UITabBarItem alloc] initWithTitle:@"Record New Trip" image:image tag:101];
 	 recordTripViewController.tabBarItem = recordTab;
-	 
+    
 	 SavedTripsViewController *savedTripsViewController = [[[SavedTripsViewController alloc]
 	 initWithTripManager:manager]
 	 autorelease];
@@ -167,10 +167,23 @@
 	vc.managedObjectContext			= context;
     
    
+    UITabBarItem *tabBarRecordItem = [tabBarController.tabBar.items objectAtIndex:0];
+    UIImage *unselectedRecordImage = [UIImage imageNamed:@"tabbar_record.png"];
+    [tabBarRecordItem setImage: [unselectedRecordImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     
-
+    UITabBarItem *tabBarViewItem = [tabBarController.tabBar.items objectAtIndex:1];
+    UIImage *unselectedViewImage = [UIImage imageNamed:@"tabbar_view.png"];
+    [tabBarViewItem setImage: [unselectedViewImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     
+    UITabBarItem *tabBarNotesItem = [tabBarController.tabBar.items objectAtIndex:2];
+    UIImage *unselectedNotesImage = [UIImage imageNamed:@"tabbar_notes.png"];
+    [tabBarNotesItem setImage: [unselectedNotesImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     
+    UITabBarItem *tabBarSettingsItem = [tabBarController.tabBar.items objectAtIndex:3];
+    UIImage *unselectedSettingsImage = [UIImage imageNamed:@"tabbar_settings.png"];
+    [tabBarSettingsItem setImage: [unselectedSettingsImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    
+    //[tabBarController.tabBar setFrame:CGRectMake(tabBarController.tabBar.frame.origin.x, tabBarController.tabBar.frame.origin.y - 30, tabBarController.tabBar.frame.size.width, tabBarController.tabBar.frame.size.height + 30)];
     
 	// create a tab bar controller and init with nav controllers above
 	// tabBarController = [[UITabBarController alloc] initWithNibName:@"MainWindow.xib" bundle:nil];

@@ -51,6 +51,7 @@
 #import "PersonalInfoViewController.h"
 #import "User.h"
 #import "constants.h"
+#import "ActionSheetStringPicker.h"
 
 
 #define kMaxCyclingFreq 3
@@ -60,7 +61,7 @@
 @synthesize delegate, managedObjectContext, user;
 @synthesize age, email, gender, ethnicity, income, homeZIP, workZIP;
 @synthesize cyclingFreq, riderType;
-@synthesize ageSelectedRow, genderSelectedRow, ethnicitySelectedRow, incomeSelectedRow, cyclingFreqSelectedRow, riderTypeSelectedRow, selectedItem;
+@synthesize ageSelectedRow, genderSelectedRow, ethnicitySelectedRow, incomeSelectedRow, cyclingFreqSelectedRow, riderTypeSelectedRow, selectedItem, futureSurveyChecked;
 
 
 - (id)initWithStyle:(UITableViewStyle)style {
@@ -120,7 +121,7 @@
 	textField.borderStyle = UITextBorderStyleRoundedRect;
 	textField.textAlignment = NSTextAlignmentRight;
 	textField.placeholder = @"name@domain";
-	textField.keyboardType = UIKeyboardTypeEmailAddress;
+    textField.keyboardType = UIKeyboardTypeDefault; //UIKeyboardTypeEmailAddress;
 	textField.returnKeyType = UIReturnKeyDone;
 	textField.delegate = self;
 	return textField;
@@ -134,7 +135,7 @@
 	textField.borderStyle = UITextBorderStyleRoundedRect;
 	textField.textAlignment = NSTextAlignmentRight;
 	textField.placeholder = @"12345";
-	textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+    textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation; //UIKeyboardTypeDefault;
 	textField.returnKeyType = UIReturnKeyDone;
 	textField.delegate = self;
 	return textField;
@@ -202,11 +203,11 @@
     // this is actually the Save button.
     UIBarButtonItem* done = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(done)];
     [done setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithRed:239.0/255.0 green:64.0/255.0 blue:54.0/255.0 alpha:1.0]} forState:UIControlStateNormal];
+    [done setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor colorWithRed:103.0/255.0 green:103.0/255.0 blue:103.0/255.0 alpha:0.0]} forState:UIControlStateDisabled];
     //Initial Save button state is disabled. will be enabled if a change has been made to any of the fields.
-	done.enabled = NO;
 	self.navigationItem.rightBarButtonItem = done;
+    self.navigationItem.rightBarButtonItem.enabled = NO;
     
-	
 	NSFetchRequest		*request = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"User" inManagedObjectContext:managedObjectContext];
 	[request setEntity:entity];
@@ -227,21 +228,22 @@
 		if ( error != nil )
 			NSLog(@"PersonalInfo viewDidLoad fetch error %@, %@", error, [error localizedDescription]);
 	}
-	
 	[self setUser:[mutableFetchResults objectAtIndex:0]];
+    id temp = user;
+    id ugh = user.age;
 	if ( user != nil )
 	{
-		// initialize text fields indexes to saved personal info
 		age.text            = [ageArray objectAtIndex:[user.age integerValue]];
         ageSelectedRow      = [user.age integerValue];
 		email.text          = user.email;
+        futureSurveyChecked = [user.futureSurvey integerValue];
 		gender.text         = [genderArray objectAtIndex:[user.gender integerValue]];;
         genderSelectedRow   = [user.gender integerValue];
         ethnicity.text      = [ethnicityArray objectAtIndex:[user.ethnicity integerValue]];
         ethnicitySelectedRow= [user.ethnicity integerValue];
         income.text         = [incomeArray objectAtIndex:[user.income integerValue]];
         incomeSelectedRow   = [user.income integerValue];
-		
+        
         homeZIP.text        = user.homeZIP;
 		workZIP.text        = user.workZIP;
         
@@ -270,7 +272,7 @@
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     if(currentTextField == email || currentTextField == workZIP || currentTextField == homeZIP || textField != email || textField != workZIP || textField != homeZIP){
-        NSLog(@"currentTextField: text2");
+        NSLog(@"currentTextField: %@", currentTextField);
         [currentTextField resignFirstResponder];
         [textField resignFirstResponder];
     }
@@ -291,6 +293,9 @@
         
         [myTextField resignFirstResponder];
         
+        //pre iOS 8
+        if(floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
+            
         actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil]; //as we want to display a subview we won't be using the default buttons but rather we're need to create a toolbar to display the buttons on
         
         [actionSheet setActionSheetStyle:UIActionSheetStyleBlackTranslucent];
@@ -311,7 +316,7 @@
         
         UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed:)];
         [barItems addObject:doneBtn];
-        
+
         //TODO add a next and previous button to left side to take us to the next/previous thing. and switch to the right kind of input mode.
         
         [doneToolbar setItems:barItems animated:YES];
@@ -342,7 +347,56 @@
         [actionSheet showInView:self.view];
         
         [actionSheet setBounds:CGRectMake(0, 0, 320, 485)];
-
+        }
+        else {
+            //for iOS 8+
+            NSArray *selectArray;
+            NSString *title = @"";
+            
+            selectedItem = 0;
+            if(myTextField == gender){
+                selectedItem = [user.gender integerValue];
+                selectArray = genderArray;
+                title = @"Gender";
+            }else if (myTextField == age){
+                selectedItem = [user.age integerValue];
+                selectArray = ageArray;
+                title = @"Age";
+            }else if (myTextField == ethnicity){
+                selectedItem = [user.ethnicity integerValue];
+                selectArray = ethnicityArray;
+                title = @"Ethnicity";
+            }else if (myTextField == income){
+                selectedItem = [user.income integerValue];
+                selectArray = incomeArray;
+                title = @"Income";
+            }else if (myTextField == cyclingFreq){
+                selectedItem = [user.cyclingFreq integerValue];
+                selectArray = cyclingFreqArray;
+                title = @"Cycling Frequency";
+            }else if (myTextField == riderType){
+                selectedItem = [user.rider_type integerValue];
+                selectArray = riderTypeArray;
+                title = @"Rider Type";
+            }
+            
+            [ActionSheetStringPicker showPickerWithTitle:title
+                                                    rows:selectArray
+                                        initialSelection:selectedItem
+                                               doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+                                                   NSLog(@"Picker: %@", picker);
+                                                   NSLog(@"Selected Index: %ld", (long)selectedIndex);
+                                                   NSLog(@"Selected Value: %@", selectedValue);
+                                                   currentTextField.text = selectedValue;
+                                                   [self textFieldDidEndEditing:currentTextField];
+                                                   [self doneButtonPressedController:selectedIndex];
+                                               }
+                                             cancelBlock:^(ActionSheetStringPicker *picker) {
+                                                 NSLog(@"Block Picker Canceled");
+                                             }
+                                                  origin:self.view];
+            
+        }
     }
 }
 
@@ -404,7 +458,7 @@
     [email resignFirstResponder];
     [homeZIP resignFirstResponder];
     [workZIP resignFirstResponder];
-    
+
     NSLog(@"Saving User Data");
 	if ( user != nil )
 	{
@@ -413,7 +467,10 @@
 
 		[user setEmail:email.text];
         NSLog(@"saved email: %@", user.email);
-
+        
+        [user setFutureSurvey:[NSNumber numberWithLong:futureSurveyChecked]];
+        NSLog(@"saved futureSurvey %@", user.futureSurvey);
+        
 		[user setGender:[NSNumber numberWithLong:genderSelectedRow]];
 		NSLog(@"saved gender index: %@ and text: %@", user.gender, gender.text);
         
@@ -443,6 +500,10 @@
 			// Handle the error.
 			NSLog(@"PersonalInfo save cycling freq error %@, %@", error, [error localizedDescription]);
 		}
+        else {
+            [self showPopupWithTitle:@"Saved" mesage:@"User information saved" dismissAfter:1.0];
+            self.navigationItem.rightBarButtonItem.enabled = NO;
+        }
 	}
 	else
 		NSLog(@"ERROR can't save personal info for nil user");
@@ -452,7 +513,29 @@
 	[delegate setSaved:YES];
     //disable the save button after saving
 	self.navigationItem.rightBarButtonItem.enabled = NO;
+    
 	[self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)dismissAlert:(UIAlertView *)alertView
+{
+    [alertView dismissWithClickedButtonIndex:0 animated:YES];
+}
+
+- (void)showPopupWithTitle:(NSString *)title mesage:(NSString *)message dismissAfter:(NSTimeInterval)interval
+{
+    UIAlertView *alertView = [[UIAlertView alloc]
+                              initWithTitle:title
+                              message:message
+                              delegate:nil
+                              cancelButtonTitle:nil
+                              otherButtonTitles:nil
+                              ];
+    [alertView show];
+    [self performSelector:@selector(dismissAlert:)
+               withObject:alertView
+               afterDelay:interval
+     ];
 }
 
 
@@ -522,49 +605,6 @@
     return nil;
 }
 
-//- (UIView *)tableView:(UITableView *)tbl viewForHeaderInSection:(NSInteger)section
-//{
-//    UIView* sectionHead = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tbl.bounds.size.width, 18)];
-//    sectionHead.backgroundColor = [UIColor colorWithWhite:0 alpha:0];
-//    sectionHead.userInteractionEnabled = YES;
-//    sectionHead.tag = section;
-//    
-//    UILabel *sectionText = [[UILabel alloc] initWithFrame:CGRectMake(18, 8, tbl.bounds.size.width - 10, 18)];
-//    
-//    switch (section) {
-//		case 0:
-//			sectionText.text = @"Tell us about yourself";
-//			break;
-//		case 1:
-//			sectionText.text = @"Your typical commute";
-//			break;
-//		case 2:
-//			sectionText.text = @"How often do you cycle?";
-//			break;
-//        case 3:
-//			sectionText.text = @"What kind of rider are you?";
-//			break;
-//        case 4:
-//			sectionText.text = @"How long have you been a cyclist?";
-//			break;
-//	}
-//    sectionText.backgroundColor = [UIColor clearColor];
-//    sectionText.textColor = [UIColor colorWithHue:0.6 saturation:0.33 brightness: 0.49 alpha:1];
-//    //sectionText.shadowColor = [UIColor grayColor];
-//    //sectionText.shadowOffset = CGSizeMake(0,0.001);
-//    sectionText.font = [UIFont boldSystemFontOfSize:16];
-//    
-//    [sectionHead addSubview:sectionText];
-//    [sectionText release];
-//    
-//    return [sectionHead autorelease];
-//}
-//
-//-(float)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-//    return UITableViewAutomaticDimension;
-//}
-
-
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -574,7 +614,7 @@
             return 1;
             break;
 		case 1:
-			return 5;
+			return 7;
 			break;
 		case 2:
 			return 2;
@@ -640,15 +680,32 @@
 					cell.textLabel.text = @"Email";
 					[cell.contentView addSubview:email];
 					break;
-				case 2:
+                case 2:
+                    cell.textLabel.text = @"(To recieve CycleSac updates, anticipated to be no more than one update per month.)";
+                    cell.textLabel.font = [UIFont fontWithName:@"MuseoSans-500" size:12];
+                    cell.textLabel.numberOfLines = 2;
+                    break;
+                case 3:
+                    //cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                    cell.textLabel.text = @"Click here if you are interested in completing a more detailed survey in the future to help with with bike planning in the region.";
+                    cell.textLabel.font = [UIFont fontWithName:@"MuseoSans-500" size:12];
+                    cell.textLabel.numberOfLines = 4;
+                    if(futureSurveyChecked == 1) {
+                        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                    }
+                    else {
+                        cell.accessoryType = UITableViewCellAccessoryNone;
+                    }
+                    break;
+				case 4:
 					cell.textLabel.text = @"Gender";
 					[cell.contentView addSubview:gender];
 					break;
-                case 3:
+                case 5:
 					cell.textLabel.text = @"Ethnicity";
 					[cell.contentView addSubview:ethnicity];
 					break;
-                case 4:
+                case 6:
 					cell.textLabel.text = @"Home Income";
 					[cell.contentView addSubview:income];
 					break;
@@ -832,6 +889,21 @@
 					break;
 				case 1:
 					break;
+                case 3: //check row
+                    self.title = self.title;
+                    UITableViewCell *cell;
+                    cell = [tableView cellForRowAtIndexPath:indexPath];
+                    if(futureSurveyChecked == 1)
+                    {
+                        cell.accessoryType = UITableViewCellAccessoryNone;
+                        futureSurveyChecked = 0;
+                    }
+                    else
+                    {
+                        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                        futureSurveyChecked = 1;
+                    }
+                    break;
 			}
 			break;
 		}
@@ -998,7 +1070,6 @@
 }
 
 - (void)doneButtonPressed:(id)sender{
-    
     NSInteger selectedRow;
     selectedRow = [pickerView selectedRowInComponent:0];
     if(currentTextField == gender){
@@ -1063,6 +1134,74 @@
     [actionSheet dismissWithClickedButtonIndex:1 animated:YES];
 }
 
+- (void)doneButtonPressedController:(id)sender{
+    NSLog(@"in doneButtonPressed, currentTextField %@", currentTextField);
+    NSInteger selectedRow;
+    selectedRow = sender;
+    if(currentTextField == gender){
+        //enable save button if value has been changed.
+        if (selectedRow != [user.gender integerValue]){
+            self.navigationItem.rightBarButtonItem.enabled = YES;
+        }
+        genderSelectedRow = selectedRow;
+        NSString *genderSelect = [genderArray objectAtIndex:selectedRow];
+        gender.text = genderSelect;
+    }
+    if(currentTextField == age){
+        //enable save button if value has been changed.
+        if (selectedRow != [user.age integerValue]){
+            self.navigationItem.rightBarButtonItem.enabled = YES;
+        }
+        
+        ageSelectedRow = selectedRow;
+        NSString *ageSelect = [ageArray objectAtIndex:selectedRow];
+        age.text = ageSelect;
+    }
+    if(currentTextField == ethnicity){
+        //enable save button if value has been changed.
+        if (selectedRow != [user.ethnicity integerValue]){
+            self.navigationItem.rightBarButtonItem.enabled = YES;
+        }
+        
+        ethnicitySelectedRow = selectedRow;
+        NSString *ethnicitySelect = [ethnicityArray objectAtIndex:selectedRow];
+        ethnicity.text = ethnicitySelect;
+    }
+    if(currentTextField == income){
+        //enable save button if value has been changed.
+        if (selectedRow != [user.income integerValue]){
+            self.navigationItem.rightBarButtonItem.enabled = YES;
+        }
+        
+        incomeSelectedRow = selectedRow;
+        NSString *incomeSelect = [incomeArray objectAtIndex:selectedRow];
+        income.text = incomeSelect;
+    }
+    if(currentTextField == cyclingFreq){
+        //enable save button if value has been changed.
+        if (selectedRow != [user.cyclingFreq integerValue]){
+            self.navigationItem.rightBarButtonItem.enabled = YES;
+        }
+        
+        cyclingFreqSelectedRow = selectedRow;
+        NSString *cyclingFreqSelect = [cyclingFreqArray objectAtIndex:selectedRow];
+        cyclingFreq.text = cyclingFreqSelect;
+    }
+    if(currentTextField == riderType){
+        //enable save button if value has been changed.
+        if (selectedRow != [user.rider_type integerValue]){
+            self.navigationItem.rightBarButtonItem.enabled = YES;
+        }
+        
+        riderTypeSelectedRow = selectedRow;
+        NSString *riderTypeSelect = [riderTypeArray objectAtIndex:selectedRow];
+        riderType.text = riderTypeSelect;
+    }
+    
+    [actionSheet dismissWithClickedButtonIndex:1 animated:YES];
+}
+
+
 - (void)cancelButtonPressed:(id)sender{
     [actionSheet dismissWithClickedButtonIndex:1 animated:YES];
 }
@@ -1087,6 +1226,7 @@
     self.cyclingFreqSelectedRow = nil;
     self.riderTypeSelectedRow = nil;
     self.selectedItem = nil;
+    self.futureSurveyChecked = nil;
     
     [delegate release];
     [managedObjectContext release];

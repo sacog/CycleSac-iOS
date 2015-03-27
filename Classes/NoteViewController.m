@@ -127,7 +127,7 @@
         
         UILabel *notesHeader		= [[[UILabel alloc] initWithFrame:CGRectMake(9,85,160,25)] autorelease];
         notesHeader.backgroundColor = [UIColor clearColor];
-        notesHeader.font			= [UIFont boldSystemFontOfSize:18.0];
+        notesHeader.font			= [UIFont fontWithName:@"MuseoSans-900" size:18.0];
         notesHeader.opaque			= NO;
         notesHeader.text			= @"Details";
         notesHeader.textColor		= [UIColor whiteColor];
@@ -141,7 +141,7 @@
         UITextView *notesText		= [[[UITextView alloc] initWithFrame:CGRectMake(0,110,320,25*row+15)] autorelease];
         notesText.backgroundColor	= [UIColor clearColor];
         notesText.editable			= NO;
-        notesText.font				= [UIFont systemFontOfSize:16.0];
+        notesText.font				= [UIFont fontWithName:@"MuseoSans-500" size:16.0];
         notesText.text				= note.details;
         notesText.textColor			= [UIColor whiteColor];
         [infoView addSubview:notesText];
@@ -167,7 +167,7 @@
         
         UILabel *notesHeader		= [[[UILabel alloc] initWithFrame:CGRectMake(9,85,160,25)] autorelease];
         notesHeader.backgroundColor = [UIColor clearColor];
-        notesHeader.font			= [UIFont boldSystemFontOfSize:18.0];
+        notesHeader.font			= [UIFont fontWithName:@"MuseoSans-900" size:18];
         notesHeader.opaque			= NO;
         notesHeader.text			= @"Details";
         notesHeader.textColor		= [UIColor whiteColor];
@@ -176,7 +176,7 @@
         UITextView *notesText		= [[[UITextView alloc] initWithFrame:CGRectMake(0,110,320,200)] autorelease];
         notesText.backgroundColor	= [UIColor clearColor];
         notesText.editable			= NO;
-        notesText.font				= [UIFont systemFontOfSize:16.0];
+        notesText.font				= [UIFont fontWithName:@"MuseoSans-500" size:16.0];
         notesText.text				= note.details;
         notesText.textColor			= [UIColor whiteColor];
         [infoView addSubview:notesText];

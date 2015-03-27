@@ -160,7 +160,7 @@ CGPathRef NewPathWithRoundRect(CGRect rect, CGFloat cornerRadius)
     loadingView.loadingLabel.lineBreakMode = NSLineBreakByWordWrapping;
 	loadingView.loadingLabel.backgroundColor = [UIColor clearColor];
 	loadingView.loadingLabel.textAlignment = NSTextAlignmentCenter;
-	loadingView.loadingLabel.font = [UIFont boldSystemFontOfSize:[UIFont labelFontSize]];
+	loadingView.loadingLabel.font = [UIFont fontWithName:@"MuseoSans-900" size:[UIFont labelFontSize]];
 	loadingView.loadingLabel.autoresizingMask =
 		UIViewAutoresizingFlexibleLeftMargin |
 		UIViewAutoresizingFlexibleRightMargin |

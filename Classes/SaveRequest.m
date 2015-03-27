@@ -60,8 +60,10 @@
 
 - initWithPostVars:(NSDictionary *)inPostVars with:(NSInteger) type image:(NSData*) imageData;
 {
+    NSLog(@"--------- initWithPostVars ------------");
 	if (self = [super init])
 	{
+        NSLog(@"--------- initWithPostVars2 ------------");
 		// create request.
         self.request = [[[NSMutableURLRequest alloc] init] autorelease];
         [request setURL:[NSURL URLWithString:kSaveURL]];

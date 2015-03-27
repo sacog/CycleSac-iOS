@@ -38,7 +38,7 @@
 #import "Note.h"
 #import "NoteManager.h"
 
-#define kAccessoryViewX	282.0
+#define kAccessoryViewX	10.0
 #define kAccessoryViewY 24.0
 
 #define kCellReuseIdentifierCheck		@"CheckMark"
@@ -347,12 +347,12 @@
             break;
     }
     
-    [cell.textLabel setFont:[UIFont systemFontOfSize:14]];
+    [cell.textLabel setFont:[UIFont fontWithName:@"MuseoSans-500" size:14]];
     [cell.textLabel setTextColor:[UIColor grayColor]];
     
     cell.textLabel.text = [NSString stringWithFormat:@"%@ at %@", [dateFormatter stringFromDate:[note recorded]], [timeFormatter stringFromDate:[note recorded]]];
     
-    [cell.detailTextLabel setFont:[UIFont boldSystemFontOfSize:18]];
+    [cell.detailTextLabel setFont:[UIFont fontWithName:@"MuseoSans-900" size:18]];
     [cell.detailTextLabel setTextColor:[UIColor blackColor]];
     
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@",title];

@@ -41,6 +41,7 @@
 @synthesize detailTextView;
 @synthesize detailPicker;
 @synthesize comfortDataSource;
+@synthesize tapRecognizer;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -54,9 +55,13 @@
 
 - (void)viewDidLoad
 {
-    [self.detailTextView becomeFirstResponder];
+    //[self.detailTextView becomeFirstResponder];
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapAnywhere:)];
+    tapRecognizer.cancelsTouchesInView = NO;
+    [self.view addGestureRecognizer:tapRecognizer];
+    
     detailTextView.layer.borderWidth = 1.0;
     detailTextView.layer.borderColor = [[UIColor blackColor] CGColor];
     
@@ -70,6 +75,13 @@
 
     self.detailPicker.dataSource = comfortDataSource;
     self.detailPicker.delegate = comfortDataSource;
+
+    [self.detailTextView setDelegate:self];
+    [self.detailTextView setReturnKeyType:UIReturnKeyDone];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(textFieldFinished:) name: UITextViewTextDidChangeNotification object:nil];
+    
+    [self.view endEditing:YES];
 }
 
 -(IBAction)skip:(id)sender{
@@ -105,6 +117,18 @@
     [delegate saveTrip];
 }
 
+- (void)textFieldFinished:(NSNotification *) notification
+{
+    if([[[notification object] text] hasSuffix:@"\n"])
+    {
+        [[notification object] resignFirstResponder];
+    }
+    
+}
+- (void) didTapAnywhere:(UITapGestureRecognizer *) sender
+{
+    [self.view endEditing:YES];
+}
 
 - (void)didReceiveMemoryWarning
 {

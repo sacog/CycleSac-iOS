@@ -59,6 +59,7 @@
 	id <PersonalInfoDelegate> delegate;
 	NSManagedObjectContext *managedObjectContext;
 	User *user;
+    NSString *checked;
 
 	UITextField *age;
 	UITextField *email;
@@ -88,12 +89,14 @@
     NSInteger cyclingFreqSelectedRow;
     NSInteger riderTypeSelectedRow;
     NSInteger selectedItem;
+    NSInteger futureSurveyChecked;
 }
 
 
 @property (nonatomic, retain) id <PersonalInfoDelegate> delegate;
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) User *user;
+@property (nonatomic, retain) NSString *checked;
 
 @property (nonatomic, retain) UITextField	*age;
 @property (nonatomic, retain) UITextField	*email;
@@ -113,6 +116,7 @@
 @property (nonatomic) NSInteger cyclingFreqSelectedRow;
 @property (nonatomic) NSInteger riderTypeSelectedRow;
 @property (nonatomic) NSInteger selectedItem;
+@property (nonatomic) NSInteger futureSurveyChecked;
 
 // DEPRECATED
 - (id)initWithManagedObjectContext:(NSManagedObjectContext*)context;

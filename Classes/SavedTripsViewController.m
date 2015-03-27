@@ -449,7 +449,7 @@
     UILabel *CaloryText = nil;
     
 	UIImage	*image;
-    
+
 	// completed
 	if ( trip.uploaded )
 	{
@@ -580,13 +580,13 @@
         timeText = [[[UILabel alloc] init] autorelease];
         timeText.tag = 1;
         timeText.frame = CGRectMake( 10, 5, 220, 25);
-        [timeText setFont:[UIFont systemFontOfSize:15]];
+        [timeText setFont:[UIFont fontWithName:@"MuseoSans-500" size:15]];
         [timeText setTextColor:[UIColor grayColor]];
         
         purposeText = [[[UILabel alloc] init] autorelease];
         purposeText.tag = 2;
         purposeText.frame = CGRectMake( 10, 24, 120, 30);
-        [purposeText setFont:[UIFont boldSystemFontOfSize:18]];
+        [purposeText setFont:[UIFont fontWithName:@"MuseoSans-900" size:18]];
         [purposeText setTextColor:[UIColor blackColor]];
         
         [cell.contentView addSubview:purposeText];
@@ -612,22 +612,22 @@
                 CO2Text.frame = CGRectMake( 10, 54, 130, 20);
             } else {
                 durationText.frame = CGRectMake(140, 30, 120, 30);
-                CO2Text.frame = CGRectMake( 10, 50, 130, 20);
+                CO2Text.frame = CGRectMake( 10 + 6, 50, 130, 20);
             }
             
-            [durationText setFont:[UIFont systemFontOfSize:14]];
+            [durationText setFont:[UIFont fontWithName:@"MuseoSans-500" size:14]];
             [durationText setTextColor:[UIColor grayColor]];
             
-            [CO2Text setFont:[UIFont systemFontOfSize:12]];
+            [CO2Text setFont:[UIFont fontWithName:@"MuseoSans-500" size:12]];
             [CO2Text setTextColor:[UIColor grayColor]];
-            
+            /*
             CaloryText = [[[UILabel alloc] init] autorelease];
             CaloryText.tag = 5;
             CaloryText.frame = CGRectMake(140, 50, 190, 20);
-            [CaloryText setFont:[UIFont systemFontOfSize:12]];
+            [CaloryText setFont:[UIFont fontWithName:@"MuseoSans-500" size:12]];
             [CaloryText setTextColor:[UIColor grayColor]];
             
-            [cell.contentView addSubview:CaloryText];
+            [cell.contentView addSubview:CaloryText];*/
             [cell.contentView addSubview:CO2Text];
             [cell.contentView addSubview:durationText];
 

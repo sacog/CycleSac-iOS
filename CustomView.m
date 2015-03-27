@@ -88,7 +88,7 @@ const CGFloat kViewHeight = 44;
 	point = CGPointMake(10.0 + self.image.size.width + 10.0, yCoord);
     
     // Create text attributes
-    NSDictionary *textAttributes = @{NSFontAttributeName: [UIFont systemFontOfSize:MAIN_FONT_SIZE]};
+    NSDictionary *textAttributes = @{NSFontAttributeName: [UIFont fontWithName:@"MuseoSans-500" size:MAIN_FONT_SIZE]};
     
     // Create string drawing context
     NSStringDrawingContext *drawingContext = [[NSStringDrawingContext alloc] init];

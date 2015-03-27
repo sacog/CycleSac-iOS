@@ -10,29 +10,29 @@
 	<string>CycleSac</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>DCAF46D1-00C6-4EE6-AB8D-E6C18544C61A</key>
+		<key>6110CC6252755727643E36F2E3E0B2B306648F28</key>
 		<string>https://github.com/sacog/CycleSac-iOS.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>CycleSac.xcodeproj/project.xcworkspace</string>
+	<string>CycleSac.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>DCAF46D1-00C6-4EE6-AB8D-E6C18544C61A</key>
+		<key>6110CC6252755727643E36F2E3E0B2B306648F28</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/sacog/CycleSac-iOS.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>DCAF46D1-00C6-4EE6-AB8D-E6C18544C61A</string>
+	<string>6110CC6252755727643E36F2E3E0B2B306648F28</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>DCAF46D1-00C6-4EE6-AB8D-E6C18544C61A</string>
+			<string>6110CC6252755727643E36F2E3E0B2B306648F28</string>
 			<key>IDESourceControlWCCName</key>
 			<string>CycleSac-iOS</string>
 		</dict>

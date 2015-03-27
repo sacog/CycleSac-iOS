@@ -163,7 +163,7 @@
 	tripNotesText = [[[UITextView alloc] initWithFrame:CGRectMake( 12.0, 50.0, 260.0, 65.0 )] autorelease];
 	tripNotesText.delegate = self;
 	tripNotesText.enablesReturnKeyAutomatically = NO;
-	tripNotesText.font = [UIFont fontWithName:@"Arial" size:16];
+	tripNotesText.font = [UIFont fontWithName:@"MuseoSans-500" size:16];
 	tripNotesText.keyboardAppearance = UIKeyboardAppearanceAlert;
 	tripNotesText.keyboardType = UIKeyboardTypeDefault;
 	tripNotesText.returnKeyType = UIReturnKeyDone;
@@ -421,6 +421,7 @@
             [userDict setValue:user.income          forKey:@"income"];
             [userDict setValue:user.rider_type      forKey:@"rider_confidence"];
             [userDict setValue:user.rider_history	forKey:@"rider_history"];
+            [userDict setValue:user.futureSurvey    forKey:@"future_survey"];
             [userDict setValue:appVersion           forKey:@"app_version"];
 		}
 		else
@@ -490,6 +491,7 @@
 	   incrementally tally delta time if < epsilon instead
 	 o recalculate distance
 	 */
+    
 	if ( trip && [coords count] )
 	{
 		CLLocationDistance newDist = [self calculateTripDistance:trip];
@@ -692,7 +694,9 @@
 	// this method is called when the server has determined that it
     // has enough information to create the NSURLResponse
 	NSLog(@"didReceiveResponse: %@", response);
-	
+    NSLog(@"Debug Description: %@", response.debugDescription);
+    NSLog(@"Description: %@", response.description);
+    NSLog(@"response url: %@", response.URL);
 	NSHTTPURLResponse *httpResponse = nil;
 	if ( [response isKindOfClass:[NSHTTPURLResponse class]] &&
 		( httpResponse = (NSHTTPURLResponse*)response ) )
@@ -720,7 +724,7 @@
 				message = kServerError;
 		}
 		
-		NSLog(@"%@: %@", title, message);
+		NSLog(@"%@: %@, Status Code: %ld", title, message, (long)[httpResponse statusCode]);
         
         //
         // DEBUG
@@ -1262,7 +1266,7 @@
 			return @"School";
 			break;
 		case kTripPurposeWork:
-			return @"Work-related";
+			return @"Work-Related";
 			break;
 		case kTripPurposeExercise:
 			return @"Exercise";
@@ -1273,7 +1277,6 @@
 		case kTripPurposeErrand:
 			return @"Errand";
 			break;
-		case kTripPurposeOther:
 		default:
 			return @"Other";
 			break;

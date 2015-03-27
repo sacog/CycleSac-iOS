@@ -52,7 +52,7 @@
 #import "PickerViewController.h"
 #import "DetailViewController.h"
 
-//#import "TripDetailViewController.h"
+#import "TripDetailViewController.h"
 #import "TookTransitViewController.h"
 
 #import "TripManager.h"
@@ -135,10 +135,16 @@
         NSLog(@"Purpose Save button pressed");
         long row = [customPickerView selectedRowInComponent:0];
         
-        TookTransitViewController *tookTransitViewController = [[TookTransitViewController alloc] initWithNibName:@"TookTransitViewController" bundle:nil];
+        
+        /*TookTransitViewController *tookTransitViewController = [[TookTransitViewController alloc] initWithNibName:@"TookTransitViewController" bundle:nil];
         tookTransitViewController.delegate = self.delegate;
         
-        [self presentViewController:tookTransitViewController animated:YES completion:nil];
+        [self presentViewController:tookTransitViewController animated:YES completion:nil];*/
+        TripDetailViewController *tripDetailViewController = [[TripDetailViewController alloc] initWithNibName:@"TripDetailViewController" bundle:nil];
+        tripDetailViewController.delegate = self.delegate;
+        
+        [self presentViewController:tripDetailViewController animated:YES completion:nil];
+        
         
         [delegate didPickPurpose:row];
     }
@@ -314,7 +320,7 @@
     description.backgroundColor = [UIColor clearColor];
     description.textColor = [UIColor whiteColor];
     
-	description.font = [UIFont fontWithName:@"Arial" size:16];
+	description.font = [UIFont fontWithName:@"MuseoSans-500" size:16];
 	[self.view addSubview:description];
 }
 
@@ -366,9 +372,6 @@
                 description.text = kDescSocial;
                 break;
             case 5:
-                description.text = kDescShopping;
-                break;
-            case 6:
                 description.text = kDescErrand;
                 break;
             default:

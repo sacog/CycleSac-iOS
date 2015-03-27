@@ -54,13 +54,12 @@
 #define IOS_6_OR_EARLIER ([[[UIDevice currentDevice] systemVersion] floatValue] < 7.0)
 
 // Trip Purpose descriptions
-#define kDescCommute	@"The primary reason for this bike trip is to get between home and your primary work location."
-#define kDescSchool		@"The primary reason for this bike trip is to go to or from school or college."
-#define kDescWork		@"The primary reason for this bike trip is to go to or from business-related meeting, function, or work-related errand for your job."
-#define kDescExercise	@"The primary reason for this bike trip is exercise or biking for the sake of biking."
-#define kDescSocial		@"The primary reason for this bike trip is going to or from a social activity (e.g. at a friend's house, the park, a restaurant, the movies)."
-#define kDescShopping	@"The primary reason for this bike trip is to purchase or bring home goods or groceries."
-#define kDescErrand		@"The primary reason for this bike trip is to attend to personal business such as banking, doctor visit, going to the gym, etc."
+#define kDescCommute	@"Biking between home and your primary work location."
+#define kDescSchool		@"Biking to or from school or college."
+#define kDescWork		@"Biking to or from a business-related meeting, function, or work-related errand for your job."
+#define kDescExercise	@"Biking for exercise or for fun."
+#define kDescSocial		@"Biking to or from a socal activity (e.g. to a friend's house, the park, a restaurant, the movies)."
+#define kDescErrand		@"Biking to attend to personal business (e.g. grocery shopping, banking, doctor's visit, going to the gym)."
 #define kDescOther		@"If none of the other reasons apply to this trip, you can enter trip comments after saving your trip to tell us more."
 
 // Issue descriptions
