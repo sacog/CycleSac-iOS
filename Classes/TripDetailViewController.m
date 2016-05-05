@@ -69,7 +69,8 @@
     scroll.contentSize = CGSizeMake(320, 700);
     scroll.showsHorizontalScrollIndicator = YES;
     
-    pickerData = @[@"", @"Excellent", @"Good", @"Fair", @"Poor", @"Terrible"];
+    pickerData = @[@"", @"Excellent - no stress!", @"Good - low stress", @"Fair - some stress",
+                   @"Poor - pretty stressful", @"Terrible - high stress!"];
     comfortDataSource = [[ComfortDataSource alloc] init];
 	comfortDataSource.parent = self;
 
@@ -153,19 +154,19 @@
             comfort = @"";
             break;
         case 1:
-            comfort = @"Excellent";
+            comfort = @"Excellent - no stress!";
             break;
         case 2:
-            comfort = @"Good";
+            comfort = @"Good - low stress";
             break;
         case 3:
-            comfort = @"Fair";
+            comfort = @"Fair - some stress";
             break;
         case 4:
-            comfort = @"Poor";
+            comfort = @"Poor - pretty stressful";
             break;
         case 5:
-            comfort = @"Terrible";
+            comfort = @"Terrible - high stress!";
             break;
         default:
             comfort = @"";

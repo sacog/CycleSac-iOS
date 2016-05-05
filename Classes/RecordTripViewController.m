@@ -267,7 +267,7 @@
 	
 	// Set up the buttons.
 	[self.view addSubview:[self createStartButton]];
-    [self.view addSubview:[self createNoteButton]];
+    //[self.view addSubview:[self createNoteButton]];
 	
     appDelegate = [[UIApplication sharedApplication] delegate];
     appDelegate.isRecording = NO;
@@ -664,7 +664,7 @@
 		// present action sheet
 		UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:confirm
 																 delegate:self
-														cancelButtonTitle:@"Cancel"
+														cancelButtonTitle:@"Resume"
 												   destructiveButtonTitle:nil
 														otherButtonTitles:@"Save", nil];
 		
