@@ -100,29 +100,6 @@
 
 - (void)trigger:(NSTimer*)theTimer
 {
-	if ( audible && enabled && vibrate )
-	{
-		CFURLRef		soundFileURLRef;
-		SystemSoundID	soundFileObject;
-		
-		// Get the main bundle for the app
-		CFBundleRef mainBundle = CFBundleGetMainBundle();
-		
-		// Get the URL to the sound file to play
-		soundFileURLRef = CFBundleCopyResourceURL( mainBundle, CFSTR ("bicycle-bell-normalized"), CFSTR ("aiff"), NULL );
-		
-		// Create a system sound object representing the sound file
-		AudioServicesCreateSystemSoundID( soundFileURLRef, &soundFileObject );
-		
-		// play audio + vibrate
-		AudioServicesPlayAlertSound( soundFileObject );
-		/*		
-		 // just vibrate
-		 AudioServicesPlaySystemSound( kSystemSoundID_Vibrate );
-		 */
-        CFRelease(soundFileURLRef);
-	}
-	
 	if ( battery && delegate )
 	{
 		// check battery level
@@ -180,7 +157,7 @@
 	{
 		self.delegate = _delegate;
 		
-		self.audible = YES;
+		self.audible = NO;
 		self.battery = YES;
 		self.enabled = YES;
 		self.vibrate = YES;
