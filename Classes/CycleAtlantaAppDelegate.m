@@ -155,14 +155,9 @@
 	
 	// set parent view so we can apply opacity mask to it
 	recordVC.parentView = tabBarController.view;
-    
-    UINavigationController *notesNav = (UINavigationController*)[tabBarController.viewControllers
-                                                                 objectAtIndex:2];
-    SavedNotesViewController *notesVC = (SavedNotesViewController *)[notesNav topViewController];
-    [notesVC initNoteManager:noteManager];
 	
 	UINavigationController	*nav	= (UINavigationController*)[tabBarController.viewControllers 
-															 objectAtIndex:3];
+															 objectAtIndex:2];
 	PersonalInfoViewController *vc	= (PersonalInfoViewController *)[nav topViewController];
 	vc.managedObjectContext			= context;
     
@@ -175,11 +170,7 @@
     UIImage *unselectedViewImage = [UIImage imageNamed:@"tabbar_view.png"];
     [tabBarViewItem setImage: [unselectedViewImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     
-    UITabBarItem *tabBarNotesItem = [tabBarController.tabBar.items objectAtIndex:2];
-    UIImage *unselectedNotesImage = [UIImage imageNamed:@"tabbar_notes.png"];
-    [tabBarNotesItem setImage: [unselectedNotesImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
-    
-    UITabBarItem *tabBarSettingsItem = [tabBarController.tabBar.items objectAtIndex:3];
+    UITabBarItem *tabBarSettingsItem = [tabBarController.tabBar.items objectAtIndex:2];
     UIImage *unselectedSettingsImage = [UIImage imageNamed:@"tabbar_settings.png"];
     [tabBarSettingsItem setImage: [unselectedSettingsImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     

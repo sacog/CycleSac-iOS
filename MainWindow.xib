@@ -28,7 +28,7 @@
             <extendedEdge key="edgesForExtendedLayout"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
             <nil key="simulatedBottomBarMetrics"/>
-            <tabBar key="tabBar" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" selectedItem="49" id="18">
+            <tabBar key="tabBar" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" selectedItem="113" id="18">
                 <rect key="frame" x="0.0" y="431" width="320" height="49"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                 <color key="backgroundColor" red="0.23529411759999999" green="0.22352941179999999" blue="0.2784313725" alpha="1" colorSpace="calibratedRGB"/>
@@ -76,7 +76,7 @@
                         </viewController>
                     </viewControllers>
                 </navigationController>
-                <navigationController title="MY NOTES" id="109">
+                <!--<navigationController title="MY NOTES" id="109">
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <tabBarItem key="tabBarItem" title="MY NOTES" image="tabbar_notes.png" id="113"/>
                     <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translucent="NO" id="110">
@@ -103,7 +103,7 @@
                             <navigationItem key="navigationItem" title="My Notes" id="119"/>
                         </tableViewController>
                     </viewControllers>
-                </navigationController>
+                </navigationController>-->
                 <navigationController title="Personal Info" id="45">
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <tabBarItem key="tabBarItem" title="SETTINGS" image="tabbar_settings.png" id="49"/>
