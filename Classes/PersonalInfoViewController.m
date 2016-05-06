@@ -174,7 +174,7 @@
     
     cyclingFreqArray = [[NSArray alloc]initWithObjects: @" ", @"Less than once a month", @"Several times per month", @"Several times per week", @"Daily", nil];
     
-    riderTypeArray = [[NSArray alloc]initWithObjects: @" ", @"Strong & Fearless - I am willing to ride my bike in any situation", @"Enthused & Confident - I am confident sharing the road with vehicles, but prefer facilities geared to cyclists", @"Comfortable but Cautious - I am comfortable on most roads, but strongly prefer facilities geared to cyclists", @"Interested but Concerned - I am curious to try cycling, but I require facilities geared to cyclists", nil];
+    riderTypeArray = [[NSArray alloc]initWithObjects: @" ", @"Strong & Fearless", @"Enthused & Confident", @"Comfortable but Cautious", @"Interested but Concerned", nil];
     
     
     CGRect pickerFrame = CGRectMake(0, 40, 0, 0);
@@ -862,7 +862,7 @@
 	// [anotherViewController release];
 
 	// outer switch statement identifies section
-    NSURL *url = [NSURL URLWithString:kInstructionsURL];
+    NSURL *url = [NSURL URLWithString:kInfoURL];
     NSURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     
 	switch ([indexPath indexAtPosition:0])
