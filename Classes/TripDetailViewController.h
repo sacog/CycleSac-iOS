@@ -44,11 +44,14 @@
     NSString *comfort;
     ComfortDataSource	*comfortDataSource;
     UITapGestureRecognizer *tapRecognizer;
+    UIButton *faqButton;
 }
 
 @property (nonatomic, retain) id <TripPurposeDelegate> delegate;
 
 @property (nonatomic, retain) IBOutlet UITextView *detailTextView;
+
+@property (nonatomic, retain) IBOutlet UIButton *faqButton;
 
 @property (retain, nonatomic) IBOutlet UIPickerView *detailPicker;
 

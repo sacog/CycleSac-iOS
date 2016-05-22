@@ -276,19 +276,19 @@
     
     if (pickerCategory == 0) {
         navBarItself.topItem.title = @"Trip Purpose";
-        self.descriptionText.text = @"Please select your trip purpose & tap Save";
+        self.descriptionText.text = @"Please select your trip purpose & tap Next";
     }
     else if (pickerCategory == 1){
         navBarItself.topItem.title = @"Boo this...";
-        self.descriptionText.text = @"Please select the issue type & tap Save";
+        self.descriptionText.text = @"Please select the issue type & tap Next";
     }
     else if (pickerCategory == 2){
         navBarItself.topItem.title = @"This is rad!";
-        self.descriptionText.text = @"Please select the asset type & tap Save";
+        self.descriptionText.text = @"Please select the asset type & tap Next";
     }
     else if (pickerCategory == 3){
         navBarItself.topItem.title = @"Note This";
-        self.descriptionText.text = @"Please select the type & tap Save";
+        self.descriptionText.text = @"Please select the type & tap Next";
         [self.customPickerView selectRow:6 inComponent:0 animated:NO];
         if ([self.customPickerView selectedRowInComponent:0] == 6) {
             navBarItself.topItem.rightBarButtonItem.enabled = NO;

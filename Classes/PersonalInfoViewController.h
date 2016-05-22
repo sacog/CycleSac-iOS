@@ -74,7 +74,7 @@
     UIActionSheet *actionSheet;
     UIPickerView *pickerView;
     UITextField *currentTextField;
-    
+    UIButton *faqButton;
     NSArray *genderArray;
     NSArray *ageArray;
     NSArray *ethnicityArray;
@@ -105,7 +105,6 @@
 @property (nonatomic, retain) UITextField   *income;
 @property (nonatomic, retain) UITextField	*homeZIP;
 @property (nonatomic, retain) UITextField	*workZIP;
-
 @property (nonatomic, retain) UITextField   *cyclingFreq;
 @property (nonatomic, retain) UITextField   *riderType;
 

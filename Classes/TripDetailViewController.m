@@ -39,6 +39,7 @@
 @implementation TripDetailViewController
 @synthesize delegate;
 @synthesize detailTextView;
+@synthesize faqButton;
 @synthesize detailPicker;
 @synthesize comfortDataSource;
 @synthesize tapRecognizer;
@@ -61,6 +62,10 @@
     tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapAnywhere:)];
     tapRecognizer.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:tapRecognizer];
+    
+    CALayer *btnLayer = [faqButton layer];
+    [btnLayer setMasksToBounds:YES];
+    [btnLayer setCornerRadius:5.0f];
     
     detailTextView.layer.borderWidth = 1.0;
     detailTextView.layer.borderColor = [[UIColor blackColor] CGColor];
@@ -173,6 +178,9 @@
             break;
     }
 }
+- (IBAction)faqButton:(id)sender {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.cyclesac.org/faq/"]];
+}
 
 - (void)dealloc {
     self.delegate = nil;
@@ -183,6 +191,7 @@
     [detailTextView release];
     [detailPicker release];
     
+    [faqButton release];
     [super dealloc];
 }
 

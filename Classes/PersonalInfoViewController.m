@@ -161,11 +161,8 @@
 {
     [super viewDidLoad];
 
-	// Set the title.
-	// self.title = @"Personal Info";
-    
     genderArray = [[NSArray alloc]initWithObjects: @" ", @"Female",@"Male", nil];
-    
+
     ageArray = [[NSArray alloc]initWithObjects: @" ", @"Less than 18", @"18-24", @"25-34", @"35-44", @"45-54", @"55-64", @"65+", nil];
     
     ethnicityArray = [[NSArray alloc]initWithObjects: @" ", @"African-American", @"Asian", @"Caucasian/White", @"Hispanic/Latino", @"Native American/Alaskan", @"Pacific Islander/Hawaiian", @"Other", nil];
@@ -174,7 +171,7 @@
     
     cyclingFreqArray = [[NSArray alloc]initWithObjects: @" ", @"Less than once a month", @"Several times per month", @"Several times per week", @"Daily", nil];
     
-    riderTypeArray = [[NSArray alloc]initWithObjects: @" ", @"Strong & Fearless", @"Enthused & Confident", @"Comfortable but Cautious", @"Interested but Concerned", nil];
+    riderTypeArray = [[NSArray alloc]initWithObjects: @" ", @"Strong & fearless - I am willing to ride my bike in any situation", @"Enthused & confident - I am confident sharing the road with vehicles, but prefer facilities geared to cyclists", @"Comfortable, but cautious - I am comfortable on most roads, but strongly prefer facilities geared to cyclists", @"Interested, but concerned - I am curious to try cycling, but I require facilities geared to cyclists", nil];
     
     
     CGRect pickerFrame = CGRectMake(0, 40, 0, 0);
@@ -251,7 +248,7 @@
         cyclingFreqSelectedRow  = [user.cyclingFreq integerValue];
         riderType.text          = [riderTypeArray objectAtIndex:[user.rider_type integerValue]];
         riderTypeSelectedRow    = [user.rider_type integerValue];
-		
+        
 		// init cycling frequency
 		//NSLog(@"init cycling freq: %d", [user.cyclingFreq intValue]);
 		//cyclingFreq		= [NSNumber numberWithInt:[user.cyclingFreq intValue]];
@@ -281,62 +278,74 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)myTextField{
     
-    /*if(currentTextField == email || currentTextField == workZIP || currentTextField == homeZIP || currentTextField == schoolZIP){
-        NSLog(@"currentTextField: text");
-        [currentTextField resignFirstResponder];
-        [myTextField resignFirstResponder];
-    }
-    NSLog(@"currentTextfield: picker");*/
     currentTextField = myTextField;
     
-    if(myTextField == gender || myTextField == age || myTextField == ethnicity || myTextField == income || myTextField == cyclingFreq || myTextField == riderType){
+    if(myTextField == gender || myTextField == age || myTextField == ethnicity || myTextField == income || myTextField == cyclingFreq || myTextField == riderType) {
         
         [myTextField resignFirstResponder];
         
-        //pre iOS 8
-        if(floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
-            
-        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil]; //as we want to display a subview we won't be using the default buttons but rather we're need to create a toolbar to display the buttons on
+        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+        
+        //as we want to display a subview we won't be using the default buttons but rather we need to create a toolbar to display the buttons on
         
         [actionSheet setActionSheetStyle:UIActionSheetStyleBlackTranslucent];
         
-        [actionSheet addSubview:pickerView];
-        
         doneToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
-        doneToolbar.barStyle = UIBarStyleBlackOpaque;
+        doneToolbar.barStyle = UIBarStyleDefault;
         [doneToolbar sizeToFit];
         
         NSMutableArray *barItems = [[[NSMutableArray alloc] init] autorelease];
         
         UIBarButtonItem *flexSpace = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil] autorelease];
-        [barItems addObject:flexSpace];
         
         UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed:)];
         [barItems addObject:cancelBtn];
         
+        [barItems addObject:flexSpace];
+        
+        selectedItem = 0;
+        NSString *barTitle = @"";
+        if(myTextField == gender){
+            selectedItem = [user.gender integerValue];
+            barTitle = @"Gender";
+        }else if (myTextField == age){
+            selectedItem = [user.age integerValue];
+            barTitle = @"Age";
+        }else if (myTextField == ethnicity){
+            selectedItem = [user.ethnicity integerValue];
+            barTitle = @"Ethnicity";
+        }else if (myTextField == income){
+            selectedItem = [user.income integerValue];
+            barTitle = @"Income";
+        }else if (myTextField == cyclingFreq){
+            selectedItem = [user.cyclingFreq integerValue];
+            barTitle = @"Cycling Frequency";
+        }else if (myTextField == riderType){
+            selectedItem = [user.rider_type integerValue];
+            barTitle = @"Rider Type";
+        }
+        
+        //Setup the title for the bar
+        CGFloat width = ceil([barTitle sizeWithAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"MuseoSans-900" size:16]}].width);
+        CGRect labelFrame = CGRectMake(0, 0, width, 48);
+        UILabel *label = [[UILabel alloc] initWithFrame:labelFrame];
+        label.numberOfLines = 2;
+        label.textColor = [UIColor whiteColor];
+        label.font = [UIFont fontWithName:@"MuseoSans-900" size:16];
+        label.textColor = [UIColor blackColor];
+        label.text = barTitle;
+        UIBarButtonItem *toolBarTitle = [[UIBarButtonItem alloc] initWithCustomView:label];
+        [label release];
+        [barItems addObject:toolBarTitle];
+        
+        [barItems addObject:flexSpace];
+        
         UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed:)];
         [barItems addObject:doneBtn];
 
-        //TODO add a next and previous button to left side to take us to the next/previous thing. and switch to the right kind of input mode.
-        
         [doneToolbar setItems:barItems animated:YES];
         
         [actionSheet addSubview:doneToolbar];
-        
-        selectedItem = 0;
-        if(myTextField == gender){
-            selectedItem = [user.gender integerValue];
-        }else if (myTextField == age){
-            selectedItem = [user.age integerValue];
-        }else if (myTextField == ethnicity){
-            selectedItem = [user.ethnicity integerValue];
-        }else if (myTextField == income){
-            selectedItem = [user.income integerValue];
-        }else if (myTextField == cyclingFreq){
-            selectedItem = [user.cyclingFreq integerValue];
-        }else if (myTextField == riderType){
-            selectedItem = [user.rider_type integerValue];
-        }
         
         [pickerView selectRow:selectedItem inComponent:0 animated:NO];
         
@@ -347,56 +356,6 @@
         [actionSheet showInView:self.view];
         
         [actionSheet setBounds:CGRectMake(0, 0, 320, 485)];
-        }
-        else {
-            //for iOS 8+
-            NSArray *selectArray;
-            NSString *title = @"";
-            
-            selectedItem = 0;
-            if(myTextField == gender){
-                selectedItem = [user.gender integerValue];
-                selectArray = genderArray;
-                title = @"Gender";
-            }else if (myTextField == age){
-                selectedItem = [user.age integerValue];
-                selectArray = ageArray;
-                title = @"Age";
-            }else if (myTextField == ethnicity){
-                selectedItem = [user.ethnicity integerValue];
-                selectArray = ethnicityArray;
-                title = @"Ethnicity";
-            }else if (myTextField == income){
-                selectedItem = [user.income integerValue];
-                selectArray = incomeArray;
-                title = @"Income";
-            }else if (myTextField == cyclingFreq){
-                selectedItem = [user.cyclingFreq integerValue];
-                selectArray = cyclingFreqArray;
-                title = @"Cycling Frequency";
-            }else if (myTextField == riderType){
-                selectedItem = [user.rider_type integerValue];
-                selectArray = riderTypeArray;
-                title = @"Rider Type";
-            }
-            
-            [ActionSheetStringPicker showPickerWithTitle:title
-                                                    rows:selectArray
-                                        initialSelection:selectedItem
-                                               doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
-                                                   NSLog(@"Picker: %@", picker);
-                                                   NSLog(@"Selected Index: %ld", (long)selectedIndex);
-                                                   NSLog(@"Selected Value: %@", selectedValue);
-                                                   currentTextField.text = selectedValue;
-                                                   [self textFieldDidEndEditing:currentTextField];
-                                                   [self doneButtonPressedController:selectedIndex];
-                                               }
-                                             cancelBlock:^(ActionSheetStringPicker *picker) {
-                                                 NSLog(@"Block Picker Canceled");
-                                             }
-                                                  origin:self.view];
-            
-        }
     }
 }
 
@@ -614,7 +573,7 @@
             return 1;
             break;
 		case 1:
-			return 7;
+			return 8;
 			break;
 		case 2:
 			return 2;
@@ -637,7 +596,18 @@
 {    
     // Set up the cell...
 	UITableViewCell *cell = nil;
-	
+    
+    //Set up FAQ button
+    faqButton = [UIButton buttonWithType: UIButtonTypeRoundedRect];
+    [faqButton setTitle:@"Why do we ask this?" forState:UIControlStateNormal];
+    [faqButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [faqButton setBackgroundColor:[UIColor lightGrayColor]];
+    //adding action programatically
+    [faqButton addTarget:self action:@selector(faqBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
+    CALayer *btnLayer = [faqButton layer];
+    [btnLayer setMasksToBounds:YES];
+    [btnLayer setCornerRadius:5.0f];
+
 	// outer switch statement identifies section
 	switch ([indexPath indexAtPosition:0])
 	{
@@ -672,20 +642,24 @@
 			// inner switch statement identifies row
 			switch ([indexPath indexAtPosition:1])
 			{
-				case 0:
+                case 0:
+                    faqButton.frame = CGRectMake(cell.contentView.frame.size.height/2-(cell.frame.size.height - 10)/2, 5,(cell.frame.size.width - 10) , (cell.frame.size.height - 10));
+                    [cell.contentView addSubview:faqButton];
+                    break;
+				case 1:
 					cell.textLabel.text = @"Age";
 					[cell.contentView addSubview:age];
 					break;
-				case 1:
+				case 2:
 					cell.textLabel.text = @"Email";
 					[cell.contentView addSubview:email];
 					break;
-                case 2:
+                case 3:
                     cell.textLabel.text = @"(To recieve CycleSac updates, anticipated to be no more than one update per month.)";
                     cell.textLabel.font = [UIFont fontWithName:@"MuseoSans-500" size:12];
                     cell.textLabel.numberOfLines = 2;
                     break;
-                case 3:
+                case 4:
                     //cell.accessoryType = UITableViewCellAccessoryCheckmark;
                     cell.textLabel.text = @"Click here if you are interested in completing a more detailed survey in the future to help with with bike planning in the region.";
                     cell.textLabel.font = [UIFont fontWithName:@"MuseoSans-500" size:12];
@@ -697,15 +671,15 @@
                         cell.accessoryType = UITableViewCellAccessoryNone;
                     }
                     break;
-				case 4:
+				case 5:
 					cell.textLabel.text = @"Gender";
 					[cell.contentView addSubview:gender];
 					break;
-                case 5:
+                case 6:
 					cell.textLabel.text = @"Ethnicity";
 					[cell.contentView addSubview:ethnicity];
 					break;
-                case 6:
+                case 7:
 					cell.textLabel.text = @"Home Income";
 					[cell.contentView addSubview:income];
 					break;
@@ -772,7 +746,7 @@
 			{
 				case 0:
                     cell.textLabel.text = @"Rider Type";
-					[cell.contentView addSubview:riderType];
+                    [cell.contentView addSubview:riderType];
 					break;
             }
 			
@@ -851,6 +825,10 @@
     return cell;
 }
 
+- (IBAction)faqBtnClicked:(id)sender
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.cyclesac.org/faq/"]];
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -864,6 +842,9 @@
 	// outer switch statement identifies section
     NSURL *url = [NSURL URLWithString:kInfoURL];
     NSURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    
+    NSURL *faqUrl = [NSURL URLWithString:kFaqUrl];
+    NSURLRequest *faqRequest = [NSMutableURLRequest requestWithURL:faqUrl];
     
 	switch ([indexPath indexAtPosition:0])
 	{
@@ -886,10 +867,13 @@
 			switch ([indexPath indexAtPosition:1])
 			{
 				case 0:
+                    [[UIApplication sharedApplication] openURL:[faqRequest URL]];
 					break;
 				case 1:
 					break;
-                case 3: //check row
+                case 2:
+					break;
+                case 4: //check row
                     self.title = self.title;
                     UITableViewCell *cell;
                     cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -1045,6 +1029,52 @@
         return [riderTypeArray count];
     }
     return 0;
+}
+
+- (UIView *)pickerView:(UIPickerView *)thePickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view {
+    
+    if(view == nil) {
+        view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, thePickerView.frame.size.width, 48)];
+    }
+    else {
+        NSArray *viewsToRemove = [view subviews];
+        for (UIView *v in viewsToRemove) {
+            [v removeFromSuperview];
+        }
+    }
+
+    CGRect labelFrame = CGRectMake(0, 0, thePickerView.frame.size.width, 48);
+    UILabel *label = [[UILabel alloc] initWithFrame:labelFrame];
+    label.numberOfLines = 3;
+    label.textColor = [UIColor blackColor];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.font = [UIFont fontWithName:@"MuseoSans-500" size:24];
+    label.lineBreakMode = NSLineBreakByWordWrapping;
+    label.adjustsFontSizeToFitWidth = YES;
+
+    if(currentTextField == gender){
+        label.text = [genderArray objectAtIndex:row];
+    }
+    else if(currentTextField == age){
+        label.text = [ageArray objectAtIndex:row];
+    }
+    else if(currentTextField == ethnicity){
+        label.text = [ethnicityArray objectAtIndex:row];
+    }
+    else if(currentTextField == income){
+        label.text = [incomeArray objectAtIndex:row];
+    }
+    else if(currentTextField == cyclingFreq){
+        label.text = [cyclingFreqArray objectAtIndex:row];
+    }
+    else if(currentTextField == riderType){
+        label.font = [UIFont fontWithName:@"MuseoSans-500" size:12];
+        label.text = [riderTypeArray objectAtIndex:row];
+    }
+    
+    [view addSubview:label];
+    [label release];
+    return [view autorelease];
 }
 
 - (NSString *)pickerView:(UIPickerView *)thePickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {

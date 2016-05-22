@@ -103,6 +103,7 @@
 
 #define kInfoURL			@"http://CycleSac.org"
 #define kInstructionsURL	@"mailto:cyclesac@sacog.org"
+#define kFaqUrl             @"http://cyclesac.org/faq/"
 
 #define kSaveURL			@"http://cyclesac.sacog.org/post/"
 
