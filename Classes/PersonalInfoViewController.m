@@ -52,17 +52,17 @@
 #import "User.h"
 #import "constants.h"
 #import "ActionSheetStringPicker.h"
-
+#import "ComfortDataSource.h"
+#import <sys/sysctl.h>
 
 #define kMaxCyclingFreq 3
 
-@implementation PersonalInfoViewController
+@implementation PersonalInfoViewController;
 
 @synthesize delegate, managedObjectContext, user;
 @synthesize age, email, gender, ethnicity, income, homeZIP, workZIP;
 @synthesize cyclingFreq, riderType;
 @synthesize ageSelectedRow, genderSelectedRow, ethnicitySelectedRow, incomeSelectedRow, cyclingFreqSelectedRow, riderTypeSelectedRow, selectedItem, futureSurveyChecked;
-
 
 - (id)initWithStyle:(UITableViewStyle)style {
     // Override initWithStyle: if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -161,6 +161,13 @@
 {
     [super viewDidLoad];
 
+    size_t size;
+    sysctlbyname("hw.machine", NULL, &size, NULL, 0);
+    char *machine = malloc(size);
+    sysctlbyname("hw.machine", machine, &size, NULL, 0);
+    NSString *platform = [NSString stringWithCString:machine encoding:NSUTF8StringEncoding];
+    deviceType = [self platformType:platform];
+    
     genderArray = [[NSArray alloc]initWithObjects: @" ", @"Female",@"Male", nil];
 
     ageArray = [[NSArray alloc]initWithObjects: @" ", @"Less than 18", @"18-24", @"25-34", @"35-44", @"45-54", @"55-64", @"65+", nil];
@@ -226,8 +233,7 @@
 			NSLog(@"PersonalInfo viewDidLoad fetch error %@, %@", error, [error localizedDescription]);
 	}
 	[self setUser:[mutableFetchResults objectAtIndex:0]];
-    id temp = user;
-    id ugh = user.age;
+
 	if ( user != nil )
 	{
 		age.text            = [ageArray objectAtIndex:[user.age integerValue]];
@@ -284,79 +290,215 @@
         
         [myTextField resignFirstResponder];
         
-        actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-        
+        if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+
         //as we want to display a subview we won't be using the default buttons but rather we need to create a toolbar to display the buttons on
         
-        [actionSheet setActionSheetStyle:UIActionSheetStyleBlackTranslucent];
+            [actionSheet setActionSheetStyle:UIActionSheetStyleBlackTranslucent];
         
-        doneToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
-        doneToolbar.barStyle = UIBarStyleDefault;
-        [doneToolbar sizeToFit];
+            doneToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+            doneToolbar.backgroundColor = [UIColor whiteColor];
+            [doneToolbar sizeToFit];
         
-        NSMutableArray *barItems = [[[NSMutableArray alloc] init] autorelease];
+            NSMutableArray *barItems = [[[NSMutableArray alloc] init] autorelease];
         
-        UIBarButtonItem *flexSpace = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil] autorelease];
+           // platformCalculator = [[PlatformCalculator alloc] init];
+            //NSString *currentPlatform = [platformCalculator platformNiceString];
+            
+            if (([deviceType isEqual:@"iPhone 6"]) || ([deviceType isEqual:@"iPhone 6s"]) || ([deviceType isEqual:@"iPhone 6 Plus"]) || ([deviceType isEqual:@"iPhone 6s Plus"])) {                UIBarButtonItem *positiveSeparator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+                positiveSeparator.width = 15;
+                
+                [barItems addObject:positiveSeparator];
+            }
+            
+            UIBarButtonItem *flexSpace = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil] autorelease];
         
-        UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed:)];
-        [barItems addObject:cancelBtn];
+            UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed:)];
+            [barItems addObject:cancelBtn];
         
-        [barItems addObject:flexSpace];
+            [barItems addObject:flexSpace];
         
-        selectedItem = 0;
-        NSString *barTitle = @"";
-        if(myTextField == gender){
-            selectedItem = [user.gender integerValue];
-            barTitle = @"Gender";
-        }else if (myTextField == age){
-            selectedItem = [user.age integerValue];
-            barTitle = @"Age";
-        }else if (myTextField == ethnicity){
-            selectedItem = [user.ethnicity integerValue];
-            barTitle = @"Ethnicity";
-        }else if (myTextField == income){
-            selectedItem = [user.income integerValue];
-            barTitle = @"Income";
-        }else if (myTextField == cyclingFreq){
-            selectedItem = [user.cyclingFreq integerValue];
-            barTitle = @"Cycling Frequency";
-        }else if (myTextField == riderType){
-            selectedItem = [user.rider_type integerValue];
-            barTitle = @"Rider Type";
-        }
+            selectedItem = 0;
+            NSString *barTitle = @"";
+            if(myTextField == gender){
+                NSString *selectedGender = gender.text;
+                selectedItem = [genderArray indexOfObject: selectedGender];
+                barTitle = @"Gender";
+            }else if (myTextField == age){
+                NSString *selectedAge = age.text;
+                selectedItem = [ageArray indexOfObject: selectedAge];
+                barTitle = @"Age";
+            }else if (myTextField == ethnicity){
+                NSString *selectedEthnicity = ethnicity.text;
+                selectedItem = [ethnicityArray indexOfObject: selectedEthnicity];
+                barTitle = @"Ethnicity";
+            }else if (myTextField == income){
+                NSString *selectedIncome = income.text;
+                selectedItem = [incomeArray indexOfObject: selectedIncome];
+                barTitle = @"Income";
+            }else if (myTextField == cyclingFreq){
+                NSString *selectedCyclingFreq = cyclingFreq.text;
+                selectedItem = [cyclingFreqArray indexOfObject: selectedCyclingFreq];
+                barTitle = @"Cycling Frequency";
+            }else if (myTextField == riderType){
+                NSString *selectedRiderType = riderType.text;
+                selectedItem = [riderTypeArray indexOfObject: selectedRiderType];
+                barTitle = @"Rider Type";
+            }
         
         //Setup the title for the bar
-        CGFloat width = ceil([barTitle sizeWithAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"MuseoSans-900" size:16]}].width);
-        CGRect labelFrame = CGRectMake(0, 0, width, 48);
-        UILabel *label = [[UILabel alloc] initWithFrame:labelFrame];
-        label.numberOfLines = 2;
-        label.textColor = [UIColor whiteColor];
-        label.font = [UIFont fontWithName:@"MuseoSans-900" size:16];
-        label.textColor = [UIColor blackColor];
-        label.text = barTitle;
-        UIBarButtonItem *toolBarTitle = [[UIBarButtonItem alloc] initWithCustomView:label];
-        [label release];
-        [barItems addObject:toolBarTitle];
+            CGFloat width = ceil([barTitle sizeWithAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"MuseoSans-900" size:16]}].width);
+            CGRect labelFrame = CGRectMake(0, 0, width, 48);
+            UILabel *label = [[UILabel alloc] initWithFrame:labelFrame];
+            label.numberOfLines = 2;
+            label.textColor = [UIColor whiteColor];
+            label.font = [UIFont fontWithName:@"MuseoSans-900" size:16];
+            label.textColor = [UIColor blackColor];
+            label.text = barTitle;
+            UIBarButtonItem *toolBarTitle = [[UIBarButtonItem alloc] initWithCustomView:label];
+            [label release];
+            [barItems addObject:toolBarTitle];
         
-        [barItems addObject:flexSpace];
+            [barItems addObject:flexSpace];
         
-        UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed:)];
-        [barItems addObject:doneBtn];
-
-        [doneToolbar setItems:barItems animated:YES];
+            UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed:)];
+            [barItems addObject:doneBtn];
+            
+            if (([deviceType isEqual:@"iPhone 6"]) || ([deviceType isEqual:@"iPhone 6s"]) || ([deviceType isEqual:@"iPhone 6 Plus"]) || ([deviceType isEqual:@"iPhone 6s Plus"])) {
+                UIBarButtonItem *negativeSeparator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+                negativeSeparator.width = 15;
+                
+                [barItems addObject:negativeSeparator];
+            }
+            
+            [doneToolbar setItems:barItems animated:YES];
+            [actionSheet addSubview:doneToolbar];
         
-        [actionSheet addSubview:doneToolbar];
+            pickerView.tag = 156;
         
-        [pickerView selectRow:selectedItem inComponent:0 animated:NO];
+            [pickerView reloadAllComponents];
         
-        [pickerView reloadAllComponents];
-        
-        [actionSheet addSubview:pickerView];
-        
-        [actionSheet showInView:self.view];
-        
-        [actionSheet setBounds:CGRectMake(0, 0, 320, 485)];
+            [pickerView selectRow:selectedItem inComponent:0 animated:NO];
+            
+            //[btnLayer setMasksToBounds:YES];
+            //[btnLayer setCornerRadius:5.0f];
+            pickerView.layer.cornerRadius = 5.0f;
+            
+            alertController = [UIAlertController alertControllerWithTitle:@" \n\n\n\n\n\n\n\n\n\n"
+                                                              message:@""
+                                                       preferredStyle:UIAlertControllerStyleActionSheet];
+            
+            UIPickerView *pickerFiliter=[[UIPickerView alloc]init];
+            pickerFiliter = [[UIPickerView alloc] initWithFrame:CGRectMake(0.0, 40.0, 320.0, 120.0)];
+            pickerFiliter.showsSelectionIndicator = YES;
+            pickerFiliter.dataSource = self;
+            pickerFiliter.delegate = self;
+            pickerFiliter.tag = 166;
+            [pickerFiliter selectRow:selectedItem inComponent:0 animated:NO];
+            pickerFiliter.backgroundColor = [UIColor whiteColor];
+            pickerFiliter.layer.cornerRadius = 10.0f;
+            
+            CGRect screenBound = [[UIScreen mainScreen] bounds];
+            CGSize screenSize = screenBound.size;
+            CGFloat screenWidth = screenSize.width * .94;
+            
+            [pickerFiliter setFrame:CGRectMake(0.0, 40.0, screenWidth, 120.0)];
+            [alertController.view addSubview:pickerFiliter];
+            
+            [doneToolbar setFrame:CGRectMake(0, 0, screenWidth, 44)];
+            
+            [alertController.view addSubview:doneToolbar];
+            
+            [self presentViewController:alertController animated:YES completion:nil];
+        }
+        else {
+            actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+            
+            //as we want to display a subview we won't be using the default buttons but rather we need to create a toolbar to display the buttons on
+            
+            [actionSheet setActionSheetStyle:UIActionSheetStyleBlackTranslucent];
+            
+            doneToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+            doneToolbar.barStyle = UIBarStyleDefault;
+            [doneToolbar sizeToFit];
+            
+            NSMutableArray *barItems = [[[NSMutableArray alloc] init] autorelease];
+            
+            UIBarButtonItem *flexSpace = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil] autorelease];
+            
+            UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed:)];
+            [barItems addObject:cancelBtn];
+            
+            [barItems addObject:flexSpace];
+            
+            selectedItem = 0;
+            NSString *barTitle = @"";
+            if(myTextField == gender){
+                NSString *selectedGender = gender.text;
+                selectedItem = [genderArray indexOfObject: selectedGender];
+                barTitle = @"Gender";
+            }else if (myTextField == age){
+                NSString *selectedAge = age.text;
+                selectedItem = [ageArray indexOfObject: selectedAge];
+                barTitle = @"Age";
+            }else if (myTextField == ethnicity){
+                NSString *selectedEthnicity = ethnicity.text;
+                selectedItem = [ethnicityArray indexOfObject: selectedEthnicity];
+                barTitle = @"Ethnicity";
+            }else if (myTextField == income){
+                NSString *selectedIncome = income.text;
+                selectedItem = [incomeArray indexOfObject: selectedIncome];
+                barTitle = @"Income";
+            }else if (myTextField == cyclingFreq){
+                NSString *selectedCyclingFreq = cyclingFreq.text;
+                selectedItem = [cyclingFreqArray indexOfObject: selectedCyclingFreq];
+                barTitle = @"Cycling Frequency";
+            }else if (myTextField == riderType){
+                NSString *selectedRiderType = riderType.text;
+                selectedItem = [riderTypeArray indexOfObject: selectedRiderType];
+                barTitle = @"Rider Type";
+            }
+            
+            //Setup the title for the bar
+            CGFloat width = ceil([barTitle sizeWithAttributes:@{NSFontAttributeName: [UIFont fontWithName:@"MuseoSans-900" size:16]}].width);
+            CGRect labelFrame = CGRectMake(0, 0, width, 48);
+            UILabel *label = [[UILabel alloc] initWithFrame:labelFrame];
+            label.numberOfLines = 2;
+            label.textColor = [UIColor whiteColor];
+            label.font = [UIFont fontWithName:@"MuseoSans-900" size:16];
+            label.textColor = [UIColor blackColor];
+            label.text = barTitle;
+            UIBarButtonItem *toolBarTitle = [[UIBarButtonItem alloc] initWithCustomView:label];
+            [label release];
+            [barItems addObject:toolBarTitle];
+            
+            [barItems addObject:flexSpace];
+            
+            UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed:)];
+            [barItems addObject:doneBtn];
+            
+            [doneToolbar setItems:barItems animated:YES];
+            
+            [actionSheet addSubview:doneToolbar];
+            
+            [pickerView selectRow:selectedItem inComponent:0 animated:NO];
+            
+            [pickerView reloadAllComponents];
+            
+            [actionSheet addSubview:pickerView];
+            
+            [actionSheet showInView:self.view];
+            
+            [actionSheet setBounds:CGRectMake(0, 0, 320, 485)];
+        }
     }
+}
+
+//STEVEN
+- (IBAction)dismissActionSheet:(id)sender
+{
+    [alertController dismissViewControllerAnimated:YES completion:nil];
 }
 
 // the user pressed the "Done" button, so dismiss the keyboard
@@ -1045,7 +1187,7 @@
 
     CGRect labelFrame = CGRectMake(0, 0, thePickerView.frame.size.width, 48);
     UILabel *label = [[UILabel alloc] initWithFrame:labelFrame];
-    label.numberOfLines = 3;
+    label.numberOfLines = 3; //was 3
     label.textColor = [UIColor blackColor];
     label.textAlignment = NSTextAlignmentCenter;
     label.font = [UIFont fontWithName:@"MuseoSans-500" size:24];
@@ -1077,6 +1219,11 @@
     return [view autorelease];
 }
 
+- (CGFloat)pickerView:(UIPickerView *)thisPickerView rowHeightForComponent:(NSInteger)component
+{
+    return 44.0;
+}
+
 - (NSString *)pickerView:(UIPickerView *)thePickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
     if(currentTextField == gender){
         return [genderArray objectAtIndex:row];
@@ -1101,7 +1248,13 @@
 
 - (void)doneButtonPressed:(id)sender{
     NSInteger selectedRow;
-    selectedRow = [pickerView selectedRowInComponent:0];
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+        UIPickerView *currentPickerView = (UIPickerView*)[alertController.view viewWithTag:166];
+        selectedRow = [currentPickerView selectedRowInComponent:0];
+    }
+    else {
+        selectedRow = [pickerView selectedRowInComponent:0];
+    }
     if(currentTextField == gender){
         //enable save button if value has been changed.
         if (selectedRow != [user.gender integerValue]){
@@ -1161,7 +1314,12 @@
         NSString *riderTypeSelect = [riderTypeArray objectAtIndex:selectedRow];
         riderType.text = riderTypeSelect;
     }
-    [actionSheet dismissWithClickedButtonIndex:1 animated:YES];
+    
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+        [alertController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [actionSheet dismissWithClickedButtonIndex:1 animated:YES];
+    }
 }
 
 - (void)doneButtonPressedController:(id)sender{
@@ -1233,7 +1391,67 @@
 
 
 - (void)cancelButtonPressed:(id)sender{
-    [actionSheet dismissWithClickedButtonIndex:1 animated:YES];
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+        [alertController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [actionSheet dismissWithClickedButtonIndex:1 animated:YES];
+    }
+}
+
+- (NSString *) platformType:(NSString *)platform
+{
+    if ([platform isEqualToString:@"iPhone1,1"])    return @"iPhone 1G";
+    if ([platform isEqualToString:@"iPhone1,2"])    return @"iPhone 3G";
+    if ([platform isEqualToString:@"iPhone2,1"])    return @"iPhone 3GS";
+    if ([platform isEqualToString:@"iPhone3,1"])    return @"iPhone 4";
+    if ([platform isEqualToString:@"iPhone3,3"])    return @"Verizon iPhone 4";
+    if ([platform isEqualToString:@"iPhone4,1"])    return @"iPhone 4S";
+    if ([platform isEqualToString:@"iPhone5,1"])    return @"iPhone 5 (GSM)";
+    if ([platform isEqualToString:@"iPhone5,2"])    return @"iPhone 5 (GSM+CDMA)";
+    if ([platform isEqualToString:@"iPhone5,3"])    return @"iPhone 5c (GSM)";
+    if ([platform isEqualToString:@"iPhone5,4"])    return @"iPhone 5c (GSM+CDMA)";
+    if ([platform isEqualToString:@"iPhone6,1"])    return @"iPhone 5s (GSM)";
+    if ([platform isEqualToString:@"iPhone6,2"])    return @"iPhone 5s (GSM+CDMA)";
+    if ([platform isEqualToString:@"iPhone7,2"])    return @"iPhone 6";
+    if ([platform isEqualToString:@"iPhone7,1"])    return @"iPhone 6 Plus";
+    if ([platform isEqualToString:@"iPhone8,1"])    return @"iPhone 6s";
+    if ([platform isEqualToString:@"iPhone8,2"])    return @"iPhone 6s Plus";
+    if ([platform isEqualToString:@"iPod1,1"])      return @"iPod Touch 1G";
+    if ([platform isEqualToString:@"iPod2,1"])      return @"iPod Touch 2G";
+    if ([platform isEqualToString:@"iPod3,1"])      return @"iPod Touch 3G";
+    if ([platform isEqualToString:@"iPod4,1"])      return @"iPod Touch 4G";
+    if ([platform isEqualToString:@"iPod5,1"])      return @"iPod Touch 5G";
+    if ([platform isEqualToString:@"iPad1,1"])      return @"iPad";
+    if ([platform isEqualToString:@"iPad2,1"])      return @"iPad 2 (WiFi)";
+    if ([platform isEqualToString:@"iPad2,2"])      return @"iPad 2 (GSM)";
+    if ([platform isEqualToString:@"iPad2,3"])      return @"iPad 2 (CDMA)";
+    if ([platform isEqualToString:@"iPad2,4"])      return @"iPad 2 (WiFi)";
+    if ([platform isEqualToString:@"iPad2,5"])      return @"iPad Mini (WiFi)";
+    if ([platform isEqualToString:@"iPad2,6"])      return @"iPad Mini (GSM)";
+    if ([platform isEqualToString:@"iPad2,7"])      return @"iPad Mini (GSM+CDMA)";
+    if ([platform isEqualToString:@"iPad3,1"])      return @"iPad 3 (WiFi)";
+    if ([platform isEqualToString:@"iPad3,2"])      return @"iPad 3 (GSM+CDMA)";
+    if ([platform isEqualToString:@"iPad3,3"])      return @"iPad 3 (GSM)";
+    if ([platform isEqualToString:@"iPad3,4"])      return @"iPad 4 (WiFi)";
+    if ([platform isEqualToString:@"iPad3,5"])      return @"iPad 4 (GSM)";
+    if ([platform isEqualToString:@"iPad3,6"])      return @"iPad 4 (GSM+CDMA)";
+    if ([platform isEqualToString:@"iPad4,1"])      return @"iPad Air (WiFi)";
+    if ([platform isEqualToString:@"iPad4,2"])      return @"iPad Air (Cellular)";
+    if ([platform isEqualToString:@"iPad4,3"])      return @"iPad Air";
+    if ([platform isEqualToString:@"iPad4,4"])      return @"iPad Mini 2G (WiFi)";
+    if ([platform isEqualToString:@"iPad4,5"])      return @"iPad Mini 2G (Cellular)";
+    if ([platform isEqualToString:@"iPad4,6"])      return @"iPad Mini 2G";
+    if ([platform isEqualToString:@"iPad4,7"])      return @"iPad Mini 3 (WiFi)";
+    if ([platform isEqualToString:@"iPad4,8"])      return @"iPad Mini 3 (Cellular)";
+    if ([platform isEqualToString:@"iPad4,9"])      return @"iPad Mini 3 (China)";
+    if ([platform isEqualToString:@"iPad5,3"])      return @"iPad Air 2 (WiFi)";
+    if ([platform isEqualToString:@"iPad5,4"])      return @"iPad Air 2 (Cellular)";
+    if ([platform isEqualToString:@"AppleTV2,1"])   return @"Apple TV 2G";
+    if ([platform isEqualToString:@"AppleTV3,1"])   return @"Apple TV 3";
+    if ([platform isEqualToString:@"AppleTV3,2"])   return @"Apple TV 3 (2013)";
+    if ([platform isEqualToString:@"i386"])         return @"Simulator";
+    if ([platform isEqualToString:@"x86_64"])       return @"Simulator";
+    return platform;
 }
 
 - (void)dealloc {

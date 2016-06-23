@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>B5FDE338-8EA4-4CCE-9763-32AB20871B10</string>
 	<key>IDESourceControlProjectName</key>
-	<string>CycleSac</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>6110CC6252755727643E36F2E3E0B2B306648F28</key>
 		<string>https://github.com/sacog/CycleSac-iOS.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>CycleSac.xcodeproj</string>
+	<string>CycleSac.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>6110CC6252755727643E36F2E3E0B2B306648F28</key>

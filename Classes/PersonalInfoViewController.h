@@ -82,6 +82,9 @@
     NSArray *cyclingFreqArray;
     NSArray *riderTypeArray;
     
+    UIAlertController *alertController;
+    NSString *deviceType;
+    
     NSInteger ageSelectedRow;
     NSInteger genderSelectedRow;
     NSInteger ethnicitySelectedRow;
